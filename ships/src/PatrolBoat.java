@@ -7,6 +7,10 @@ public class PatrolBoat extends Ship {
 
     }
 
+    /**
+     *
+     * @param position0
+     */
     public void setPosition0(String position0) {
         this.position0 = position0;
     }

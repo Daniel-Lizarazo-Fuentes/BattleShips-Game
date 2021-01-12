@@ -56,4 +56,15 @@ public abstract class Ship {
         return this.name;
     }
 
+    /**
+     *
+     * @return
+     */
+     public boolean sunk(){
+         if(getHitPoints() <= 0){
+             return true;
+         } else {
+             return false;
+         }
+     }
 }
