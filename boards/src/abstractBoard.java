@@ -4,7 +4,16 @@ import java.util.HashMap;
 public abstract class abstractBoard {
     private static final int ROWS = 10;
     private static final int COLUMNS = 15;
-    ArrayList<String> coordinates = new ArrayList<>();
+    private ArrayList<String> coordinates = new ArrayList<>();
+//prob need to add positionsState and positionHiddend in a list to the coordinates
+    private enum positionState {
+        EMPTY,
+        SHIP,
+        WRECK
+    }
+
+    private boolean positionHidden;
+
 
     public abstractBoard() {
 
@@ -31,7 +40,6 @@ public abstract class abstractBoard {
 
         }
     }
-
 
 
     abstract String boardToString();
