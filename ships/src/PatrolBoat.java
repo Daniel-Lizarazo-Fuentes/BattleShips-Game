@@ -1,17 +1,14 @@
+import java.util.ArrayList;
+
 public class PatrolBoat extends Ship {
-    String position0;
+    private static final int SIZE=1;
 
-    public PatrolBoat(int size, int hitPoints, String name, String position0) {
-        super(size, hitPoints, name);
-        setPosition0(position0);
+
+    public PatrolBoat(String name, ArrayList<String> positions) {
+        super(SIZE, SIZE, name, positions);
+
 
     }
 
-    /**
-     *
-     * @param position0
-     */
-    public void setPosition0(String position0) {
-        this.position0 = position0;
-    }
+
 }
