@@ -19,8 +19,8 @@ public class Board {
 
     public void fillFields() {
         for (String s : getCoordinates()) {
-            // boardPosition bp = new boardPosition(s, boardPosition.positionState.EMPTY, false); // only used for testing if toString works correctly
-            boardPosition bp = new boardPosition(s, boardPosition.positionState.EMPTY, true);
+          //  boardPosition bp = new boardPosition(s, boardPosition.positionState.EMPTY, false); // only used for testing if toString works correctly
+             boardPosition bp = new boardPosition(s, boardPosition.positionState.EMPTY, true);
             getFields().add(bp);
         }
     }
@@ -53,35 +53,61 @@ public class Board {
 
     @Override
     public String toString() {
-        String result = "|";
-        int i = 0;
+        int i = 0; // for column numbers which reset
+        int j = 0; // for row numbers to print
+        boolean[] rowEmpty = new boolean[COLUMNS];
+        int o = 0; // for iterating through array
+        for (boolean b : rowEmpty) {
+            rowEmpty[o]=true;
+            o++;
+        }
+        String append = Integer.toString(j) + " |";
+
+
         for (int k = 0; k < getFields().size(); k++) {
             boardPosition p = getFields().get(k);
             if (i == COLUMNS) {
-                result += "\n|";
+                j++;
+                append += "\n" + Integer.toString(j) + " |";
                 i = 0;
+
             }
             if (p.getPositionHidden()) {
-                result += p.getCoordinate() + "....|";
+                append += ".... |";
             } else {
                 switch (p.getState()) {
                     case SHIP:
-                        result += p.getCoordinate() + " SHIP|";
+                        append += " SHIP |";
+
                         break;
                     case EMPTY:
-                        result += p.getCoordinate() + " EMPTY|";
+                        append += " EMPTY|";
                         break;
                     case WRECK:
-                        result += p.getCoordinate() + " WRECK|";
+                        append += " WRECK|";
                         break;
                     default:
                 }
+                rowEmpty[i]=false;
             }
             i++;
         }
+        String result = "";
 
+        for (int z = 0; z < COLUMNS; z++) {
+            char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+            if (rowEmpty[z]) {
+                result += "     " + alphabet[z];
+            }
+            else{
+                result += "      " + alphabet[z];
+            }
+
+        }
+        result += "\n" + append;
         return result;
     }
+
 
 
 }
