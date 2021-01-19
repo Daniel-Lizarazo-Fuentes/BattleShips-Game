@@ -17,6 +17,10 @@ public class Board {
         fillFields(visible);
     }
 
+    /**
+     * Fills the field of the board, all are empty but visibility depends on parameter
+     * @param visible indicates whether the whole board is visible or not
+     */
     public void fillFields(boolean visible) {
         for (String s : getCoordinates()) {
             boardPosition bp;
@@ -31,18 +35,34 @@ public class Board {
         }
     }
 
+    /**
+     *
+     * @ensures result!=null
+     */
     public ArrayList<boardPosition> getFields() {
         return this.fields;
     }
 
+    /**
+     *
+     * @ensures result!=null
+     */
     public ArrayList<String> getCoordinates() {
         return this.coordinates;
     }
 
+    /**
+     * Method to set individual coordinate in coordinates
+     * @param a
+     * @param i
+     */
     public void setCoordinate(char a, int i) {
         getCoordinates().add(a + Integer.toString(i));
     }
 
+    /**
+     * method to fill coordinates Arraylist with the correct coordinates
+     */
     public void fillCoordinates() {
         char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
         // for each row we add all the letters with the row number
@@ -57,27 +77,35 @@ public class Board {
         }
     }
 
+    /**
+     * Method which overrides regular toString so that a board with the correct visibility is returned
+     * @ensures result!=null;
+     */
     @Override
     public String toString() {
         int i = 0; // for column numbers which reset
         int j = 0; // for row numbers to print
-        boolean[] rowEmpty = new boolean[COLUMNS];
+        boolean[] columnFullyHidden = new boolean[COLUMNS];
         int o = 0; // for iterating through array
-        for (boolean b : rowEmpty) {
-            rowEmpty[o] = true;
+        // fill array with true as the board is empty at first
+        for (boolean b : columnFullyHidden) {
+            columnFullyHidden[o] = true;
             o++;
         }
+        // string to append to the result as the column letters are decided on at the end
         String append = Integer.toString(j) + " |";
 
-
+//for all boardPositions in fields we add them to the string
         for (int k = 0; k < getFields().size(); k++) {
             boardPosition p = getFields().get(k);
+            // if the end of the columns is reached we go to a new row and add the row number
             if (i == COLUMNS) {
                 j++;
                 append += "\n" + Integer.toString(j) + " |";
                 i = 0;
 
             }
+            // check if hiddend and based on that print the state or hidden
             if (p.getPositionHidden()) {
                 append += ".... |";
             } else {
@@ -94,15 +122,15 @@ public class Board {
                         break;
                     default:
                 }
-                rowEmpty[i] = false;
+                columnFullyHidden[i] = false;
             }
             i++;
         }
         String result = "";
-
+// add letters for all columns and depending on if column is not hidden change width
         for (int z = 0; z < COLUMNS; z++) {
             char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
-            if (rowEmpty[z]) {
+            if (columnFullyHidden[z]) {
                 result += "     " + alphabet[z];
             } else {
                 result += "      " + alphabet[z];
