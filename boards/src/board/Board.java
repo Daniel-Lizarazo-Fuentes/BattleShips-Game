@@ -1,25 +1,31 @@
 package board;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
 
 public class Board {
     private static final int ROWS = 10;
     private static final int COLUMNS = 15;
 
-    private ArrayList<boardPosition> fields = new ArrayList<>();
-    private ArrayList<String> coordinates = new ArrayList<>();
+    private ArrayList<boardPosition> fields;
+    private ArrayList<String> coordinates;
 
 
     public Board() {
-
+        this.fields = new ArrayList<>();
+        this.coordinates = new ArrayList<>();
+        fillCoordinates();
+        fillFields();
     }
 
     public void fillFields() {
         for (String s : getCoordinates()) {
-            boardPosition bp = new boardPosition(s, boardPosition.positionState.EMPTY, true);
+            boardPosition bp = new boardPosition(s, boardPosition.positionState.EMPTY, false);
+            //boardPosition bp = new boardPosition(s, boardPosition.positionState.EMPTY, true);
         }
+    }
+
+    public ArrayList<boardPosition> getFields() {
+        return this.fields;
     }
 
     public ArrayList<String> getCoordinates() {
@@ -44,11 +50,41 @@ public class Board {
         }
     }
 
+    @Override
+    public String toString() {
+        String result = "|";
+        int i = 0;
+        for (boardPosition p : getFields()) {
+            if (i == COLUMNS) {
+                result += "\n|";
+                i = 0;
+            }
+            if (p.getPositionHidden()) {
+                result += "....|";
+            } else {
+                switch (p.getState()) {
+                    case SHIP:
+                        result += p.getCoordinate() + " SHIP|";
+                        break;
+                    case EMPTY:
+                        result += p.getCoordinate() + " EMPTY|";
+                        break;
+                    case WRECK:
+                        result += p.getCoordinate() + " WRECK|";
+                        break;
+                    default:
+                }
+            }
+            i++;
+        }
 
-//    public String boardToString(){
-//
-//
-//    }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        Board board = new Board();
+        System.out.println(board.toString());
+    }
 
 }
 
