@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -6,17 +7,14 @@ public abstract class abstractBoard {
     private static final int ROWS = 10;
     private static final int COLUMNS = 15;
 
-
+    private ArrayList<position> fields = new ArrayList<>();
     private ArrayList<String> coordinates = new ArrayList<>();
-
-
-
-
 
 
     public abstractBoard() {
 
     }
+
 
     public ArrayList<String> getCoordinates() {
         return this.coordinates;
