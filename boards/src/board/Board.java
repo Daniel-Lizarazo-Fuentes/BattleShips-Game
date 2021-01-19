@@ -1,20 +1,26 @@
+package board;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-public abstract class abstractBoard {
+public class Board {
     private static final int ROWS = 10;
     private static final int COLUMNS = 15;
 
-    private ArrayList<position> fields = new ArrayList<>();
+    private ArrayList<boardPosition> fields = new ArrayList<>();
     private ArrayList<String> coordinates = new ArrayList<>();
 
 
-    public abstractBoard() {
+    public Board() {
 
     }
 
+    public void fillFields() {
+        for (String s : getCoordinates()) {
+            boardPosition bp = new boardPosition(s, boardPosition.positionState.EMPTY, true);
+        }
+    }
 
     public ArrayList<String> getCoordinates() {
         return this.coordinates;
@@ -39,7 +45,10 @@ public abstract class abstractBoard {
     }
 
 
-    abstract String boardToString();
+//    public String boardToString(){
+//
+//
+//    }
 
 }
 

@@ -1,3 +1,4 @@
+package ships;
 
 import java.util.ArrayList;
 //abstract parent class ship

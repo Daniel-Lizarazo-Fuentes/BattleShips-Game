@@ -1,4 +1,5 @@
-public class position {
+package board;
+public class boardPosition {
     public enum positionState {
         EMPTY,
         SHIP,
@@ -9,7 +10,7 @@ public class position {
     private positionState state;
     private boolean positionHidden;
 
-    public position(String coordinate, positionState state, boolean hidden) {
+    public boardPosition(String coordinate, positionState state, boolean hidden) {
         this.coordinate = coordinate;
         this.state = state;
         this.positionHidden = hidden;

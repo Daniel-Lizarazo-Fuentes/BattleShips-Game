@@ -1,3 +1,5 @@
+package ships;
+
 import java.util.ArrayList;
 
 public class PatrolBoat extends Ship {
