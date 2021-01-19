@@ -10,18 +10,24 @@ public class Board {
     private ArrayList<String> coordinates;
 
 
-    public Board() {
+    public Board(boolean visible) {
         this.fields = new ArrayList<>();
         this.coordinates = new ArrayList<>();
         fillCoordinates();
-        fillFields();
+        fillFields(visible);
     }
 
-    public void fillFields() {
+    public void fillFields(boolean visible) {
         for (String s : getCoordinates()) {
-          //  boardPosition bp = new boardPosition(s, boardPosition.positionState.EMPTY, false); // only used for testing if toString works correctly
-             boardPosition bp = new boardPosition(s, boardPosition.positionState.EMPTY, true);
+            boardPosition bp;
+            if (visible) {
+                bp = new boardPosition(s, boardPosition.positionState.EMPTY, false);
+            } else {
+                bp = new boardPosition(s, boardPosition.positionState.EMPTY, true);
+            }
             getFields().add(bp);
+
+
         }
     }
 
@@ -58,7 +64,7 @@ public class Board {
         boolean[] rowEmpty = new boolean[COLUMNS];
         int o = 0; // for iterating through array
         for (boolean b : rowEmpty) {
-            rowEmpty[o]=true;
+            rowEmpty[o] = true;
             o++;
         }
         String append = Integer.toString(j) + " |";
@@ -88,7 +94,7 @@ public class Board {
                         break;
                     default:
                 }
-                rowEmpty[i]=false;
+                rowEmpty[i] = false;
             }
             i++;
         }
@@ -98,8 +104,7 @@ public class Board {
             char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
             if (rowEmpty[z]) {
                 result += "     " + alphabet[z];
-            }
-            else{
+            } else {
                 result += "      " + alphabet[z];
             }
 
@@ -109,13 +114,14 @@ public class Board {
     }
 
 
-
 }
 
 // used for testing if fillFields worked and if upon creating new board object the board would be empty
 //public static void main(String[] args) {
-//    Board board = new Board();
-//    System.out.println(board.toString());
+//    Board boardVisble = new Board(true);
+//    Board boardHidden = new Board(false);
+//    System.out.println(boardVisble.toString());
+//    System.out.println(boardHidden.toString());
 //}
 
 // used for testing if fillCoordinates worked
