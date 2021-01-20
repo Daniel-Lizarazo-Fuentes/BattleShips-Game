@@ -58,12 +58,15 @@ public class Board {
      */
     public int getFieldIndex(String s) {
         int result = -1;
-        System.out.println(getFields().size());
+        //System.out.println(getFields().size()); // for testing purposes
         for (int i = 0; i < getFields().size(); i++) {
+          // System.out.println(s+"TEST: "+getFields().get(i).getCoordinate()); //for testing purposes
             if ((getFields().get(i).getCoordinate()).equals(s)) {
+
                 result = i;
             }
         }
+        //System.out.println(result); //for testing purposes
         return result;
     }
 
@@ -130,13 +133,14 @@ public class Board {
                 i = 0;
 
             }
-            // check if hiddend and based on that print the state or hidden
+            // check if hidden and based on that print the state or hidden
             if (p.getPositionHidden()) {
                 append += ".... |";
             } else {
                 switch (p.getState()) {
                     case SHIP:
-                        append += " SHIP |";
+
+                        append += "  "+p.getShipType()+"  |";
 
                         break;
                     case EMPTY:

@@ -9,12 +9,22 @@ public class boardPosition {
 
     private String coordinate;
     private positionState state;
+    private String shipType;
     private boolean positionHidden;
 
     public boardPosition(String coordinate, positionState state, boolean hidden) {
         this.coordinate = coordinate;
         this.state = state;
         this.positionHidden = hidden;
+        this.shipType="EMPTY";
+    }
+
+    public void setShipType(String shipType) {
+        this.shipType = shipType;
+    }
+
+    public String getShipType(){
+        return this.shipType;
     }
 
     /**
