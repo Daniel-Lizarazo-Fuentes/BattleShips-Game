@@ -17,6 +17,14 @@ public class Board {
         fillFields(visible);
     }
 
+    public int getRows(){
+        return this.ROWS;
+    }
+    public int getColumns(){
+        return this.COLUMNS;
+    }
+
+
     /**
      * Fills the field of the game.board, all are empty but visibility depends on parameter
      *
@@ -43,6 +51,11 @@ public class Board {
         return this.fields;
     }
 
+    /**
+     * Find the index of a coordinate in fields
+     * @param s
+     * @return
+     */
     public int getFieldIndex(String s) {
         int result = -1;
         System.out.println(getFields().size());
@@ -153,23 +166,18 @@ public class Board {
         return result;
     }
 
-    public static void main(String[] args) {
-        Board boardVisble = new Board(true);
-        System.out.println(boardVisble.toString());
-        System.out.println(boardVisble.getFieldIndex("a1"));
-        //  Board boardHidden = new Board(false);
 
-        // System.out.println(boardHidden.toString());
-    }
 
 }
 
 // used for testing if fillFields worked and if upon creating new game.board object the game.board would be empty
 //public static void main(String[] args) {
 //    Board boardVisble = new Board(true);
-//    Board boardHidden = new Board(false);
 //    System.out.println(boardVisble.toString());
-//    System.out.println(boardHidden.toString());
+//    System.out.println(boardVisble.getFieldIndex("a1"));
+//      Board boardHidden = new Board(false);
+//
+//     System.out.println(boardHidden.toString());
 //}
 
 // used for testing if fillCoordinates worked

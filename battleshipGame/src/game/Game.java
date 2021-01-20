@@ -17,14 +17,17 @@ public class Game {
     // for now single player game
     public Game(boolean randomPlacement) {
         // fill boards[] with 2 empty boards of which one is completely visible
-        BOARDS[0] = new Board(true);
-        BOARDS[1] = new Board(false);
+        Board playerBoard = new Board(true);
+        Board computerBoard = new Board(false);
+        BOARDS[0] = playerBoard;
+        BOARDS[1] = computerBoard;
         if (randomPlacement) {
-          //  fillBoardRandom();
+            fillBoardRandom(playerBoard);
+            fillBoardRandom(computerBoard);
         } else {
-            fillBoardManual();
+            fillBoardManual(playerBoard);
+            fillBoardRandom(computerBoard);
         }
-
 
     }
 
@@ -54,18 +57,32 @@ public class Game {
             patrolBoats.add(new PatrolBoat("PatrolBoat" + i, positions));
         }
 // for each ship find a valid position
+        char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
         for (Ship sh : carriers) {
             boolean foundFittingField = false;
             // while a random field that fits hasn't been found
             while (!foundFittingField) {
-                // find random field
-                int randomField = (int) (Math.random() * ((board.getFields().size()) + 1));
-                // TODO find better way of simplifying the and statements switch?
-                if (board.getFields().get(randomField).getState() == boardPosition.positionState.EMPTY && board.getFields().get(randomField).getState() == boardPosition.positionState.EMPTY) {
-
+                // generate random field
+                int randomColumn = (int) (Math.random() * (board.getColumns() + 1));
+                int randomRow = (int) (Math.random() * (board.getRows() + 1));
+//temporarily set to true until proven otherwise, avoids load of and statements for checking if everything is true
+                foundFittingField = true;
+                for (int k = 0; k < sh.getSize(); k++) {
+                    String randomCoordinate = Integer.toString(randomColumn + k) + Integer.toString(randomRow);
+                    if (board.getFields().get(board.getFieldIndex(randomCoordinate)).getState() != boardPosition.positionState.EMPTY) {
+                        foundFittingField = false;
+                    }
 
                 }
+                if(foundFittingField){
+                    for (int j = 0; j < sh.getSize(); j++) {
+                        String randomCoordinate = Integer.toString(randomColumn + j) + Integer.toString(randomRow);
+                        board.getFields().get(board.getFieldIndex(randomCoordinate)).setState(boardPosition.positionState.SHIP);
+
+                    }
+                }
             }
+
         }
         for (Ship sh : battleships) {
 
@@ -82,7 +99,7 @@ public class Game {
 
     }
 
-    public void fillBoardManual() {
+    public void fillBoardManual(Board board) {
 
     }
 
