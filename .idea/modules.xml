@@ -4,8 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/battleship-Project-module2.iml" filepath="$PROJECT_DIR$/.idea/battleship-Project-module2.iml" />
       <module fileurl="file://$PROJECT_DIR$/battleshipGame/battleshipGame.iml" filepath="$PROJECT_DIR$/battleshipGame/battleshipGame.iml" />
-      <module fileurl="file://$PROJECT_DIR$/boards/boards.iml" filepath="$PROJECT_DIR$/boards/boards.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ships/ships.iml" filepath="$PROJECT_DIR$/ships/ships.iml" />
     </modules>
   </component>
 </project>
