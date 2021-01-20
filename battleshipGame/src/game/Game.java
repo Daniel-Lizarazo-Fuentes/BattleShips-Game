@@ -20,7 +20,7 @@ public class Game {
         BOARDS[0] = new Board(true);
         BOARDS[1] = new Board(false);
         if (randomPlacement) {
-            fillBoardRandom();
+          //  fillBoardRandom();
         } else {
             fillBoardManual();
         }

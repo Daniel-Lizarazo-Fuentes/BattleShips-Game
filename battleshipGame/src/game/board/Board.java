@@ -43,9 +43,14 @@ public class Board {
         return this.fields;
     }
 
-    public int getFieldIndex(String s){
-        int result;
-        result=getFields().indexOf(s);
+    public int getFieldIndex(String s) {
+        int result = -1;
+        System.out.println(getFields().size());
+        for (int i = 0; i < getFields().size(); i++) {
+            if ((getFields().get(i).getCoordinate()).equals(s)) {
+                result = i;
+            }
+        }
         return result;
     }
 
@@ -148,6 +153,14 @@ public class Board {
         return result;
     }
 
+    public static void main(String[] args) {
+        Board boardVisble = new Board(true);
+        System.out.println(boardVisble.toString());
+        System.out.println(boardVisble.getFieldIndex("a1"));
+        //  Board boardHidden = new Board(false);
+
+        // System.out.println(boardHidden.toString());
+    }
 
 }
 
