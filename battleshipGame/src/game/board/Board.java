@@ -1,4 +1,4 @@
-package board;
+package game.board;
 
 import java.util.ArrayList;
 
@@ -18,8 +18,8 @@ public class Board {
     }
 
     /**
-     * Fills the field of the board, all are empty but visibility depends on parameter
-     * @param visible indicates whether the whole board is visible or not
+     * Fills the field of the game.board, all are empty but visibility depends on parameter
+     * @param visible indicates whether the whole game.board is visible or not
      */
     public void fillFields(boolean visible) {
         for (String s : getCoordinates()) {
@@ -78,7 +78,7 @@ public class Board {
     }
 
     /**
-     * Method which overrides regular toString so that a board with the correct visibility is returned
+     * Method which overrides regular toString so that a game.board with the correct visibility is returned
      * @ensures result!=null;
      */
     @Override
@@ -87,7 +87,7 @@ public class Board {
         int j = 0; // for row numbers to print
         boolean[] columnFullyHidden = new boolean[COLUMNS];
         int o = 0; // for iterating through array
-        // fill array with true as the board is empty at first
+        // fill array with true as the game.board is empty at first
         for (boolean b : columnFullyHidden) {
             columnFullyHidden[o] = true;
             o++;
@@ -144,7 +144,7 @@ public class Board {
 
 }
 
-// used for testing if fillFields worked and if upon creating new board object the board would be empty
+// used for testing if fillFields worked and if upon creating new game.board object the game.board would be empty
 //public static void main(String[] args) {
 //    Board boardVisble = new Board(true);
 //    Board boardHidden = new Board(false);

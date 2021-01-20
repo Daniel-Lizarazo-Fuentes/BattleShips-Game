@@ -1,4 +1,4 @@
-package board;
+package game.board;
 public class boardPosition {
     public enum positionState {
         EMPTY,

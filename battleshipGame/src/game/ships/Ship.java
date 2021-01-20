@@ -1,4 +1,4 @@
-package ships;
+package game.ships;
 
 import java.util.ArrayList;
 //abstract parent class ship
