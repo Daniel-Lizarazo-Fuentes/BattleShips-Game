@@ -19,6 +19,7 @@ public class Board {
 
     /**
      * Fills the field of the game.board, all are empty but visibility depends on parameter
+     *
      * @param visible indicates whether the whole game.board is visible or not
      */
     public void fillFields(boolean visible) {
@@ -36,15 +37,19 @@ public class Board {
     }
 
     /**
-     *
      * @ensures result!=null
      */
     public ArrayList<boardPosition> getFields() {
         return this.fields;
     }
 
+    public int getFieldIndex(String s){
+        int result;
+        result=getFields().indexOf(s);
+        return result;
+    }
+
     /**
-     *
      * @ensures result!=null
      */
     public ArrayList<String> getCoordinates() {
@@ -53,6 +58,7 @@ public class Board {
 
     /**
      * Method to set individual coordinate in coordinates
+     *
      * @param a
      * @param i
      */
@@ -79,6 +85,7 @@ public class Board {
 
     /**
      * Method which overrides regular toString so that a game.board with the correct visibility is returned
+     *
      * @ensures result!=null;
      */
     @Override
