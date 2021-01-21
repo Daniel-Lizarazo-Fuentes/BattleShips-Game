@@ -1,4 +1,5 @@
-package board;
+package game.board;
+
 public class boardPosition {
     public enum positionState {
         EMPTY,
@@ -8,16 +9,25 @@ public class boardPosition {
 
     private String coordinate;
     private positionState state;
+    private String shipType;
     private boolean positionHidden;
 
     public boardPosition(String coordinate, positionState state, boolean hidden) {
         this.coordinate = coordinate;
         this.state = state;
         this.positionHidden = hidden;
+        this.shipType="EMPTY";
+    }
+
+    public void setShipType(String shipType) {
+        this.shipType = shipType;
+    }
+
+    public String getShipType(){
+        return this.shipType;
     }
 
     /**
-     *
      * @ensures result !=null;
      */
     public String getCoordinate() {
@@ -27,7 +37,6 @@ public class boardPosition {
     // no setter needed for coordinate as it will not change after initialization
 
     /**
-     *
      * @ensures result!=null;
      */
     public positionState getState() {
@@ -35,8 +44,8 @@ public class boardPosition {
     }
 
     /**
-     * @requires state is a valid positionState
      * @param state the state of the coordinate (i.e. empty field, field with ship, field with wreck)
+     * @requires state is a valid positionState
      */
     public void setState(positionState state) {
         this.state = state;
@@ -44,15 +53,14 @@ public class boardPosition {
 
     /**
      *
-     *
      */
     public boolean getPositionHidden() {
         return this.positionHidden;
     }
 
     /**
-     * @requires positionHidden == true && positionHidden==false;
      * @param positionHidden if the position is visible to the player
+     * @requires positionHidden == true && positionHidden==false;
      */
     public void setPositionHidden(boolean positionHidden) {
         this.positionHidden = positionHidden;

@@ -1,4 +1,4 @@
-package board;
+package game.board;
 
 import java.util.ArrayList;
 
@@ -18,8 +18,26 @@ public class Board {
     }
 
     /**
-     * Fills the field of the board, all are empty but visibility depends on parameter
-     * @param visible indicates whether the whole board is visible or not
+     *
+     * @return
+     */
+    public int getRows(){
+        return this.ROWS;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int getColumns(){
+        return this.COLUMNS;
+    }
+
+
+    /**
+     * Fills the field of the game.board, all are empty but visibility depends on parameter
+     *
+     * @param visible indicates whether the whole game.board is visible or not
      */
     public void fillFields(boolean visible) {
         for (String s : getCoordinates()) {
@@ -36,7 +54,6 @@ public class Board {
     }
 
     /**
-     *
      * @ensures result!=null
      */
     public ArrayList<boardPosition> getFields() {
@@ -44,7 +61,25 @@ public class Board {
     }
 
     /**
-     *
+     * Find the index of a coordinate in fields
+     * @param s
+     * @return
+     */
+    public int getFieldIndex(String s) {
+        int result = -1;
+        //System.out.println(getFields().size()); // for testing purposes
+        for (int i = 0; i < getFields().size(); i++) {
+          // System.out.println(s+"TEST: "+getFields().get(i).getCoordinate()); //for testing purposes
+            if ((getFields().get(i).getCoordinate()).equals(s)) {
+
+                result = i;
+            }
+        }
+        //System.out.println(result); //for testing purposes
+        return result;
+    }
+
+    /**
      * @ensures result!=null
      */
     public ArrayList<String> getCoordinates() {
@@ -53,6 +88,7 @@ public class Board {
 
     /**
      * Method to set individual coordinate in coordinates
+     *
      * @param a
      * @param i
      */
@@ -78,7 +114,8 @@ public class Board {
     }
 
     /**
-     * Method which overrides regular toString so that a board with the correct visibility is returned
+     * Method which overrides regular toString so that a game.board with the correct visibility is returned
+     *
      * @ensures result!=null;
      */
     @Override
@@ -87,7 +124,7 @@ public class Board {
         int j = 0; // for row numbers to print
         boolean[] columnFullyHidden = new boolean[COLUMNS];
         int o = 0; // for iterating through array
-        // fill array with true as the board is empty at first
+        // fill array with true as the game.board is empty at first
         for (boolean b : columnFullyHidden) {
             columnFullyHidden[o] = true;
             o++;
@@ -105,13 +142,14 @@ public class Board {
                 i = 0;
 
             }
-            // check if hiddend and based on that print the state or hidden
+            // check if hidden and based on that print the state or hidden
             if (p.getPositionHidden()) {
                 append += ".... |";
             } else {
                 switch (p.getState()) {
                     case SHIP:
-                        append += " SHIP |";
+
+                        append += "  "+p.getShipType()+"  |";
 
                         break;
                     case EMPTY:
@@ -142,14 +180,17 @@ public class Board {
     }
 
 
+
 }
 
-// used for testing if fillFields worked and if upon creating new board object the board would be empty
+// used for testing if fillFields worked and if upon creating new game.board object the game.board would be empty
 //public static void main(String[] args) {
 //    Board boardVisble = new Board(true);
-//    Board boardHidden = new Board(false);
 //    System.out.println(boardVisble.toString());
-//    System.out.println(boardHidden.toString());
+//    System.out.println(boardVisble.getFieldIndex("a1"));
+//      Board boardHidden = new Board(false);
+//
+//     System.out.println(boardHidden.toString());
 //}
 
 // used for testing if fillCoordinates worked
