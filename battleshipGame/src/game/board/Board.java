@@ -17,9 +17,18 @@ public class Board {
         fillFields(visible);
     }
 
+    /**
+     *
+     * @return
+     */
     public int getRows(){
         return this.ROWS;
     }
+
+    /**
+     *
+     * @return
+     */
     public int getColumns(){
         return this.COLUMNS;
     }
