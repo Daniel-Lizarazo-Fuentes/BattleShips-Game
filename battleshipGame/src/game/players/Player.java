@@ -1,6 +1,9 @@
 package game.players;
 import game.ships.*;
 import game.board.*;
+
+import java.util.ArrayList;
+
 public interface Player {
     /**
      * Returns the name of the player
@@ -13,6 +16,20 @@ public interface Player {
      * @ensures result = the points of the player
      */
     public int getPoints();
+
+    /**
+     * Sets an arrayList with ships arraylists, used for the scores
+     *
+     * @param shipLists
+     */
+    public void setShipArrayList(ArrayList<ArrayList<Ship>> shipLists);
+
+    /**
+     * Returns the arraylist whith ship arraylists, used for scores
+     *
+     * @ensures result is an arrayList of Arraylists with ships
+     */
+    public ArrayList<ArrayList<Ship>> getShipArrayList();
 
     /**
      * Adds points based on what ship was sunk
