@@ -40,7 +40,9 @@ public class Game {
     }
 
     // TODO add to player
-    public void createShipArrays(){}
+    public void createShipArrays() {
+    }
+
 
     // adjust to only be for one specific board
     public void fillBoardRandom(Board board) {
@@ -67,214 +69,24 @@ public class Game {
         for (int i = 0; i < 10; i++) {
             patrolBoats.add(new PatrolBoat("PatrolBoat" + i, positions));
         }
-// for each ship find a valid position
-        char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+
+        // for each ship find a valid position
         for (Ship sh : carriers) {
-            boolean foundFittingField = false;
-            // while a random field that fits hasn't been found
-            while (!foundFittingField) {
-                // generate random field
-                int randomColumn = (int) (Math.random() * (board.getColumns() + 1));
-                int randomRow = (int) (Math.random() * (board.getRows() + 1));
-//temporarily set to true until proven otherwise, avoids load of and statements for checking if everything is true
-                foundFittingField = true;
-                for (int k = 0; k < sh.getSize(); k++) {
-
-                    String randomCoordinate = alphabet[randomColumn + k] + Integer.toString(randomRow);
-                    if (randomColumn + k < 15) {
-                        //if index doesn't exist then it will just be set to false
-                        try {
-                            if (board.getFields().get(board.getFieldIndex(randomCoordinate)).getState() != boardPosition.positionState.EMPTY) {
-                                foundFittingField = false;
-                            }
-                        } catch (IndexOutOfBoundsException e) {
-                            foundFittingField = false;
-                        }
-
-                    } else {
-                        foundFittingField = false;
-                    }
-                }
-//                System.out.println(foundFittingField); // for testing purposes
-                if (foundFittingField) {
-                    for (int j = 0; j < sh.getSize(); j++) {
-                        String randomCoordinate = alphabet[randomColumn + j] + Integer.toString(randomRow);
-                        try {
-                            board.getFields().get(board.getFieldIndex(randomCoordinate)).setState(boardPosition.positionState.SHIP);
-                            board.getFields().get(board.getFieldIndex(randomCoordinate)).setShipType("CV"); // CV is based on hull type, meaning generic aircarft carrier
-                        } catch (IndexOutOfBoundsException e) {
-                            foundFittingField = false;
-                        }
-
-                    }
-                }
-            }
+            checkAndPlaceRandom(board, sh, "CV");
 
         }
         for (Ship sh : battleships) {
-            boolean foundFittingField = false;
-            // while a random field that fits hasn't been found
-            while (!foundFittingField) {
-                // generate random field
-                int randomColumn = (int) (Math.random() * (board.getColumns() + 1));
-                int randomRow = (int) (Math.random() * (board.getRows() + 1));
-//temporarily set to true until proven otherwise, avoids load of and statements for checking if everything is true
-                foundFittingField = true;
-                for (int k = 0; k < sh.getSize(); k++) {
-
-                    String randomCoordinate = alphabet[randomColumn + k] + Integer.toString(randomRow);
-                    if (randomColumn + k < 15) {
-                        //if index doesn't exist then it will just be set to false
-                        try {
-                            if (board.getFields().get(board.getFieldIndex(randomCoordinate)).getState() != boardPosition.positionState.EMPTY) {
-                                foundFittingField = false;
-                            }
-                        } catch (IndexOutOfBoundsException e) {
-                            foundFittingField = false;
-                        }
-
-                    } else {
-                        foundFittingField = false;
-                    }
-                }
-//                System.out.println(foundFittingField); // for testing purposes
-                if (foundFittingField) {
-                    for (int j = 0; j < sh.getSize(); j++) {
-                        String randomCoordinate = alphabet[randomColumn + j] + Integer.toString(randomRow);
-                        try {
-                            board.getFields().get(board.getFieldIndex(randomCoordinate)).setState(boardPosition.positionState.SHIP);
-                            board.getFields().get(board.getFieldIndex(randomCoordinate)).setShipType("BB"); // BB is based on hull type, meaning heavy gun-armed vessel
-                        } catch (IndexOutOfBoundsException e) {
-                            foundFittingField = false;
-                        }
-
-                    }
-                }
-            }
+            checkAndPlaceRandom(board, sh, "BB");
         }
         for (Ship sh : destroyers) {
-            boolean foundFittingField = false;
-            // while a random field that fits hasn't been found
-            while (!foundFittingField) {
-                // generate random field
-                int randomColumn = (int) (Math.random() * (board.getColumns() + 1));
-                int randomRow = (int) (Math.random() * (board.getRows() + 1));
-//temporarily set to true until proven otherwise, avoids load of and statements for checking if everything is true
-                foundFittingField = true;
-                for (int k = 0; k < sh.getSize(); k++) {
-
-                    String randomCoordinate = alphabet[randomColumn + k] + Integer.toString(randomRow);
-                    if (randomColumn + k < 15) {
-                        //if index doesn't exist then it will just be set to false
-                        try {
-                            if (board.getFields().get(board.getFieldIndex(randomCoordinate)).getState() != boardPosition.positionState.EMPTY) {
-                                foundFittingField = false;
-                            }
-                        } catch (IndexOutOfBoundsException e) {
-                            foundFittingField = false;
-                        }
-
-                    } else {
-                        foundFittingField = false;
-                    }
-                }
-//                System.out.println(foundFittingField); // for testing purposes
-                if (foundFittingField) {
-                    for (int j = 0; j < sh.getSize(); j++) {
-                        String randomCoordinate = alphabet[randomColumn + j] + Integer.toString(randomRow);
-                        try {
-                            board.getFields().get(board.getFieldIndex(randomCoordinate)).setState(boardPosition.positionState.SHIP);
-                            board.getFields().get(board.getFieldIndex(randomCoordinate)).setShipType("DD"); // DD is based on hull type, meaning destroyer
-                        } catch (IndexOutOfBoundsException e) {
-                            foundFittingField = false;
-                        }
-
-                    }
-                }
-            }
+            checkAndPlaceRandom(board, sh, "DD");
 
         }
         for (Ship sh : superPatrols) {
-            boolean foundFittingField = false;
-            // while a random field that fits hasn't been found
-            while (!foundFittingField) {
-                // generate random field
-                int randomColumn = (int) (Math.random() * (board.getColumns() + 1));
-                int randomRow = (int) (Math.random() * (board.getRows() + 1));
-//temporarily set to true until proven otherwise, avoids load of and statements for checking if everything is true
-                foundFittingField = true;
-                for (int k = 0; k < sh.getSize(); k++) {
-
-                    String randomCoordinate = alphabet[randomColumn + k] + Integer.toString(randomRow);
-                    if (randomColumn + k < 15) {
-                        //if index doesn't exist then it will just be set to false
-                        try {
-                            if (board.getFields().get(board.getFieldIndex(randomCoordinate)).getState() != boardPosition.positionState.EMPTY) {
-                                foundFittingField = false;
-                            }
-                        } catch (IndexOutOfBoundsException e) {
-                            foundFittingField = false;
-                        }
-
-                    } else {
-                        foundFittingField = false;
-                    }
-                }
-//                System.out.println(foundFittingField); // for testing purposes
-                if (foundFittingField) {
-                    for (int j = 0; j < sh.getSize(); j++) {
-                        String randomCoordinate = alphabet[randomColumn + j] + Integer.toString(randomRow);
-                        try {
-                            board.getFields().get(board.getFieldIndex(randomCoordinate)).setState(boardPosition.positionState.SHIP);
-                            board.getFields().get(board.getFieldIndex(randomCoordinate)).setShipType("SV"); // SV is based on hull type (made up definition), meaning super patrol vessel
-                        } catch (IndexOutOfBoundsException e) {
-                            foundFittingField = false;
-                        }
-
-                    }
-                }
-            }
+            checkAndPlaceRandom(board, sh, "SV");
         }
         for (Ship sh : patrolBoats) {
-            boolean foundFittingField = false;
-            // while a random field that fits hasn't been found
-            while (!foundFittingField) {
-                // generate random field
-                int randomColumn = (int) (Math.random() * (board.getColumns() + 1));
-                int randomRow = (int) (Math.random() * (board.getRows() + 1));
-//temporarily set to true until proven otherwise, avoids load of and statements for checking if everything is true
-                foundFittingField = true;
-                for (int k = 0; k < sh.getSize(); k++) {
-
-                    String randomCoordinate = alphabet[randomColumn + k] + Integer.toString(randomRow);
-                    if (randomColumn + k < 15) {
-                        //if index doesn't exist then it will just be set to false
-                        try {
-                            if (board.getFields().get(board.getFieldIndex(randomCoordinate)).getState() != boardPosition.positionState.EMPTY) {
-                                foundFittingField = false;
-                            }
-                        } catch (IndexOutOfBoundsException e) {
-                            foundFittingField = false;
-                        }
-
-                    } else {
-                        foundFittingField = false;
-                    }
-                }
-//                System.out.println(foundFittingField); // for testing purposes
-                if (foundFittingField) {
-                    for (int j = 0; j < sh.getSize(); j++) {
-                        String randomCoordinate = alphabet[randomColumn + j] + Integer.toString(randomRow);
-                        try {
-                            board.getFields().get(board.getFieldIndex(randomCoordinate)).setState(boardPosition.positionState.SHIP);
-                            board.getFields().get(board.getFieldIndex(randomCoordinate)).setShipType("PV"); // PV is based on hull type, meaning patrol vessel
-                        } catch (IndexOutOfBoundsException e) {
-                            foundFittingField = false;
-                        }
-
-                    }
-                }
-            }
+            checkAndPlaceRandom(board, sh, "PV");
         }
 
     }
@@ -282,11 +94,11 @@ public class Game {
     public boolean isValidField(Ship sh, Board board, String randomField) {
         char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
         for (int k = 0; k < sh.getSize(); k++) {
-            int randomColumn=-1;
-            for(int z=0;z<board.getColumns();z++){
-               if( alphabet[z]==(randomField.charAt(0))){
-                   randomColumn=z;
-               }
+            int randomColumn = -1;
+            for (int z = 0; z < board.getColumns(); z++) {
+                if (alphabet[z] == (randomField.charAt(0))) {
+                    randomColumn = z;
+                }
             }
             int randomRow = Character.getNumericValue((randomField.charAt(1)));
             String randomInput = alphabet[randomColumn + k] + Integer.toString(randomRow);
@@ -307,34 +119,78 @@ public class Game {
         return true;
     }
 
-public void checkAndPlaceManual(Scanner sc, Board board, Ship sh, String shipName){
-    System.out.println("Enter a field");
-    String randomField = sc.nextLine();
-    boolean validField = false;
-    while (board.getFieldIndex(randomField) == -1 || !validField) {
-        if (isValidField(sh, board, randomField)) {
-            for (int j = 0; j < sh.getSize(); j++) {
-                char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
-                int randomColumn=-1;
-                for(int z=0;z<board.getColumns();z++){
-                    if( alphabet[z]==(randomField.charAt(0))){
-                        randomColumn=z;
-                    }
-                }
-                int randomRow = Character.getNumericValue((randomField.charAt(1)));
-                String randomCoordinate = alphabet[randomColumn + j] + Integer.toString(randomRow);
-                board.getFields().get(board.getFieldIndex(randomCoordinate)).setState(boardPosition.positionState.SHIP);
-                board.getFields().get(board.getFieldIndex(randomCoordinate)).setShipType(shipName);
-            }
-            System.out.println(board.toString());
-            validField = true;
-        } else {
+    public void checkAndPlaceRandom(Board board, Ship sh, String shipName) {
+        boolean foundFittingField = false;
+        char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+        // while a random field that fits hasn't been found
+        while (!foundFittingField) {
+            // generate random field
+            int randomColumn = (int) (Math.random() * (board.getColumns() + 1));
+            int randomRow = (int) (Math.random() * (board.getRows() + 1));
+//temporarily set to true until proven otherwise, avoids load of and statements for checking if everything is true
+            foundFittingField = true;
+            for (int k = 0; k < sh.getSize(); k++) {
 
-            System.out.println("Enter valid field");
-            randomField = sc.nextLine();
+                String randomCoordinate = alphabet[randomColumn + k] + Integer.toString(randomRow);
+                if (randomColumn + k < 15) {
+                    //if index doesn't exist then it will just be set to false
+                    try {
+                        if (board.getFields().get(board.getFieldIndex(randomCoordinate)).getState() != boardPosition.positionState.EMPTY) {
+                            foundFittingField = false;
+                        }
+                    } catch (IndexOutOfBoundsException e) {
+                        foundFittingField = false;
+                    }
+
+                } else {
+                    foundFittingField = false;
+                }
+            }
+//                System.out.println(foundFittingField); // for testing purposes
+            if (foundFittingField) {
+                for (int j = 0; j < sh.getSize(); j++) {
+                    String randomCoordinate = alphabet[randomColumn + j] + Integer.toString(randomRow);
+                    try {
+                        board.getFields().get(board.getFieldIndex(randomCoordinate)).setState(boardPosition.positionState.SHIP);
+                        board.getFields().get(board.getFieldIndex(randomCoordinate)).setShipType(shipName);
+                    } catch (IndexOutOfBoundsException e) {
+                        foundFittingField = false;
+                    }
+
+                }
+            }
+        }
+
+    }
+
+    public void checkAndPlaceManual(Scanner sc, Board board, Ship sh, String shipName) {
+        System.out.println("Enter a field");
+        String randomField = sc.nextLine();
+        boolean validField = false;
+        while (board.getFieldIndex(randomField) == -1 || !validField) {
+            if (isValidField(sh, board, randomField)) {
+                for (int j = 0; j < sh.getSize(); j++) {
+                    char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+                    int randomColumn = -1;
+                    for (int z = 0; z < board.getColumns(); z++) {
+                        if (alphabet[z] == (randomField.charAt(0))) {
+                            randomColumn = z;
+                        }
+                    }
+                    int randomRow = Character.getNumericValue((randomField.charAt(1)));
+                    String randomCoordinate = alphabet[randomColumn + j] + Integer.toString(randomRow);
+                    board.getFields().get(board.getFieldIndex(randomCoordinate)).setState(boardPosition.positionState.SHIP);
+                    board.getFields().get(board.getFieldIndex(randomCoordinate)).setShipType(shipName);
+                }
+                System.out.println(board.toString());
+                validField = true;
+            } else {
+
+                System.out.println("Enter valid field");
+                randomField = sc.nextLine();
+            }
         }
     }
-}
 
     public void fillBoardManual(Board board) {
         Scanner sc = new Scanner(System.in);
@@ -364,25 +220,25 @@ public void checkAndPlaceManual(Scanner sc, Board board, Ship sh, String shipNam
 
         String shipName;
         for (Ship sh : carriers) {
-            shipName="CV";
-            checkAndPlaceManual( sc,  board,  sh,  shipName);
+            shipName = "CV";
+            checkAndPlaceManual(sc, board, sh, shipName);
 
         }
         for (Ship sh : battleships) {
-            shipName="BB";
-            checkAndPlaceManual( sc,  board,  sh,  shipName);
+            shipName = "BB";
+            checkAndPlaceManual(sc, board, sh, shipName);
         }
         for (Ship sh : destroyers) {
-            shipName="DD";
-            checkAndPlaceManual( sc,  board,  sh,  shipName);
+            shipName = "DD";
+            checkAndPlaceManual(sc, board, sh, shipName);
         }
         for (Ship sh : superPatrols) {
-            shipName="SV";
-            checkAndPlaceManual( sc,  board,  sh,  shipName);
+            shipName = "SV";
+            checkAndPlaceManual(sc, board, sh, shipName);
         }
         for (Ship sh : patrolBoats) {
-            shipName="PV";
-            checkAndPlaceManual( sc,  board,  sh,  shipName);
+            shipName = "PV";
+            checkAndPlaceManual(sc, board, sh, shipName);
         }
 
     }
@@ -391,7 +247,7 @@ public void checkAndPlaceManual(Scanner sc, Board board, Ship sh, String shipNam
     public static void main(String[] args) {
         Board board = new Board(true);
         board.toString();
-        Game game = new Game(false);
+        Game game = new Game(true);
         System.out.println(game.getPlayerBoard().toString());
         System.out.println(game.getComputerBoard().toString());
     }
