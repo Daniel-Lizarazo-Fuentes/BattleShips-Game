@@ -9,7 +9,7 @@ public interface Player {
     public String getName();
 
     /**
-     * Returnts the points of the player
+     * Returns the points of the player
      * @ensures result = the points of the player
      */
     public int getPoints();
@@ -17,7 +17,7 @@ public interface Player {
     /**
      * Adds points based on what ship was sunk
      */
-    public void addPoints (Ship s);
+    public void updatePoints ();
     /**
      * Fires at specified field
      * @requires field is valid field

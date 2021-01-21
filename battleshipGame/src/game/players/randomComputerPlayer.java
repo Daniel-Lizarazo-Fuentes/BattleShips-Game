@@ -4,7 +4,7 @@ import game.board.*;
 
 public class randomComputerPlayer implements Player {
 
-        private final String name = "Random Player";
+        private final String name = "Random Computer Player";
         private int points;
 
         /**
@@ -15,39 +15,29 @@ public class randomComputerPlayer implements Player {
         }
 
         /**
-         * Getter for the name of the player
-         * @returns the name of the player
+         * Returns the name of the player
+         * @ensures result=the name of the player
          */
         @Override
-        public String getName() {
-            return name;
-        }
+        public String getName(){return this.name;}
 
         /**
-         * Getter for the points of the player
-         * @returns the points of the player
+         * Returns the points of the player
+         * @ensures result = the points of the player
          */
         @Override
-        public int getPoints() {
-            return points;
-        }
+        public int getPoints(){return this.points;}
 
         /**
-         * Adds points of a type of ship to the points of the player
-         * @param sh ship which was destroyed
+         * Adds points based on what ship was sunk
          */
         @Override
-        public void addPoints(Ship sh) {
-
-        }
-
+        public void updatePoints (){}
         /**
-         * Lets the player shot to his intended place
-         * @returns whether his shot was possible and completed successful
+         * Fires at specified field
+         * @requires field is valid field
          */
         @Override
-        public void fire() {
-
-        }
+        public void fire(){}
 
 }

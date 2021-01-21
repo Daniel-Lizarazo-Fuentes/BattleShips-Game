@@ -4,7 +4,7 @@ import game.ships.*;
 import game.board.*;
 
 public class smartComputerPlayer implements Player {
-    private final String name = "Smart Player";
+    private final String name = "Smart Computer Player";
     private int points;
 
     /**
@@ -15,42 +15,28 @@ public class smartComputerPlayer implements Player {
     }
 
     /**
-     * Getter for the name of the player
-     *
-     * @return the name of the player
+     * Returns the name of the player
+     * @ensures result=the name of the player
      */
     @Override
-    public String getName() {
-        return name;
-    }
+    public String getName(){return this.name;}
 
     /**
-     * Getter for the points of the player
-     *
-     * @return the points of the player
+     * Returns the points of the player
+     * @ensures result = the points of the player
      */
     @Override
-    public int getPoints() {
-        return points;
-    }
+    public int getPoints(){return this.points;}
 
     /**
-     * Adds points of a type of ship to the points of the player
-     *
-     * @param s ship which was destroyed
+     * Adds points based on what ship was sunk
      */
     @Override
-    public void addPoints(Ship s) {
-
-    }
-
+    public void updatePoints (){}
     /**
-     * Lets the player shot to his intended place
-     *
-     * @return whether his shot was possible and completed successful
+     * Fires at specified field
+     * @requires field is valid field
      */
     @Override
-    public void fire() {
-
-    }
+    public void fire(){}
 }
