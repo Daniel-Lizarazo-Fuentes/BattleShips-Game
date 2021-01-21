@@ -3,9 +3,17 @@ package game.players;
 import game.ships.*;
 import game.board.*;
 
+import java.util.ArrayList;
+
 public class humanPlayer implements Player {
     private String name;
     private int points;
+
+    private ArrayList<Carrier> carriers = new ArrayList<>();
+    private ArrayList<Battleship> battleships = new ArrayList<>();
+    private ArrayList<Destroyer> destroyers = new ArrayList<>();
+    private ArrayList<SuperPatrol> superPatrols = new ArrayList<>();
+    private ArrayList<PatrolBoat> patrolBoats = new ArrayList<>();
 
 
     /**
