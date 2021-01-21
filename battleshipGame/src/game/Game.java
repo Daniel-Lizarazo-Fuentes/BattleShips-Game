@@ -39,6 +39,8 @@ public class Game {
         return this.boards[1];
     }
 
+    // TODO add to player
+    public void createShipArrays(){}
 
     // adjust to only be for one specific board
     public void fillBoardRandom(Board board) {
@@ -305,6 +307,34 @@ public class Game {
         return true;
     }
 
+public void checkAndPlaceManual(Scanner sc, Board board, Ship sh, String shipName){
+    System.out.println("Enter a field");
+    String randomField = sc.nextLine();
+    boolean validField = false;
+    while (board.getFieldIndex(randomField) == -1 || !validField) {
+        if (isValidField(sh, board, randomField)) {
+            for (int j = 0; j < sh.getSize(); j++) {
+                char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+                int randomColumn=-1;
+                for(int z=0;z<board.getColumns();z++){
+                    if( alphabet[z]==(randomField.charAt(0))){
+                        randomColumn=z;
+                    }
+                }
+                int randomRow = Character.getNumericValue((randomField.charAt(1)));
+                String randomCoordinate = alphabet[randomColumn + j] + Integer.toString(randomRow);
+                board.getFields().get(board.getFieldIndex(randomCoordinate)).setState(boardPosition.positionState.SHIP);
+                board.getFields().get(board.getFieldIndex(randomCoordinate)).setShipType(shipName);
+            }
+            System.out.println(board.toString());
+            validField = true;
+        } else {
+
+            System.out.println("Enter valid field");
+            randomField = sc.nextLine();
+        }
+    }
+}
 
     public void fillBoardManual(Board board) {
         Scanner sc = new Scanner(System.in);
@@ -332,147 +362,27 @@ public class Game {
             patrolBoats.add(new PatrolBoat("PatrolBoat" + i, positions));
         }
 
-
+        String shipName;
         for (Ship sh : carriers) {
-            System.out.println("Enter a field");
-            String randomField = sc.nextLine();
-            boolean validField = false;
-            while (board.getFieldIndex(randomField) == -1 || !validField) {
-                if (isValidField(sh, board, randomField)) {
-                    for (int j = 0; j < sh.getSize(); j++) {
-                        char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
-                        int randomColumn=-1;
-                        for(int z=0;z<board.getColumns();z++){
-                            if( alphabet[z]==(randomField.charAt(0))){
-                                randomColumn=z;
-                            }
-                        }
-                        int randomRow = Character.getNumericValue((randomField.charAt(1)));
-                        String randomCoordinate = alphabet[randomColumn + j] + Integer.toString(randomRow);
-                        board.getFields().get(board.getFieldIndex(randomCoordinate)).setState(boardPosition.positionState.SHIP);
-                        board.getFields().get(board.getFieldIndex(randomCoordinate)).setShipType("CV"); // CV is based on hull type, meaning generic aircarft carrier
-                    }
-                    System.out.println(board.toString());
-                    validField = true;
-                } else {
-
-                    System.out.println("Enter valid field");
-                    randomField = sc.nextLine();
-                }
-            }
+            shipName="CV";
+            checkAndPlaceManual( sc,  board,  sh,  shipName);
 
         }
         for (Ship sh : battleships) {
-            System.out.println("Enter a field");
-            String randomField = sc.nextLine();
-            boolean validField = false;
-            while (board.getFieldIndex(randomField) == -1 || !validField) {
-                if (isValidField(sh, board, randomField)) {
-                    for (int j = 0; j < sh.getSize(); j++) {
-                        char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
-                        int randomColumn=-1;
-                        for(int z=0;z<board.getColumns();z++){
-                            if( alphabet[z]==(randomField.charAt(0))){
-                                randomColumn=z;
-                            }
-                        }
-                        int randomRow = Character.getNumericValue((randomField.charAt(1)));
-                        String randomCoordinate = alphabet[randomColumn + j] + Integer.toString(randomRow);
-                        board.getFields().get(board.getFieldIndex(randomCoordinate)).setState(boardPosition.positionState.SHIP);
-                        board.getFields().get(board.getFieldIndex(randomCoordinate)).setShipType("BB");
-                    }
-                    System.out.println(board.toString());
-                    validField = true;
-                } else {
-
-                    System.out.println("Enter valid field");
-                    randomField = sc.nextLine();
-                }
-            }
+            shipName="BB";
+            checkAndPlaceManual( sc,  board,  sh,  shipName);
         }
         for (Ship sh : destroyers) {
-            System.out.println("Enter a field");
-            String randomField = sc.nextLine();
-            boolean validField = false;
-            while (board.getFieldIndex(randomField) == -1 || !validField) {
-                if (isValidField(sh, board, randomField)) {
-                    for (int j = 0; j < sh.getSize(); j++) {
-                        char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
-                        int randomColumn=-1;
-                        for(int z=0;z<board.getColumns();z++){
-                            if( alphabet[z]==(randomField.charAt(0))){
-                                randomColumn=z;
-                            }
-                        }
-                        int randomRow = Character.getNumericValue((randomField.charAt(1)));
-                        String randomCoordinate = alphabet[randomColumn + j] + Integer.toString(randomRow);
-                        board.getFields().get(board.getFieldIndex(randomCoordinate)).setState(boardPosition.positionState.SHIP);
-                        board.getFields().get(board.getFieldIndex(randomCoordinate)).setShipType("DD");
-                    }
-                    System.out.println(board.toString());
-                    validField = true;
-                } else {
-
-                    System.out.println("Enter valid field");
-                    randomField = sc.nextLine();
-                }
-            }
+            shipName="DD";
+            checkAndPlaceManual( sc,  board,  sh,  shipName);
         }
         for (Ship sh : superPatrols) {
-            System.out.println("Enter a field");
-            String randomField = sc.nextLine();
-            boolean validField = false;
-            while (board.getFieldIndex(randomField) == -1 || !validField) {
-                if (isValidField(sh, board, randomField)) {
-                    for (int j = 0; j < sh.getSize(); j++) {
-                        char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
-                        int randomColumn=-1;
-                        for(int z=0;z<board.getColumns();z++){
-                            if( alphabet[z]==(randomField.charAt(0))){
-                                randomColumn=z;
-                            }
-                        }
-                        int randomRow = Character.getNumericValue((randomField.charAt(1)));
-                        String randomCoordinate = alphabet[randomColumn + j] + Integer.toString(randomRow);
-                        board.getFields().get(board.getFieldIndex(randomCoordinate)).setState(boardPosition.positionState.SHIP);
-                        board.getFields().get(board.getFieldIndex(randomCoordinate)).setShipType("SV");
-                    }
-                    System.out.println(board.toString());
-                    validField = true;
-                } else {
-
-                    System.out.println("Enter valid field");
-                    randomField = sc.nextLine();
-                }
-            }
+            shipName="SV";
+            checkAndPlaceManual( sc,  board,  sh,  shipName);
         }
         for (Ship sh : patrolBoats) {
-            System.out.println("Enter a field");
-            String randomField = sc.nextLine();
-            boolean validField = false;
-            while (board.getFieldIndex(randomField) == -1 || !validField) {
-                if (isValidField(sh, board, randomField)) {
-                    for (int j = 0; j < sh.getSize(); j++) {
-                        char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
-                        int randomColumn=-1;
-                        for(int z=0;z<board.getColumns();z++){
-                            if( alphabet[z]==(randomField.charAt(0))){
-                                randomColumn=z;
-                            }
-                        }
-                        int randomRow = Character.getNumericValue((randomField.charAt(1)));
-                        String randomCoordinate = alphabet[randomColumn + j] + Integer.toString(randomRow);
-                        board.getFields().get(board.getFieldIndex(randomCoordinate)).setState(boardPosition.positionState.SHIP);
-                        board.getFields().get(board.getFieldIndex(randomCoordinate)).setShipType("PV");
-                    }
-                    System.out.println(board.toString());
-                    validField = true;
-                } else {
-
-                    System.out.println("Enter valid field");
-                    randomField = sc.nextLine();
-                }
-            }
+            shipName="PV";
+            checkAndPlaceManual( sc,  board,  sh,  shipName);
         }
 
     }
