@@ -33,7 +33,7 @@ public class Game {
         if (randomPlacement) {
             fillBoardRandom(p0.getBoard(), p0);
         } else {
-            fillBoardManual(p0.getBoard(), p1);
+            fillBoardManual(p0.getBoard(), p0);
         }
         fillBoardRandom(computerBoard, p1);
 
@@ -152,6 +152,7 @@ public class Game {
     public void fillBoardManual(Board board, Player player) {
         Scanner sc = new Scanner(System.in);
 
+
         ArrayList<String> positions = new ArrayList<>();
 
         String shipName;
@@ -161,26 +162,26 @@ public class Game {
             checkAndPlaceManual(sc, board, sh, shipName, player, i);
 
         }
-        i = 0;
-        for (Ship sh : player.getShipArrayList().get(1)) {
-            shipName = "BB";
-            checkAndPlaceManual(sc, board, sh, shipName, player, i);
-        }
-        i = 0;
-        for (Ship sh : player.getShipArrayList().get(2)) {
-            shipName = "DD";
-            checkAndPlaceManual(sc, board, sh, shipName, player, i);
-        }
-        i = 0;
-        for (Ship sh : player.getShipArrayList().get(3)) {
-            shipName = "SV";
-            checkAndPlaceManual(sc, board, sh, shipName, player, i);
-        }
-        i = 0;
-        for (Ship sh : player.getShipArrayList().get(4)) {
-            shipName = "PV";
-            checkAndPlaceManual(sc, board, sh, shipName, player, i);
-        }
+//        i = 0;
+//        for (Ship sh : player.getShipArrayList().get(1)) {
+//            shipName = "BB";
+//            checkAndPlaceManual(sc, board, sh, shipName, player, i);
+//        }
+//        i = 0;
+//        for (Ship sh : player.getShipArrayList().get(2)) {
+//            shipName = "DD";
+//            checkAndPlaceManual(sc, board, sh, shipName, player, i);
+//        }
+//        i = 0;
+//        for (Ship sh : player.getShipArrayList().get(3)) {
+//            shipName = "SV";
+//            checkAndPlaceManual(sc, board, sh, shipName, player, i);
+//        }
+//        i = 0;
+//        for (Ship sh : player.getShipArrayList().get(4)) {
+//            shipName = "PV";
+//            checkAndPlaceManual(sc, board, sh, shipName, player, i);
+//        }
 
     }
 
@@ -337,6 +338,7 @@ public class Game {
                     case "CV":
                         shipLists.get(0).get(shipIndexInArrayList).setPositions(positions);
                         player.setShipArrayList(shipLists);
+
                         break;
                     case "BB":
 
@@ -375,14 +377,14 @@ public class Game {
     public static void main(String[] args) {
         Board board = new Board(true);
         board.toString();
-        Game game = new Game(true);
+        Game game = new Game(false);
 
         // print out player board
         System.out.println(game.getBoard(0).toString());
         //print out computer board
         System.out.println(game.getBoard(1).toString());
 
-        // print out positions off first cv in cvlist of humanplayer, for testing purposes
+        // print out positions off first cv in cv-list of humanPlayer, for testing purposes
         System.out.println(game.getPlayer(0).getShipArrayList().get(0).get(0).getPositions().get(0));
         System.out.println(game.getPlayer(0).getShipArrayList().get(0).get(0).getPositions().get(1));
         System.out.println(game.getPlayer(0).getShipArrayList().get(0).get(0).getPositions().get(2));
