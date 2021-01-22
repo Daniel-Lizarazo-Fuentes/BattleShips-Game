@@ -10,12 +10,13 @@ import java.util.Scanner;
 
 
 public class Game {
-    //TODO replace arraylist initiation with method when players available, add positions to ships in lists
+
     //TODO score things
     //TODO network and threading
     //TODO fix game breaking if two numbers are enter when manually placing
     private Board[] boards = new Board[2];
-private Player[] players = new Player[2];
+    private Player[] players = new Player[2];
+
     // for now single player game
     public Game(boolean randomPlacement) {
         // fill boards[] with 2 empty boards of which one is completely visible
@@ -25,7 +26,7 @@ private Player[] players = new Player[2];
         boards[1] = computerBoard;
 
         Player p0 = new humanPlayer("human", createShipArrays(), boards[0]);
-        Player p1 = new randomComputerPlayer(createShipArrays(), boards[0]);
+        Player p1 = new randomComputerPlayer(createShipArrays(), boards[1]);
         players[0] = p0;
         players[1] = p1;
 
@@ -51,7 +52,9 @@ private Player[] players = new Player[2];
      * @requires i==0||i==1
      * @ensures result!=null;
      */
-    public Player getPlayer(int i){return this.players[i];}
+    public Player getPlayer(int i) {
+        return this.players[i];
+    }
 
 
     /**
@@ -152,26 +155,31 @@ private Player[] players = new Player[2];
         ArrayList<String> positions = new ArrayList<>();
 
         String shipName;
+        int i = 0;
         for (Ship sh : player.getShipArrayList().get(0)) {
             shipName = "CV";
-            checkAndPlaceManual(sc, board, sh, shipName);
+            checkAndPlaceManual(sc, board, sh, shipName, player, i);
 
         }
+        i = 0;
         for (Ship sh : player.getShipArrayList().get(1)) {
             shipName = "BB";
-            checkAndPlaceManual(sc, board, sh, shipName);
+            checkAndPlaceManual(sc, board, sh, shipName, player, i);
         }
+        i = 0;
         for (Ship sh : player.getShipArrayList().get(2)) {
             shipName = "DD";
-            checkAndPlaceManual(sc, board, sh, shipName);
+            checkAndPlaceManual(sc, board, sh, shipName, player, i);
         }
+        i = 0;
         for (Ship sh : player.getShipArrayList().get(3)) {
             shipName = "SV";
-            checkAndPlaceManual(sc, board, sh, shipName);
+            checkAndPlaceManual(sc, board, sh, shipName, player, i);
         }
+        i = 0;
         for (Ship sh : player.getShipArrayList().get(4)) {
             shipName = "PV";
-            checkAndPlaceManual(sc, board, sh, shipName);
+            checkAndPlaceManual(sc, board, sh, shipName, player, i);
         }
 
     }
@@ -303,7 +311,8 @@ private Player[] players = new Player[2];
      * @param sh
      * @param shipName
      */
-    public void checkAndPlaceManual(Scanner sc, Board board, Ship sh, String shipName) {
+    public void checkAndPlaceManual(Scanner sc, Board board, Ship sh, String shipName, Player player, int shipIndexInArrayList) {
+        ArrayList<String> positions = new ArrayList<>();
         System.out.println("Enter a field");
         String randomField = sc.nextLine();
         boolean validField = false;
@@ -321,7 +330,37 @@ private Player[] players = new Player[2];
                     String randomCoordinate = alphabet[randomColumn + j] + Integer.toString(randomRow);
                     board.getFields().get(board.getFieldIndex(randomCoordinate)).setState(boardPosition.positionState.SHIP);
                     board.getFields().get(board.getFieldIndex(randomCoordinate)).setShipType(shipName);
+                    positions.add(randomCoordinate);
                 }
+                ArrayList<ArrayList<? extends Ship>> shipLists = player.getShipArrayList();
+                switch (shipName) {
+                    case "CV":
+
+                        shipLists.get(0).get(shipIndexInArrayList).setPositions(positions);
+                        player.setShipArrayList(shipLists);
+                        break;
+                    case "BB":
+
+                        shipLists.get(1).get(shipIndexInArrayList).setPositions(positions);
+                        player.setShipArrayList(shipLists);
+                        break;
+                    case "DD":
+                        shipLists.get(2).get(shipIndexInArrayList).setPositions(positions);
+                        player.setShipArrayList(shipLists);
+                        break;
+                    case "SV":
+                        shipLists.get(3).get(shipIndexInArrayList).setPositions(positions);
+                        player.setShipArrayList(shipLists);
+                        break;
+                    case "PV":
+                        shipLists.get(4).get(shipIndexInArrayList).setPositions(positions);
+                        player.setShipArrayList(shipLists);
+                        break;
+
+                    default:
+                        System.out.println("Something went wrong in the switch trying to assign ships to the player");
+                }
+
                 System.out.println(board.toString());
                 validField = true;
             } else {
