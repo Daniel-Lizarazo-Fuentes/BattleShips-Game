@@ -335,7 +335,6 @@ public class Game {
                 ArrayList<ArrayList<? extends Ship>> shipLists = player.getShipArrayList();
                 switch (shipName) {
                     case "CV":
-
                         shipLists.get(0).get(shipIndexInArrayList).setPositions(positions);
                         player.setShipArrayList(shipLists);
                         break;
