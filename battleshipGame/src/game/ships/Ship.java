@@ -100,5 +100,13 @@ public abstract class Ship {
      public ArrayList<String> getPositions(){
          return this.positions;
      }
+    /**
+     * for setting the Arraylist of positions
+     * @ensures result!=null;
+     * @return
+     */
+    public void setPositions(ArrayList<String> positions){
+        this.positions=positions;
+    }
 
 }
