@@ -23,15 +23,15 @@ public class Game {
         boards[0] = playerBoard;
         boards[1] = computerBoard;
 
-        Player p0 = new humanPlayer("human", createShipArrays(),boards[0]);
-        Player p1 = new randomComputerPlayer( createShipArrays(),boards[0]);
+        Player p0 = new humanPlayer("human", createShipArrays(), boards[0]);
+        Player p1 = new randomComputerPlayer(createShipArrays(), boards[0]);
 
         if (randomPlacement) {
-            fillBoardRandom(playerBoard);
+            fillBoardRandom(p0.getBoard(),p0);
         } else {
-            fillBoardManual(playerBoard);
+            fillBoardManual(p0.getBoard()); //TODO edit for using players
         }
-        fillBoardRandom(computerBoard);
+        fillBoardRandom(computerBoard,p1);
 
     }
 
@@ -48,7 +48,6 @@ public class Game {
     public Board getComputerBoard() {
         return this.boards[1];
     }
-
 
 
     /**
@@ -96,25 +95,25 @@ public class Game {
      *
      * @param board board to fill, can be player of computer
      */
-    public void fillBoardRandom(Board board) {
+    public void fillBoardRandom(Board board, Player player) {
 
 
-        // for each ship find a valid position
-        for (Ship sh : carriers) {
+        // for each ship in arraylist of ? extends Ship (i.e. carriers, battleships etc.)
+        for (Ship sh : player.getShipArrayList().get(0)) {
             checkAndPlaceRandom(board, sh, "CV");
 
         }
-        for (Ship sh : battleships) {
+        for (Ship sh : player.getShipArrayList().get(1)) {
             checkAndPlaceRandom(board, sh, "BB");
         }
-        for (Ship sh : destroyers) {
+        for (Ship sh : player.getShipArrayList().get(2)) {
             checkAndPlaceRandom(board, sh, "DD");
 
         }
-        for (Ship sh : superPatrols) {
+        for (Ship sh : player.getShipArrayList().get(3)) {
             checkAndPlaceRandom(board, sh, "SV");
         }
-        for (Ship sh : patrolBoats) {
+        for (Ship sh : player.getShipArrayList().get(4)) {
             checkAndPlaceRandom(board, sh, "PV");
         }
 
@@ -304,13 +303,13 @@ public class Game {
 
 
 // for testing purposes
-//    public static void main(String[] args) {
-//        Board board = new Board(true);
-//        board.toString();
-//        Game game = new Game(true);
-//        System.out.println(game.getPlayerBoard().toString());
-//        System.out.println(game.getComputerBoard().toString());
-//    }
+    public static void main(String[] args) {
+        Board board = new Board(true);
+        board.toString();
+        Game game = new Game(true);
+        System.out.println(game.getPlayerBoard().toString());
+        System.out.println(game.getComputerBoard().toString());
+    }
 
 }
 
