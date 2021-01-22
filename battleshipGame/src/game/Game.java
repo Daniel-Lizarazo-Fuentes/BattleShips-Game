@@ -10,9 +10,10 @@ import java.util.Scanner;
 
 
 public class Game {
-    //TODO replace arralist initiation with method when players available, add positions to ships in lists
+    //TODO replace arraylist initiation with method when players available, add positions to ships in lists
     //TODO score things
     //TODO network and threading
+    //TODO fix game breaking if two numbers are enter when manually placing
     private Board[] boards = new Board[2];
 
     // for now single player game
@@ -29,7 +30,7 @@ public class Game {
         if (randomPlacement) {
             fillBoardRandom(p0.getBoard(),p0);
         } else {
-            fillBoardManual(p0.getBoard()); //TODO edit for using players
+            fillBoardManual(p0.getBoard(),p1);
         }
         fillBoardRandom(computerBoard,p1);
 
@@ -52,6 +53,7 @@ public class Game {
 
     /**
      *
+     * @return
      */
     public ArrayList<ArrayList<? extends Ship>> createShipArrays() {
         // create the ship arrays for player but without positions yet
@@ -99,22 +101,28 @@ public class Game {
 
 
         // for each ship in arraylist of ? extends Ship (i.e. carriers, battleships etc.)
+        String shipName;
         for (Ship sh : player.getShipArrayList().get(0)) {
-            checkAndPlaceRandom(board, sh, "CV");
+            shipName="CV";
+            checkAndPlaceRandom(board, sh, shipName);
 
         }
         for (Ship sh : player.getShipArrayList().get(1)) {
-            checkAndPlaceRandom(board, sh, "BB");
+            shipName="BB";
+            checkAndPlaceRandom(board, sh, shipName);
         }
         for (Ship sh : player.getShipArrayList().get(2)) {
-            checkAndPlaceRandom(board, sh, "DD");
+            shipName="DD";
+            checkAndPlaceRandom(board, sh, shipName);
 
         }
         for (Ship sh : player.getShipArrayList().get(3)) {
-            checkAndPlaceRandom(board, sh, "SV");
+            shipName="SV";
+            checkAndPlaceRandom(board, sh, shipName);
         }
         for (Ship sh : player.getShipArrayList().get(4)) {
-            checkAndPlaceRandom(board, sh, "PV");
+            shipName="PV";
+            checkAndPlaceRandom(board, sh, shipName);
         }
 
     }
@@ -125,51 +133,30 @@ public class Game {
      * @param board board to fill, only for human players
      * @requires board belongs to humanplayer
      */
-    public void fillBoardManual(Board board) {
+    public void fillBoardManual(Board board, Player player) {
         Scanner sc = new Scanner(System.in);
 
         ArrayList<String> positions = new ArrayList<>();
 
-        ArrayList<Carrier> carriers = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
-            carriers.add(new Carrier("carrier" + i, positions));
-        }
-        ArrayList<Battleship> battleships = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            battleships.add(new Battleship("battleship" + i, positions));
-        }
-        ArrayList<Destroyer> destroyers = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            destroyers.add(new Destroyer("destroyer" + i, positions));
-        }
-        ArrayList<SuperPatrol> superPatrols = new ArrayList<>();
-        for (int i = 0; i < 8; i++) {
-            superPatrols.add(new SuperPatrol("SuperPatrol" + i, positions));
-        }
-        ArrayList<PatrolBoat> patrolBoats = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            patrolBoats.add(new PatrolBoat("PatrolBoat" + i, positions));
-        }
-
         String shipName;
-        for (Ship sh : carriers) {
+        for (Ship sh : player.getShipArrayList().get(0)) {
             shipName = "CV";
             checkAndPlaceManual(sc, board, sh, shipName);
 
         }
-        for (Ship sh : battleships) {
+        for (Ship sh : player.getShipArrayList().get(1)) {
             shipName = "BB";
             checkAndPlaceManual(sc, board, sh, shipName);
         }
-        for (Ship sh : destroyers) {
+        for (Ship sh : player.getShipArrayList().get(2)) {
             shipName = "DD";
             checkAndPlaceManual(sc, board, sh, shipName);
         }
-        for (Ship sh : superPatrols) {
+        for (Ship sh : player.getShipArrayList().get(3)) {
             shipName = "SV";
             checkAndPlaceManual(sc, board, sh, shipName);
         }
-        for (Ship sh : patrolBoats) {
+        for (Ship sh : player.getShipArrayList().get(4)) {
             shipName = "PV";
             checkAndPlaceManual(sc, board, sh, shipName);
         }
@@ -179,9 +166,9 @@ public class Game {
     /**
      * Checks if a the param randomField is a valid field for placing the ship sh, for manual board.
      *
-     * @param sh          ship to place
-     * @param board       board in question
-     * @param randomField field provided to check
+     * @param sh            ship to place
+     * @param board         board in question
+     * @param randomField   field provided to check
      * @requires board to be of a human player
      * @ensures result=true if field is valid || result = false if field is not valid
      */
@@ -306,7 +293,7 @@ public class Game {
     public static void main(String[] args) {
         Board board = new Board(true);
         board.toString();
-        Game game = new Game(true);
+        Game game = new Game(false);
         System.out.println(game.getPlayerBoard().toString());
         System.out.println(game.getComputerBoard().toString());
     }
