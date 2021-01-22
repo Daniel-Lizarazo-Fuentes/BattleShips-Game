@@ -4,7 +4,6 @@ import game.ships.*;
 import game.board.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class humanPlayer implements Player {
     private String name;

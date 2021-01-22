@@ -160,28 +160,32 @@ public class Game {
         for (Ship sh : player.getShipArrayList().get(0)) {
             shipName = "CV";
             checkAndPlaceManual(sc, board, sh, shipName, player, i);
-
+            i++;
         }
-//        i = 0;
-//        for (Ship sh : player.getShipArrayList().get(1)) {
-//            shipName = "BB";
-//            checkAndPlaceManual(sc, board, sh, shipName, player, i);
-//        }
-//        i = 0;
-//        for (Ship sh : player.getShipArrayList().get(2)) {
-//            shipName = "DD";
-//            checkAndPlaceManual(sc, board, sh, shipName, player, i);
-//        }
-//        i = 0;
-//        for (Ship sh : player.getShipArrayList().get(3)) {
-//            shipName = "SV";
-//            checkAndPlaceManual(sc, board, sh, shipName, player, i);
-//        }
-//        i = 0;
-//        for (Ship sh : player.getShipArrayList().get(4)) {
-//            shipName = "PV";
-//            checkAndPlaceManual(sc, board, sh, shipName, player, i);
-//        }
+        i = 0;
+        for (Ship sh : player.getShipArrayList().get(1)) {
+            shipName = "BB";
+            checkAndPlaceManual(sc, board, sh, shipName, player, i);
+        i++;
+        }
+        i = 0;
+        for (Ship sh : player.getShipArrayList().get(2)) {
+            shipName = "DD";
+            checkAndPlaceManual(sc, board, sh, shipName, player, i);
+        i++;
+        }
+        i = 0;
+        for (Ship sh : player.getShipArrayList().get(3)) {
+            shipName = "SV";
+            checkAndPlaceManual(sc, board, sh, shipName, player, i);
+        i++;
+        }
+        i = 0;
+        for (Ship sh : player.getShipArrayList().get(4)) {
+            shipName = "PV";
+            checkAndPlaceManual(sc, board, sh, shipName, player, i);
+        i++;
+        }
 
     }
 
@@ -386,10 +390,8 @@ public class Game {
 
         // print out positions off first cv in cv-list of humanPlayer, for testing purposes
         System.out.println(game.getPlayer(0).getShipArrayList().get(0).get(0).getPositions().get(0));
-        System.out.println(game.getPlayer(0).getShipArrayList().get(0).get(0).getPositions().get(1));
-        System.out.println(game.getPlayer(0).getShipArrayList().get(0).get(0).getPositions().get(2));
-        System.out.println(game.getPlayer(0).getShipArrayList().get(0).get(0).getPositions().get(3));
-        System.out.println(game.getPlayer(0).getShipArrayList().get(0).get(0).getPositions().get(4));
+        System.out.println(game.getPlayer(0).getShipArrayList().get(0).get(1).getPositions().get(0));
+
     }
 
 }
