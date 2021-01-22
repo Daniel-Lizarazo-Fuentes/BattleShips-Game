@@ -15,7 +15,7 @@ public class Game {
     //TODO network and threading
     //TODO fix game breaking if two numbers are enter when manually placing
     private Board[] boards = new Board[2];
-
+private Player[] players = new Player[2];
     // for now single player game
     public Game(boolean randomPlacement) {
         // fill boards[] with 2 empty boards of which one is completely visible
@@ -26,6 +26,8 @@ public class Game {
 
         Player p0 = new humanPlayer("human", createShipArrays(), boards[0]);
         Player p1 = new randomComputerPlayer(createShipArrays(), boards[0]);
+        players[0] = p0;
+        players[1] = p1;
 
         if (randomPlacement) {
             fillBoardRandom(p0.getBoard(), p0);
@@ -37,18 +39,19 @@ public class Game {
     }
 
     /**
+     * @requires i==0||i==1
      * @ensures result!=null;
      */
-    public Board getPlayerBoard() {
-        return this.boards[0];
+    public Board getBoard(int i) {
+        return this.boards[i];
     }
 
+
     /**
+     * @requires i==0||i==1
      * @ensures result!=null;
      */
-    public Board getComputerBoard() {
-        return this.boards[1];
-    }
+    public Player getPlayer(int i){return this.players[i];}
 
 
     /**
@@ -334,9 +337,19 @@ public class Game {
     public static void main(String[] args) {
         Board board = new Board(true);
         board.toString();
-        Game game = new Game(false);
-        System.out.println(game.getPlayerBoard().toString());
-        System.out.println(game.getComputerBoard().toString());
+        Game game = new Game(true);
+
+        // print out player board
+        System.out.println(game.getBoard(0).toString());
+        //print out computer board
+        System.out.println(game.getBoard(1).toString());
+
+        // print out positions off first cv in cvlist of humanplayer, for testing purposes
+        System.out.println(game.getPlayer(0).getShipArrayList().get(0).get(0).getPositions().get(0));
+        System.out.println(game.getPlayer(0).getShipArrayList().get(0).get(0).getPositions().get(1));
+        System.out.println(game.getPlayer(0).getShipArrayList().get(0).get(0).getPositions().get(2));
+        System.out.println(game.getPlayer(0).getShipArrayList().get(0).get(0).getPositions().get(3));
+        System.out.println(game.getPlayer(0).getShipArrayList().get(0).get(0).getPositions().get(4));
     }
 
 }
