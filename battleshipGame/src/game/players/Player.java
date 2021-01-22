@@ -12,6 +12,18 @@ public interface Player {
     public String getName();
 
     /**
+     * Sets the board of a player
+     * @param board
+     */
+    public void setBoard(Board board);
+
+    /**
+     * Gets the board of a player
+     * @return
+     */
+    public Board getBoard();
+
+    /**
      * Returns the points of the player
      * @ensures result = the points of the player
      */
@@ -22,14 +34,14 @@ public interface Player {
      *
      * @param shipLists
      */
-    public void setShipArrayList(ArrayList<ArrayList<Ship>> shipLists);
+    public void setShipArrayList(ArrayList<ArrayList<? extends Ship>> shipLists);
 
     /**
      * Returns the arraylist whith ship arraylists, used for scores
      *
      * @ensures result is an arrayList of Arraylists with ships
      */
-    public ArrayList<ArrayList<Ship>> getShipArrayList();
+    public ArrayList<ArrayList<? extends Ship>> getShipArrayList();
 
     /**
      * Adds points based on what ship was sunk

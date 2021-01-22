@@ -4,22 +4,40 @@ import game.ships.*;
 import game.board.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class humanPlayer implements Player {
     private String name;
     private int points;
-
-    private ArrayList<ArrayList<Ship>> shipLists = new ArrayList<>();
+private Board board;
+    private ArrayList<ArrayList<? extends Ship>> shipLists;
 
 
     /**
      * @param name of the player
      * @ensures the Player starts with 0 points
      */
-    public humanPlayer(String name, ArrayList<ArrayList<Ship>> shipLists) {
+    public humanPlayer(String name, ArrayList<ArrayList<? extends Ship>> shipLists, Board board) {
         this.name = name;
         this.points = 0;
         this.shipLists = shipLists;
+        this.board=board;
+    }
+
+    /**
+     * Sets the board of a player
+     * @param board
+     */
+    public void setBoard(Board board){
+        this.board=board;
+    }
+
+    /**
+     * Gets the board of a player
+     * @return
+     */
+    public Board getBoard(){
+        return this.board;
     }
 
     /**
@@ -27,7 +45,7 @@ public class humanPlayer implements Player {
      *
      * @param shipLists
      */
-    public void setShipArrayList(ArrayList<ArrayList<Ship>> shipLists) {
+    public void setShipArrayList(ArrayList<ArrayList<? extends Ship>> shipLists) {
         this.shipLists = shipLists;
     }
 
@@ -36,7 +54,7 @@ public class humanPlayer implements Player {
      *
      * @ensures result is an arrayList of Arraylists with ships
      */
-    public ArrayList<ArrayList<Ship>> getShipArrayList() {
+    public ArrayList<ArrayList<? extends Ship>> getShipArrayList() {
         return this.shipLists;
     }
 

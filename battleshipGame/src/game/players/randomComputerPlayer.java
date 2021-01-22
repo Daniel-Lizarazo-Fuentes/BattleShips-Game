@@ -9,14 +9,32 @@ public class randomComputerPlayer implements Player {
 
     private final String name = "Random Computer Player";
     private int points;
-    private ArrayList<ArrayList<Ship>> shipLists = new ArrayList<>();
+    private Board board;
+    private ArrayList<ArrayList<? extends Ship>> shipLists = new ArrayList<>();
 
     /**
      * @ensures the Player starts with 0 points
      */
-    public randomComputerPlayer() {
+    public randomComputerPlayer(ArrayList<ArrayList<? extends Ship>> shipLists, Board board) {
         this.points = 0;
         this.shipLists = shipLists;
+        this.board=board;
+    }
+
+    /**
+     * Sets the board of a player
+     * @param board
+     */
+    public void setBoard(Board board){
+        this.board=board;
+    }
+
+    /**
+     * Gets the board of a player
+     * @return
+     */
+    public Board getBoard(){
+        return this.board;
     }
 
     /**
@@ -24,7 +42,7 @@ public class randomComputerPlayer implements Player {
      *
      * @param shipLists
      */
-    public void setShipArrayList(ArrayList<ArrayList<Ship>> shipLists) {
+    public void setShipArrayList(ArrayList<ArrayList<? extends Ship>> shipLists) {
         this.shipLists = shipLists;
     }
 
@@ -33,7 +51,7 @@ public class randomComputerPlayer implements Player {
      *
      * @ensures result is an arrayList of Arraylists with ships
      */
-    public ArrayList<ArrayList<Ship>> getShipArrayList() {
+    public ArrayList<ArrayList<? extends Ship>> getShipArrayList() {
         return this.shipLists;
     }
 

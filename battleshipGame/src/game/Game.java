@@ -2,16 +2,16 @@ package game;
 
 import game.ships.*;
 import game.board.*;
+import game.players.*;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Scanner;
 
 
 public class Game {
-//TODO replace arralist initiation with method when players available, add positions to ships in lists
+    //TODO replace arralist initiation with method when players available, add positions to ships in lists
     //TODO score things
-    //TODO players
     //TODO network and threading
     private Board[] boards = new Board[2];
 
@@ -22,6 +22,10 @@ public class Game {
         Board computerBoard = new Board(false);
         boards[0] = playerBoard;
         boards[1] = computerBoard;
+
+        Player p0 = new humanPlayer("human", createShipArrays(),boards[0]);
+        Player p1 = new randomComputerPlayer( createShipArrays(),boards[0]);
+
         if (randomPlacement) {
             fillBoardRandom(playerBoard);
         } else {
@@ -32,7 +36,6 @@ public class Game {
     }
 
     /**
-     *
      * @ensures result!=null;
      */
     public Board getPlayerBoard() {
@@ -40,29 +43,21 @@ public class Game {
     }
 
     /**
-     *
      * @ensures result!=null;
      */
     public Board getComputerBoard() {
         return this.boards[1];
     }
 
-    // TODO add to player
+
 
     /**
      *
      */
-    public void createShipArrays() {
-    }
-
-
-    /**
-     * Fills board with all ships in a random fashion, ships only placed horizontally
-     * @param board board to fill, can be player of computer
-     */
-    public void fillBoardRandom(Board board) {
-// create the ship arrays for player but without positions yet
+    public ArrayList<ArrayList<? extends Ship>> createShipArrays() {
+        // create the ship arrays for player but without positions yet
         ArrayList<String> positions = new ArrayList<>();
+        ArrayList<ArrayList<? extends Ship>> shipLists = new ArrayList<>();
 
         ArrayList<Carrier> carriers = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
@@ -84,6 +79,25 @@ public class Game {
         for (int i = 0; i < 10; i++) {
             patrolBoats.add(new PatrolBoat("PatrolBoat" + i, positions));
         }
+
+        shipLists.add(carriers);
+        shipLists.add(battleships);
+        shipLists.add(destroyers);
+        shipLists.add(superPatrols);
+        shipLists.add(patrolBoats);
+
+        return shipLists;
+
+    }
+
+
+    /**
+     * Fills board with all ships in a random fashion, ships only placed horizontally
+     *
+     * @param board board to fill, can be player of computer
+     */
+    public void fillBoardRandom(Board board) {
+
 
         // for each ship find a valid position
         for (Ship sh : carriers) {
@@ -108,8 +122,9 @@ public class Game {
 
     /**
      * Let's human player fill board manually
-     * @requires board belongs to humanplayer
+     *
      * @param board board to fill, only for human players
+     * @requires board belongs to humanplayer
      */
     public void fillBoardManual(Board board) {
         Scanner sc = new Scanner(System.in);
@@ -164,10 +179,11 @@ public class Game {
 
     /**
      * Checks if a the param randomField is a valid field for placing the ship sh, for manual board.
-     * @requires board to be of a human player
-     * @param sh ship to place
-     * @param board board in question
+     *
+     * @param sh          ship to place
+     * @param board       board in question
      * @param randomField field provided to check
+     * @requires board to be of a human player
      * @ensures result=true if field is valid || result = false if field is not valid
      */
     public boolean isValidField(Ship sh, Board board, String randomField) {
@@ -200,6 +216,7 @@ public class Game {
 
     /**
      * Generates random field and checks if it's a valid field then also places it
+     *
      * @param board
      * @param sh
      * @param shipName
@@ -250,6 +267,7 @@ public class Game {
 
     /**
      * Check if fields is valid and place it, only for manual board, uses isValidField
+     *
      * @param sc
      * @param board
      * @param sh
@@ -283,7 +301,6 @@ public class Game {
             }
         }
     }
-
 
 
 // for testing purposes
