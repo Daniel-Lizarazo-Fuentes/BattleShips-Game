@@ -28,11 +28,11 @@ public class Game {
         Player p1 = new randomComputerPlayer(createShipArrays(), boards[0]);
 
         if (randomPlacement) {
-            fillBoardRandom(p0.getBoard(),p0);
+            fillBoardRandom(p0.getBoard(), p0);
         } else {
-            fillBoardManual(p0.getBoard(),p1);
+            fillBoardManual(p0.getBoard(), p1);
         }
-        fillBoardRandom(computerBoard,p1);
+        fillBoardRandom(computerBoard, p1);
 
     }
 
@@ -52,7 +52,6 @@ public class Game {
 
 
     /**
-     *
      * @return
      */
     public ArrayList<ArrayList<? extends Ship>> createShipArrays() {
@@ -102,27 +101,38 @@ public class Game {
 
         // for each ship in arraylist of ? extends Ship (i.e. carriers, battleships etc.)
         String shipName;
+        int i = 0;
         for (Ship sh : player.getShipArrayList().get(0)) {
-            shipName="CV";
-            checkAndPlaceRandom(board, sh, shipName);
+            shipName = "CV";
+
+            checkAndPlaceRandom(board, sh, shipName, player, i);
+            i++;
 
         }
+        i = 0;
         for (Ship sh : player.getShipArrayList().get(1)) {
-            shipName="BB";
-            checkAndPlaceRandom(board, sh, shipName);
+            shipName = "BB";
+            checkAndPlaceRandom(board, sh, shipName, player, i);
+            i++;
         }
+        i = 0;
         for (Ship sh : player.getShipArrayList().get(2)) {
-            shipName="DD";
-            checkAndPlaceRandom(board, sh, shipName);
+            shipName = "DD";
+            checkAndPlaceRandom(board, sh, shipName, player, i);
+            i++;
 
         }
+        i = 0;
         for (Ship sh : player.getShipArrayList().get(3)) {
-            shipName="SV";
-            checkAndPlaceRandom(board, sh, shipName);
+            shipName = "SV";
+            checkAndPlaceRandom(board, sh, shipName, player, i);
+            i++;
         }
+        i = 0;
         for (Ship sh : player.getShipArrayList().get(4)) {
-            shipName="PV";
-            checkAndPlaceRandom(board, sh, shipName);
+            shipName = "PV";
+            checkAndPlaceRandom(board, sh, shipName, player, i);
+            i++;
         }
 
     }
@@ -166,9 +176,9 @@ public class Game {
     /**
      * Checks if a the param randomField is a valid field for placing the ship sh, for manual board.
      *
-     * @param sh            ship to place
-     * @param board         board in question
-     * @param randomField   field provided to check
+     * @param sh          ship to place
+     * @param board       board in question
+     * @param randomField field provided to check
      * @requires board to be of a human player
      * @ensures result=true if field is valid || result = false if field is not valid
      */
@@ -207,7 +217,8 @@ public class Game {
      * @param sh
      * @param shipName
      */
-    public void checkAndPlaceRandom(Board board, Ship sh, String shipName) {
+    public void checkAndPlaceRandom(Board board, Ship sh, String shipName, Player player, int shipIndexInArrayList) {
+        ArrayList<String> positions = new ArrayList<>();
         boolean foundFittingField = false;
         char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
         // while a random field that fits hasn't been found
@@ -241,10 +252,40 @@ public class Game {
                     try {
                         board.getFields().get(board.getFieldIndex(randomCoordinate)).setState(boardPosition.positionState.SHIP);
                         board.getFields().get(board.getFieldIndex(randomCoordinate)).setShipType(shipName);
+                        positions.add(randomCoordinate);
+
                     } catch (IndexOutOfBoundsException e) {
                         foundFittingField = false;
                     }
 
+                }
+                ArrayList<ArrayList<? extends Ship>> shipLists = player.getShipArrayList();
+                switch (shipName) {
+                    case "CV":
+
+                        shipLists.get(0).get(shipIndexInArrayList).setPositions(positions);
+                        player.setShipArrayList(shipLists);
+                        break;
+                    case "BB":
+
+                        shipLists.get(1).get(shipIndexInArrayList).setPositions(positions);
+                        player.setShipArrayList(shipLists);
+                        break;
+                    case "DD":
+                        shipLists.get(2).get(shipIndexInArrayList).setPositions(positions);
+                        player.setShipArrayList(shipLists);
+                        break;
+                    case "SV":
+                        shipLists.get(3).get(shipIndexInArrayList).setPositions(positions);
+                        player.setShipArrayList(shipLists);
+                        break;
+                    case "PV":
+                        shipLists.get(4).get(shipIndexInArrayList).setPositions(positions);
+                        player.setShipArrayList(shipLists);
+                        break;
+
+                    default:
+                        System.out.println("Something went wrong in the switch trying to assign ships to the player");
                 }
             }
         }
@@ -289,7 +330,7 @@ public class Game {
     }
 
 
-// for testing purposes
+    // for testing purposes
     public static void main(String[] args) {
         Board board = new Board(true);
         board.toString();

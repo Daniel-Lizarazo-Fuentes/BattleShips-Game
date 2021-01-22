@@ -36,6 +36,8 @@ public interface Player {
      */
     public void setShipArrayList(ArrayList<ArrayList<? extends Ship>> shipLists);
 
+
+
     /**
      * Returns the arraylist whith ship arraylists, used for scores
      *

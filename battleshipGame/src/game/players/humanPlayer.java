@@ -9,7 +9,7 @@ import java.util.List;
 public class humanPlayer implements Player {
     private String name;
     private int points;
-private Board board;
+    private Board board;
     private ArrayList<ArrayList<? extends Ship>> shipLists;
 
 
@@ -21,22 +21,24 @@ private Board board;
         this.name = name;
         this.points = 0;
         this.shipLists = shipLists;
-        this.board=board;
+        this.board = board;
     }
 
     /**
      * Sets the board of a player
+     *
      * @param board
      */
-    public void setBoard(Board board){
-        this.board=board;
+    public void setBoard(Board board) {
+        this.board = board;
     }
 
     /**
      * Gets the board of a player
+     *
      * @return
      */
-    public Board getBoard(){
+    public Board getBoard() {
         return this.board;
     }
 
@@ -48,6 +50,7 @@ private Board board;
     public void setShipArrayList(ArrayList<ArrayList<? extends Ship>> shipLists) {
         this.shipLists = shipLists;
     }
+
 
     /**
      * Returns the arraylist whith ship arraylists, used for scores
