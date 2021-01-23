@@ -125,6 +125,7 @@ public class randomComputerPlayer implements Player {
 
                     // check if position was already hit
                     if (!board.getFields().get(board.getFieldIndex(input)).getIsHit()) {
+                        validField=true;
                         boardPosition hitPosition = board.getFields().get(board.getFieldIndex(input));
                         hitPosition.setIsHit(true);
                         hitPosition.setPositionHidden(false);

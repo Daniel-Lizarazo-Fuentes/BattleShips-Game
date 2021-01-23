@@ -127,6 +127,7 @@ public class humanPlayer implements Player {
 
                     // check if position was already hit
                     if (!board.getFields().get(board.getFieldIndex(input)).getIsHit()) {
+                        validField=true;
                         boardPosition hitPosition = board.getFields().get(board.getFieldIndex(input));
                         hitPosition.setIsHit(true);
                         hitPosition.setPositionHidden(false);
@@ -147,6 +148,7 @@ public class humanPlayer implements Player {
                             hitPosition.setState(boardPosition.positionState.WRECK);
                         } else {
                             hasTurn = false;
+
                         }
                     } else {
                         System.out.println("position already hit!");
@@ -158,7 +160,7 @@ public class humanPlayer implements Player {
 
             }
         }
-
+        System.out.println("Turn over");
 
     }
 }

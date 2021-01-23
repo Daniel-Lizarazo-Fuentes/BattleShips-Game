@@ -401,7 +401,7 @@ public class Game {
         System.out.println(getBoard(1).toString());
         while (!gameHasWinner(p0, p1)) {
             p0.fire(p0, p1);
-            p1.fire(p0, p1);
+            p1.fire(p1, p0);
 // print out player board
             System.out.println(getBoard(0).toString());
             //print out computer board

@@ -144,7 +144,7 @@ public class Board {
             }
             // check if hidden and based on that print the state or hidden
             if (p.getPositionHidden()) {
-                append += ".... |";
+                append += "..... |";
             } else {
                 switch (p.getState()) {
                     case SHIP:
