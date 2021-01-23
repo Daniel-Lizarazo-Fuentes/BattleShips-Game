@@ -146,6 +146,7 @@ public class humanPlayer implements Player {
                                 }
                             }
                             hitPosition.setState(boardPosition.positionState.WRECK);
+                            System.out.println(defender.getBoard().toString());
                         } else {
                             hasTurn = false;
 

@@ -402,8 +402,8 @@ public class Game {
         while (!gameHasWinner(p0, p1)) {
             p0.fire(p0, p1);
             p1.fire(p1, p0);
-// print out player board
-            System.out.println(getBoard(0).toString());
+// print out player boards (one with full visibility)
+            System.out.println("Your full board\n"+getBoard(0).toString());
             //print out computer board
             System.out.println(getBoard(1).toString());
         }
