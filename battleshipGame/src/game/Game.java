@@ -382,10 +382,17 @@ public class Game {
         } else {
             return false;
         }
-
     }
 
-    public void play() {
+    public class MyRunnable implements Runnable {
+
+        public void run(){
+
+        }
+    }
+
+    public void play(Player p0, Player p1) {
+
 
     }
 
