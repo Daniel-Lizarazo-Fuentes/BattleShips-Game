@@ -384,16 +384,29 @@ public class Game {
         }
     }
 
-    public class MyRunnable implements Runnable {
+//    public class MyRunnable implements Runnable {
+//
+//        public void run() {
+//
+//        }
+//    }
 
-        public void run() {
+    public void playSinglePlayerGame(Player p0, Player p1) {
+//        Thread thread1 = new Thread(new MyRunnable());
+//        thread1.start();
 
+        // print out player board
+        System.out.println(getBoard(0).toString());
+        //print out computer board
+        System.out.println(getBoard(1).toString());
+        while (!gameHasWinner(p0, p1)) {
+            p0.fire(p0, p1);
+            p1.fire(p0, p1);
+// print out player board
+            System.out.println(getBoard(0).toString());
+            //print out computer board
+            System.out.println(getBoard(1).toString());
         }
-    }
-
-    public void playGame(Player p0, Player p1) {
-        Thread thread1 = new Thread(new MyRunnable());
-        thread1.start();
 
     }
 
@@ -402,16 +415,18 @@ public class Game {
     public static void main(String[] args) {
         Board board = new Board(true);
         board.toString();
-        Game game = new Game(false);
+        Game game = new Game(true);
+        game.playSinglePlayerGame(game.getPlayer(0), game.getPlayer(1));
 
-        // print out player board
-        System.out.println(game.getBoard(0).toString());
-        //print out computer board
-        System.out.println(game.getBoard(1).toString());
 
-        // print out positions off first cv in cv-list of humanPlayer, for testing purposes
-        System.out.println(game.getPlayer(0).getShipArrayList().get(0).get(0).getPositions().get(0));
-        System.out.println(game.getPlayer(0).getShipArrayList().get(0).get(1).getPositions().get(0));
+//        // print out player board
+//        System.out.println(game.getBoard(0).toString());
+//        //print out computer board
+//        System.out.println(game.getBoard(1).toString());
+//
+//        // print out positions off first cv in cv-list of humanPlayer, for testing purposes
+//        System.out.println(game.getPlayer(0).getShipArrayList().get(0).get(0).getPositions().get(0));
+//        System.out.println(game.getPlayer(0).getShipArrayList().get(0).get(1).getPositions().get(0));
 
     }
 
