@@ -53,6 +53,6 @@ public interface Player {
      * Fires at specified field
      * @requires field is valid field
      */
-    public void fire();
+    public void fire(Board board);
 
 }

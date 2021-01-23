@@ -4,6 +4,7 @@ import game.ships.*;
 import game.board.*;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class humanPlayer implements Player {
     private String name;
@@ -88,11 +89,42 @@ public class humanPlayer implements Player {
     }
 
     /**
-     * Fires at specified field
+     * Fires at specified field on enemy board, includes functionallity for added turn upon hitting an enemy vessel
      *
-     * @requires field is valid field
+     * @requires @param board to be enemy board
      */
     @Override
-    public void fire() {
+    public void fire(Board board) {
+        Scanner scanner = new Scanner(System.in);
+        boolean hasTurn = true;
+        while (hasTurn) {
+            boolean validField = false;
+            while (!validField) {
+                System.out.println("Enter field to fire on");
+                String input = scanner.nextLine();
+                // check if existing position
+                if (board.getFieldIndex(input) != -1) {
+
+                    // check if position was already hit
+                    if (!board.getFields().get(board.getFieldIndex(input)).getIsHit()) {
+                        boardPosition hitPosition = board.getFields().get(board.getFieldIndex(input));
+                        hitPosition.setIsHit(true);
+                        hitPosition.setPositionHidden(false);
+                        if (hitPosition.getState() == boardPosition.positionState.SHIP) {
+                            updatePoints();
+                            hitPosition.setState(boardPosition.positionState.WRECK);
+                        } else {
+                            hasTurn = false;
+                        }
+                    } else {
+                        System.out.println("position already hit!");
+                    }
+                } else {
+                    System.out.println("Enter a valid field!");
+                }
+            }
+        }
+
+
     }
 }

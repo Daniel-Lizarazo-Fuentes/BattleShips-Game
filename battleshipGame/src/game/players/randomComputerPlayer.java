@@ -88,7 +88,7 @@ public class randomComputerPlayer implements Player {
      * @requires field is valid field
      */
     @Override
-    public void fire() {
+    public void fire(Board board) {
     }
 
 }
