@@ -386,13 +386,14 @@ public class Game {
 
     public class MyRunnable implements Runnable {
 
-        public void run(){
+        public void run() {
 
         }
     }
 
-    public void play(Player p0, Player p1) {
-
+    public void playGame(Player p0, Player p1) {
+        Thread thread1 = new Thread(new MyRunnable());
+        thread1.start();
 
     }
 
