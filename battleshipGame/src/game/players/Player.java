@@ -52,7 +52,7 @@ public interface Player {
     /**
      * Adds points based on what ship was sunk
      */
-    public void updatePoints(Player p0, Player p1);
+    public void updatePoints(Player p);
 
 
     /**

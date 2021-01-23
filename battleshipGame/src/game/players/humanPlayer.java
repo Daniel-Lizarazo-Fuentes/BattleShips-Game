@@ -85,8 +85,18 @@ public class humanPlayer implements Player {
      * Adds points based on what ship was sunk
      */
     @Override
-    public void updatePoints(Player p0, Player p1) {
+    public void updatePoints(Player p) {
+        int points = 0;
+        for (ArrayList<? extends Ship> shipList : p.getShipArrayList()) {
+            for (Ship sh : shipList) {
+                points += sh.getSize() - sh.getHitPoints();
+                if (sh.getHitPoints() == 0) {
+                    points++;
+                }
 
+            }
+        }
+        this.points = points;
 
     }
 
@@ -121,13 +131,12 @@ public class humanPlayer implements Player {
                                 for (Ship sh : shipList) {
                                     for (String position : sh.getPositions()) {
                                         if (position.equals(input)) {
-                                            sh.setHitPoints(sh.getHitPoints()-1);
+                                            sh.setHitPoints(sh.getHitPoints() - 1);
                                         }
                                     }
 
                                 }
                             }
-                            updatePoints(attacker, defender);
                             hitPosition.setState(boardPosition.positionState.WRECK);
                         } else {
                             hasTurn = false;

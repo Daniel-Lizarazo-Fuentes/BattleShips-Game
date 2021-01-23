@@ -78,7 +78,7 @@ public class smartComputerPlayer implements Player {
      * Adds points based on what ship was sunk
      */
     @Override
-    public void updatePoints(Player p0, Player p1) {
+    public void updatePoints(Player p0) {
     }
 
     /**
