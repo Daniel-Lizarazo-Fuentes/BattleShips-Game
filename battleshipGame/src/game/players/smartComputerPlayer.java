@@ -75,10 +75,29 @@ public class smartComputerPlayer implements Player {
     }
 
     /**
+     * Setter for points
+     */
+    public void setPoints(int i){
+        this.points=i;
+    }
+
+    /**
      * Adds points based on what ship was sunk
      */
     @Override
-    public void updatePoints(Player p0) {
+    public void updatePoints(Player attacker, Player defender) {
+        int points = 0;
+        for (ArrayList<? extends Ship> shipList : defender.getShipArrayList()) {
+            for (Ship sh : shipList) {
+                points += sh.getSize() - sh.getHitPoints();
+                if (sh.getHitPoints() == 0) {
+                    points++;
+                }
+
+            }
+        }
+        attacker.setPoints(points);
+
     }
 
     /**

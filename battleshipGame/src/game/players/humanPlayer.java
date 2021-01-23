@@ -82,12 +82,19 @@ public class humanPlayer implements Player {
     }
 
     /**
+     * Setter for points
+     */
+    public void setPoints(int i){
+        this.points=i;
+    }
+
+    /**
      * Adds points based on what ship was sunk
      */
     @Override
-    public void updatePoints(Player p) {
+    public void updatePoints(Player attacker, Player defender) {
         int points = 0;
-        for (ArrayList<? extends Ship> shipList : p.getShipArrayList()) {
+        for (ArrayList<? extends Ship> shipList : defender.getShipArrayList()) {
             for (Ship sh : shipList) {
                 points += sh.getSize() - sh.getHitPoints();
                 if (sh.getHitPoints() == 0) {
@@ -96,7 +103,7 @@ public class humanPlayer implements Player {
 
             }
         }
-        this.points = points;
+        attacker.setPoints(points);
 
     }
 
@@ -147,6 +154,8 @@ public class humanPlayer implements Player {
                 } else {
                     System.out.println("Enter a valid field!");
                 }
+                updatePoints(attacker,defender);
+
             }
         }
 
