@@ -85,7 +85,9 @@ public class humanPlayer implements Player {
      * Adds points based on what ship was sunk
      */
     @Override
-    public void updatePoints() {
+    public void updatePoints(Player p0, Player p1) {
+
+
     }
 
     /**
@@ -94,9 +96,10 @@ public class humanPlayer implements Player {
      * @requires @param board to be enemy board
      */
     @Override
-    public void fire(Board board) {
+    public void fire(Player attacker, Player defender) {
         Scanner scanner = new Scanner(System.in);
         boolean hasTurn = true;
+        Board board = defender.getBoard();
         while (hasTurn) {
             boolean validField = false;
             while (!validField) {
@@ -110,8 +113,21 @@ public class humanPlayer implements Player {
                         boardPosition hitPosition = board.getFields().get(board.getFieldIndex(input));
                         hitPosition.setIsHit(true);
                         hitPosition.setPositionHidden(false);
+                        //check if there was a ship at the given position
                         if (hitPosition.getState() == boardPosition.positionState.SHIP) {
-                            updatePoints();
+
+                            //find the ship and change it's hitPoints
+                            for (ArrayList<? extends Ship> shipList : defender.getShipArrayList()) {
+                                for (Ship sh : shipList) {
+                                    for (String position : sh.getPositions()) {
+                                        if (position.equals(input)) {
+                                            sh.setHitPoints(sh.getHitPoints()-1);
+                                        }
+                                    }
+
+                                }
+                            }
+                            updatePoints(attacker, defender);
                             hitPosition.setState(boardPosition.positionState.WRECK);
                         } else {
                             hasTurn = false;
