@@ -166,25 +166,25 @@ public class Game {
         for (Ship sh : player.getShipArrayList().get(1)) {
             shipName = "BB";
             checkAndPlaceManual(sc, board, sh, shipName, player, i);
-        i++;
+            i++;
         }
         i = 0;
         for (Ship sh : player.getShipArrayList().get(2)) {
             shipName = "DD";
             checkAndPlaceManual(sc, board, sh, shipName, player, i);
-        i++;
+            i++;
         }
         i = 0;
         for (Ship sh : player.getShipArrayList().get(3)) {
             shipName = "SV";
             checkAndPlaceManual(sc, board, sh, shipName, player, i);
-        i++;
+            i++;
         }
         i = 0;
         for (Ship sh : player.getShipArrayList().get(4)) {
             shipName = "PV";
             checkAndPlaceManual(sc, board, sh, shipName, player, i);
-        i++;
+            i++;
         }
 
     }
@@ -374,6 +374,19 @@ public class Game {
                 randomField = sc.nextLine();
             }
         }
+    }
+
+    public boolean gameHasWinner(Player p0, Player p1) {
+        if ((p0.getPoints() == (2 * 5 + 3 * 4 + 5 * 3 + 8 * 2 + 10 * 1 + 28)) || (p1.getPoints() == (2 * 5 + 3 * 4 + 5 * 3 + 8 * 2 + 10 * 1 + 28))) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public void play() {
+
     }
 
 
