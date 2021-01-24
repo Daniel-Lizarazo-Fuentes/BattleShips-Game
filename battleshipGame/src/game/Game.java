@@ -471,6 +471,12 @@ public class Game {
             System.out.println("Opponents board\n" + getBoard(1).toString());
             System.out.println("The current scores are:\n" + p0.getName() + ": " + p0.getPoints() + "\n" + p1.getName() + ": " + p1.getPoints());
         }
+        if (p0.getPoints() == (2 * 5 + 3 * 4 + 5 * 3 + 8 * 2 + 10 * 1 + 28)) {
+            System.out.println(p0.getName() + " has won!");
+        } else {
+            System.out.println(p1.getName() + " has won!");
+        }
+
 
     }
 
