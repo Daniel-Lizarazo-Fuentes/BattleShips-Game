@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 public class Game {
 
-    //TODO score things
+
     //TODO network and threading
     //TODO fix game breaking if two numbers are enter when manually placing
     private Board[] boards = new Board[2];
@@ -257,6 +257,14 @@ public class Game {
      * @ensures result=true if field is valid || result = false if field is not valid
      */
     public boolean isValidField(Ship sh, Board board, String randomField) {
+        try {
+            randomField.charAt(2);
+            Character.getNumericValue((randomField.charAt(2)));
+            return false;
+        } catch (IndexOutOfBoundsException e) {
+// continue as normal, there should be no index 2
+
+        }
         char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
         for (int k = 0; k < sh.getSize(); k++) {
             int randomColumn = -1;
@@ -266,20 +274,25 @@ public class Game {
                 }
             }
             int randomRow = Character.getNumericValue((randomField.charAt(1)));
-            String randomInput = alphabet[randomColumn + k] + Integer.toString(randomRow);
-            if (randomColumn + k < 15) {
-                //if index doesn't exist then it will just be set to false
-                try {
-                    if (board.getFields().get(board.getFieldIndex(randomInput)).getState() != boardPosition.positionState.EMPTY) {
+            try {
+                String randomInput = alphabet[randomColumn + k] + Integer.toString(randomRow);
+                if (randomColumn + k < 15) {
+                    //if index doesn't exist then it will just be set to false
+                    try {
+                        if (board.getFields().get(board.getFieldIndex(randomInput)).getState() != boardPosition.positionState.EMPTY) {
+                            return false;
+                        }
+                    } catch (IndexOutOfBoundsException e) {
                         return false;
                     }
-                } catch (IndexOutOfBoundsException e) {
+
+                } else {
                     return false;
                 }
-
-            } else {
+            } catch (IndexOutOfBoundsException e) {
                 return false;
             }
+
         }
         return true;
     }
@@ -458,7 +471,7 @@ public class Game {
         // print out player board
         System.out.println("Your full board\n" + unHideBoard(getBoard(0), true).toString());
         //print out computer board
-        System.out.println("Opponent board\n"+getBoard(1).toString());
+        System.out.println("Opponent board\n" + getBoard(1).toString());
         while (!gameHasWinner(p0, p1)) {
             p0.fire(p0, p1);
 
@@ -485,7 +498,7 @@ public class Game {
     public static void main(String[] args) {
         Board board = new Board(true);
         board.toString();
-        Game game = new Game(true);
+        Game game = new Game(false);
         game.playSinglePlayerGame(game.getPlayer(0), game.getPlayer(1));
 
 
