@@ -10,6 +10,7 @@ public class humanPlayer implements Player {
     private String name;
     private int points;
     private Board board;
+
     private ArrayList<ArrayList<? extends Ship>> shipLists;
 
 

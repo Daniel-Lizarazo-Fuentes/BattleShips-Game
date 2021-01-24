@@ -1,8 +1,9 @@
 package game.board;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Board {
+public class Board implements Serializable {
     private static final int ROWS = 10;
     private static final int COLUMNS = 15;
 
@@ -18,18 +19,16 @@ public class Board {
     }
 
     /**
-     *
      * @return
      */
-    public int getRows(){
+    public int getRows() {
         return this.ROWS;
     }
 
     /**
-     *
      * @return
      */
-    public int getColumns(){
+    public int getColumns() {
         return this.COLUMNS;
     }
 
@@ -62,6 +61,7 @@ public class Board {
 
     /**
      * Find the index of a coordinate in fields
+     *
      * @param s
      * @return
      */
@@ -69,7 +69,7 @@ public class Board {
         int result = -1;
         //System.out.println(getFields().size()); // for testing purposes
         for (int i = 0; i < getFields().size(); i++) {
-          // System.out.println(s+"TEST: "+getFields().get(i).getCoordinate()); //for testing purposes
+            // System.out.println(s+"TEST: "+getFields().get(i).getCoordinate()); //for testing purposes
             if ((getFields().get(i).getCoordinate()).equals(s)) {
 
                 result = i;
@@ -149,7 +149,7 @@ public class Board {
                 switch (p.getState()) {
                     case SHIP:
 
-                        append += "  "+p.getShipType()+"  |";
+                        append += "  " + p.getShipType() + "  |";
 
                         break;
                     case EMPTY:
@@ -168,17 +168,14 @@ public class Board {
 // add letters for all columns and depending on if column is not hidden change width
         for (int z = 0; z < COLUMNS; z++) {
             char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
-            if (columnFullyHidden[z]) {
-                result += "     " + alphabet[z];
-            } else {
-                result += "      " + alphabet[z];
-            }
+
+            result += "      " + alphabet[z];
+
 
         }
         result += "\n" + append;
         return result;
     }
-
 
 
 }

@@ -4,6 +4,10 @@ import game.ships.*;
 import game.board.*;
 import game.players.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -36,7 +40,7 @@ public class Game {
             fillBoardManual(p0.getBoard(), p0);
         }
         fillBoardRandom(computerBoard, p1);
-
+        boards[0] = hideBoard(boards[0],false);
     }
 
     /**
@@ -96,6 +100,61 @@ public class Game {
 
     }
 
+    /**
+     * This method makes a "deep clone" of any object it is given.
+     */
+    public static Object deepClone(Object object) {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(object);
+            ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            return ois.readObject();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Board hideBoard(Board board,boolean hideCopy) {
+        if(hideCopy){
+            Board copy = (Board) deepClone(board);
+            for (boardPosition position : copy.getFields()) {
+                position.setPositionHidden(true);
+
+            }
+            return copy;
+        }
+        else{
+
+
+        for (boardPosition position : board.getFields()) {
+            position.setPositionHidden(true);
+
+        }
+        return board;}
+    }
+
+    public Board unHideBoard(Board board, boolean unHideCopy) {
+        if(unHideCopy){
+            Board copy = (Board)deepClone(board);
+            for (boardPosition position : copy.getFields()) {
+                position.setPositionHidden(false);
+
+            }
+            return copy;
+        }
+        else{
+
+
+            for (boardPosition position : board.getFields()) {
+                position.setPositionHidden(false);
+
+            }
+            return board;}
+    }
 
     /**
      * Fills board with all ships in a random fashion, ships only placed horizontally
@@ -391,19 +450,23 @@ public class Game {
 //        }
 //    }
 
-    public void playSinglePlayerGame(Player p0, Player p1) {
-//        Thread thread1 = new Thread(new MyRunnable());
+    //        Thread thread1 = new Thread(new MyRunnable());
 //        thread1.start();
 
+    public void playSinglePlayerGame(Player p0, Player p1) {
+
+
         // print out player board
-        System.out.println(getBoard(0).toString());
+        System.out.println("Your full board\n" + unHideBoard(getBoard(0),true).toString());
         //print out computer board
         System.out.println(getBoard(1).toString());
         while (!gameHasWinner(p0, p1)) {
             p0.fire(p0, p1);
             p1.fire(p1, p0);
 // print out player boards (one with full visibility)
-            System.out.println("Your full board\n"+getBoard(0).toString());
+            System.out.println("Your full board\n" + unHideBoard(getBoard(0),true).toString());
+
+            System.out.println("What your opponent sees of your board\n"+getBoard(0).toString() );
             //print out computer board
             System.out.println(getBoard(1).toString());
         }

@@ -1,6 +1,8 @@
 package game.board;
 
-public class boardPosition {
+import java.io.Serializable;
+
+public class boardPosition implements Serializable {
     public enum positionState {
         EMPTY,
         SHIP,
