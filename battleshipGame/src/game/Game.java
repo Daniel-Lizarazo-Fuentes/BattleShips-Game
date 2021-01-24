@@ -40,7 +40,7 @@ public class Game {
             fillBoardManual(p0.getBoard(), p0);
         }
         fillBoardRandom(computerBoard, p1);
-        boards[0] = hideBoard(boards[0],false);
+        boards[0] = hideBoard(boards[0], false);
     }
 
     /**
@@ -111,49 +111,48 @@ public class Game {
             ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
             ObjectInputStream ois = new ObjectInputStream(bais);
             return ois.readObject();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public Board hideBoard(Board board,boolean hideCopy) {
-        if(hideCopy){
+    public Board hideBoard(Board board, boolean hideCopy) {
+        if (hideCopy) {
             Board copy = (Board) deepClone(board);
             for (boardPosition position : copy.getFields()) {
                 position.setPositionHidden(true);
 
             }
             return copy;
+        } else {
+
+
+            for (boardPosition position : board.getFields()) {
+                position.setPositionHidden(true);
+
+            }
+            return board;
         }
-        else{
-
-
-        for (boardPosition position : board.getFields()) {
-            position.setPositionHidden(true);
-
-        }
-        return board;}
     }
 
     public Board unHideBoard(Board board, boolean unHideCopy) {
-        if(unHideCopy){
-            Board copy = (Board)deepClone(board);
+        if (unHideCopy) {
+            Board copy = (Board) deepClone(board);
             for (boardPosition position : copy.getFields()) {
                 position.setPositionHidden(false);
 
             }
             return copy;
-        }
-        else{
+        } else {
 
 
             for (boardPosition position : board.getFields()) {
                 position.setPositionHidden(false);
 
             }
-            return board;}
+            return board;
+        }
     }
 
     /**
@@ -457,18 +456,20 @@ public class Game {
 
 
         // print out player board
-        System.out.println("Your full board\n" + unHideBoard(getBoard(0),true).toString());
+        System.out.println("Your full board\n" + unHideBoard(getBoard(0), true).toString());
         //print out computer board
         System.out.println(getBoard(1).toString());
         while (!gameHasWinner(p0, p1)) {
             p0.fire(p0, p1);
+
             p1.fire(p1, p0);
 // print out player boards (one with full visibility)
-            System.out.println("Your full board\n" + unHideBoard(getBoard(0),true).toString());
+            System.out.println("Your full board\n" + unHideBoard(getBoard(0), true).toString());
 
-            System.out.println("What your opponent sees of your board\n"+getBoard(0).toString() );
+            System.out.println("What your opponent sees of your board\n" + getBoard(0).toString());
             //print out computer board
-            System.out.println("Opponents board\n"+getBoard(1).toString());
+            System.out.println("Opponents board\n" + getBoard(1).toString());
+            System.out.println("The current scores are:\n" + p0.getName() + ": " + p0.getPoints() + "\n" + p1.getName() + ": " + p1.getPoints());
         }
 
     }

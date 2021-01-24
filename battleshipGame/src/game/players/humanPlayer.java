@@ -160,6 +160,7 @@ public class humanPlayer implements Player {
                 }
                 updatePoints(attacker,defender);
 
+
             }
         }
         System.out.println("Turn over");
