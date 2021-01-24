@@ -1,6 +1,8 @@
 package game.board;
 
-public class boardPosition {
+import java.io.Serializable;
+
+public class boardPosition implements Serializable {
     public enum positionState {
         EMPTY,
         SHIP,
@@ -11,19 +13,30 @@ public class boardPosition {
     private positionState state;
     private String shipType;
     private boolean positionHidden;
+    private boolean isHit;
 
     public boardPosition(String coordinate, positionState state, boolean hidden) {
         this.coordinate = coordinate;
         this.state = state;
         this.positionHidden = hidden;
-        this.shipType="EMPTY";
+        this.shipType = "EMPTY";
+        this.isHit = false;
     }
 
     public void setShipType(String shipType) {
         this.shipType = shipType;
     }
 
-    public String getShipType(){
+
+    public boolean getIsHit() {
+        return isHit;
+    }
+
+    public void setIsHit(boolean hit) {
+        isHit = hit;
+    }
+
+    public String getShipType() {
         return this.shipType;
     }
 

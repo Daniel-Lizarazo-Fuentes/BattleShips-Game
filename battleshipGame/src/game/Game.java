@@ -4,6 +4,10 @@ import game.ships.*;
 import game.board.*;
 import game.players.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -11,7 +15,7 @@ import java.util.Scanner;
 
 public class Game {
 
-    //TODO score things
+
     //TODO network and threading
     //TODO fix game breaking if two numbers are enter when manually placing
     private Board[] boards = new Board[2];
@@ -36,7 +40,7 @@ public class Game {
             fillBoardManual(p0.getBoard(), p0);
         }
         fillBoardRandom(computerBoard, p1);
-
+        boards[0] = hideBoard(boards[0], false);
     }
 
     /**
@@ -96,6 +100,60 @@ public class Game {
 
     }
 
+    /**
+     * This method makes a "deep clone" of any object it is given.
+     */
+    public static Object deepClone(Object object) {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(object);
+            ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            return ois.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Board hideBoard(Board board, boolean hideCopy) {
+        if (hideCopy) {
+            Board copy = (Board) deepClone(board);
+            for (boardPosition position : copy.getFields()) {
+                position.setPositionHidden(true);
+
+            }
+            return copy;
+        } else {
+
+
+            for (boardPosition position : board.getFields()) {
+                position.setPositionHidden(true);
+
+            }
+            return board;
+        }
+    }
+
+    public Board unHideBoard(Board board, boolean unHideCopy) {
+        if (unHideCopy) {
+            Board copy = (Board) deepClone(board);
+            for (boardPosition position : copy.getFields()) {
+                position.setPositionHidden(false);
+
+            }
+            return copy;
+        } else {
+
+
+            for (boardPosition position : board.getFields()) {
+                position.setPositionHidden(false);
+
+            }
+            return board;
+        }
+    }
 
     /**
      * Fills board with all ships in a random fashion, ships only placed horizontally
@@ -166,25 +224,25 @@ public class Game {
         for (Ship sh : player.getShipArrayList().get(1)) {
             shipName = "BB";
             checkAndPlaceManual(sc, board, sh, shipName, player, i);
-        i++;
+            i++;
         }
         i = 0;
         for (Ship sh : player.getShipArrayList().get(2)) {
             shipName = "DD";
             checkAndPlaceManual(sc, board, sh, shipName, player, i);
-        i++;
+            i++;
         }
         i = 0;
         for (Ship sh : player.getShipArrayList().get(3)) {
             shipName = "SV";
             checkAndPlaceManual(sc, board, sh, shipName, player, i);
-        i++;
+            i++;
         }
         i = 0;
         for (Ship sh : player.getShipArrayList().get(4)) {
             shipName = "PV";
             checkAndPlaceManual(sc, board, sh, shipName, player, i);
-        i++;
+            i++;
         }
 
     }
@@ -199,6 +257,14 @@ public class Game {
      * @ensures result=true if field is valid || result = false if field is not valid
      */
     public boolean isValidField(Ship sh, Board board, String randomField) {
+        try {
+            randomField.charAt(2);
+            Character.getNumericValue((randomField.charAt(2)));
+            return false;
+        } catch (IndexOutOfBoundsException e) {
+// continue as normal, there should be no index 2
+
+        }
         char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
         for (int k = 0; k < sh.getSize(); k++) {
             int randomColumn = -1;
@@ -208,20 +274,25 @@ public class Game {
                 }
             }
             int randomRow = Character.getNumericValue((randomField.charAt(1)));
-            String randomInput = alphabet[randomColumn + k] + Integer.toString(randomRow);
-            if (randomColumn + k < 15) {
-                //if index doesn't exist then it will just be set to false
-                try {
-                    if (board.getFields().get(board.getFieldIndex(randomInput)).getState() != boardPosition.positionState.EMPTY) {
+            try {
+                String randomInput = alphabet[randomColumn + k] + Integer.toString(randomRow);
+                if (randomColumn + k < 15) {
+                    //if index doesn't exist then it will just be set to false
+                    try {
+                        if (board.getFields().get(board.getFieldIndex(randomInput)).getState() != boardPosition.positionState.EMPTY) {
+                            return false;
+                        }
+                    } catch (IndexOutOfBoundsException e) {
                         return false;
                     }
-                } catch (IndexOutOfBoundsException e) {
+
+                } else {
                     return false;
                 }
-
-            } else {
+            } catch (IndexOutOfBoundsException e) {
                 return false;
             }
+
         }
         return true;
     }
@@ -376,21 +447,69 @@ public class Game {
         }
     }
 
+    public boolean gameHasWinner(Player p0, Player p1) {
+        if ((p0.getPoints() == (2 * 5 + 3 * 4 + 5 * 3 + 8 * 2 + 10 * 1 + 28)) || (p1.getPoints() == (2 * 5 + 3 * 4 + 5 * 3 + 8 * 2 + 10 * 1 + 28))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+//    public class MyRunnable implements Runnable {
+//
+//        public void run() {
+//
+//        }
+//    }
+
+    //        Thread thread1 = new Thread(new MyRunnable());
+//        thread1.start();
+
+    public void playSinglePlayerGame(Player p0, Player p1) {
+
+
+        // print out player board
+        System.out.println("Your full board\n" + unHideBoard(getBoard(0), true).toString());
+        //print out computer board
+        System.out.println("Opponent board\n" + getBoard(1).toString());
+        while (!gameHasWinner(p0, p1)) {
+            p0.fire(p0, p1);
+
+            p1.fire(p1, p0);
+// print out player boards (one with full visibility)
+            System.out.println("Your full board\n" + unHideBoard(getBoard(0), true).toString());
+
+            System.out.println("What your opponent sees of your board\n" + getBoard(0).toString());
+            //print out computer board
+            System.out.println("Opponents board\n" + getBoard(1).toString());
+            System.out.println("The current scores are:\n" + p0.getName() + ": " + p0.getPoints() + "\n" + p1.getName() + ": " + p1.getPoints());
+        }
+        if (p0.getPoints() == (2 * 5 + 3 * 4 + 5 * 3 + 8 * 2 + 10 * 1 + 28)) {
+            System.out.println(p0.getName() + " has won!");
+        } else {
+            System.out.println(p1.getName() + " has won!");
+        }
+
+
+    }
+
 
     // for testing purposes
     public static void main(String[] args) {
         Board board = new Board(true);
         board.toString();
         Game game = new Game(false);
+        game.playSinglePlayerGame(game.getPlayer(0), game.getPlayer(1));
 
-        // print out player board
-        System.out.println(game.getBoard(0).toString());
-        //print out computer board
-        System.out.println(game.getBoard(1).toString());
 
-        // print out positions off first cv in cv-list of humanPlayer, for testing purposes
-        System.out.println(game.getPlayer(0).getShipArrayList().get(0).get(0).getPositions().get(0));
-        System.out.println(game.getPlayer(0).getShipArrayList().get(0).get(1).getPositions().get(0));
+//        // print out player board
+//        System.out.println(game.getBoard(0).toString());
+//        //print out computer board
+//        System.out.println(game.getBoard(1).toString());
+//
+//        // print out positions off first cv in cv-list of humanPlayer, for testing purposes
+//        System.out.println(game.getPlayer(0).getShipArrayList().get(0).get(0).getPositions().get(0));
+//        System.out.println(game.getPlayer(0).getShipArrayList().get(0).get(1).getPositions().get(0));
 
     }
 
