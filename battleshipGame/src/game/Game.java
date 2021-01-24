@@ -468,7 +468,7 @@ public class Game {
 
             System.out.println("What your opponent sees of your board\n"+getBoard(0).toString() );
             //print out computer board
-            System.out.println(getBoard(1).toString());
+            System.out.println("Opponents board\n"+getBoard(1).toString());
         }
 
     }
