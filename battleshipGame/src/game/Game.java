@@ -17,7 +17,7 @@ public class Game {
 
 
     //TODO network and threading
-    //TODO fix game breaking if two numbers are enter when manually placing
+
     private Board[] boards = new Board[2];
     private Player[] players = new Player[2];
 
@@ -493,13 +493,25 @@ public class Game {
 
     }
 
+    public void playMultiPlayerGame(Player p0, Player p1) {
+
+
+
+
+
+
+
+    }
+
 
     // for testing purposes
     public static void main(String[] args) {
         Board board = new Board(true);
         board.toString();
-        Game game = new Game(false);
+        Game game = new Game(true);
         game.playSinglePlayerGame(game.getPlayer(0), game.getPlayer(1));
+
+
 
 
 //        // print out player board
