@@ -455,16 +455,6 @@ public class Game {
         }
     }
 
-//    public class MyRunnable implements Runnable {
-//
-//        public void run() {
-//
-//        }
-//    }
-
-    //        Thread thread1 = new Thread(new MyRunnable());
-//        thread1.start();
-
     public void playSinglePlayerGame(Player p0, Player p1) {
 
 
@@ -493,15 +483,7 @@ public class Game {
 
     }
 
-    public void playMultiPlayerGame(Player p0, Player p1) {
 
-
-
-
-
-
-
-    }
 
 
     // for testing purposes
