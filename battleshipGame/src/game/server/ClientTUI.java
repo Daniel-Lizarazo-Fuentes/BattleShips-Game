@@ -21,7 +21,9 @@ public class ClientTUI {
 
 
     }
-    public String getSuggestion() {}
+    public String getSuggestion() {
+
+    }
     public void handleMove(String input) throws game.exceptions.ExitProgram, game.exceptions.ServerUnavailableException {}
     public void showMessage(String msg) {
         System.out.println(msg);

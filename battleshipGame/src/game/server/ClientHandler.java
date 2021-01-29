@@ -1,4 +1,5 @@
 package game.server;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -33,6 +34,7 @@ public class ClientHandler implements Runnable {
             shutdown();
         }
     }
+
     public String getName() {
         return this.name;
     }
@@ -53,7 +55,18 @@ public class ClientHandler implements Runnable {
         return this.out;
     }
 
-    public String getMove() {}
+    public String[] getMove() {
+        writeOut(ProtocolMessages.TURN);
+        while (move.isEmpty()) {
+
+            String[] input = this.move.split(";");
+            this.move = null;
+            if (input[0] == ProtocolMessages.MOVE && input.length >= 5 && input.length <= 9) {
+                return input;
+            }
+        }
+        return null;
+    }
 
     public boolean isReady() {
         return this.ready;
@@ -75,7 +88,9 @@ public class ClientHandler implements Runnable {
             shutdown();
         }
     }
-    private void handleCommand(String msg) throws IOException {}
+
+    private void handleCommand(String msg) throws IOException {
+    }
 
     public void writeOut(String msg) {
         try {

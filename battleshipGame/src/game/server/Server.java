@@ -149,12 +149,12 @@ public class Server implements Runnable {
         this.clients.remove(client);
     }
 
-    public void getReady(Player playerInterface) {
-        ready.add(Player);
+    public void getReady(Player player) {
+        ready.add(player);
     }
 
-    public boolean inList(Player playerInterface) {
-        if (ready.contains(Player)) {
+    public boolean inList(Player player) {
+        if (ready.contains(player)) {
             return true;
         }
         return false;
