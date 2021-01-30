@@ -30,7 +30,6 @@ public class BattleShip {
                     int port = 5000;
                     System.out.println("Want to change default port? Type 'Yes' if yes or press any other key to continue with default port 5000.");
 
-
                     try {
                         if (scnr.nextLine().equals("Yes")) {
                             System.out.println("What is the port?");

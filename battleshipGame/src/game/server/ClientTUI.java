@@ -24,7 +24,8 @@ public class ClientTUI {
         try {
             while (true) {
                 String input = c.readLineFromServer();
-                if (input.equals(ProtocolMessages.TURN)) {
+
+                if (input.split(";")[0].equals(ProtocolMessages.TURN) && input.split(";")[1].equals(getName())) {
                     Scanner scnr = new Scanner(System.in);
                     showMessage("----------------------------------------------------");
                     showMessage("Input your salvo:");
@@ -42,6 +43,16 @@ public class ClientTUI {
                     showMessage("----------------------------------------------------");
                     showMessage("Salvo shot by player " + inputSplit[1] + ":");
                     showMessage(game.getBoard().toString() + "\n");
+
+
+// print out player boards (one with full visibility)
+                    System.out.println("Your full board\n" + unHideBoard(getBoard(0), true).toString());
+
+                    System.out.println("What your opponent sees of your board\n" + getBoard(0).toString());
+                    //print out computer board
+                    System.out.println("Opponents board\n" + getBoard(1).toString());
+
+
                     game.nextTurn();
                 } else if (input.split(";")[0].equals(ProtocolMessages.WINNER)) {
                     String[] inputSplit = input.split(";");
@@ -66,7 +77,8 @@ public class ClientTUI {
     }
 
 
-    public void handleSalvo(String input) throws game.exceptions.ExitProgram, game.exceptions.ServerUnavailableException {
+    public void handleMove(String input) throws game.exceptions.ExitProgram, game.exceptions.ServerUnavailableException {
+
     }
 
     public void showMessage(String msg) {
