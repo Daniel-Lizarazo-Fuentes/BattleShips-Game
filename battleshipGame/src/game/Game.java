@@ -21,10 +21,9 @@ public class Game implements Runnable {
 
 
     //======================================= Multiplayer ============================================//
-    private Board[] board = new Board[2];
+    private Board[] GameBoards = new Board[2];
     private ArrayList<ClientHandler> gameList;
     private Player[] GamePlayers = new Player[2];
-    private Player turn;
     private String move;
 
 
@@ -35,10 +34,12 @@ public class Game implements Runnable {
 
         Board player1Board = new Board(true);
         Board player2Board = new Board(true);
-        boards[0] = player1Board;
-        boards[1] = player2Board;
-        Player p1 = new humanPlayer(gameList.get(0).getName(), createShipArrays(), boards[0]); //TODO edit humanPlayer to allow construct for multiplayer
-        Player p2 = new humanPlayer(gameList.get(1).getName(), createShipArrays(), boards[1]); //TODO edit humanPlayer to allow construct for multiplayer
+        GameBoards[0] = player1Board;
+        GameBoards[1] = player2Board;
+        //TODO edit back to Player if computer player needs to be available as well
+        humanPlayer p1 = new humanPlayer(gameList.get(0).getName(), createShipArrays(), GameBoards[0]); //TODO edit humanPlayer to allow construct for multiplayer
+        humanPlayer p2 = new humanPlayer(gameList.get(1).getName(), createShipArrays(), GameBoards[1]); //TODO edit humanPlayer to allow construct for multiplayer
+        p1.setTurn(true);
         GamePlayers[0] = p1;
         GamePlayers[0] = p2;
 
@@ -92,7 +93,7 @@ public class Game implements Runnable {
             }
             if (move != null) {
                 String move = this.move;
-                if (moveCheck(move)) {
+                if (fireCheck(move)) { // TODO get defender board from somewhere
 
 
                     ch.writeOut(ProtocolMessages.VALID);
@@ -148,8 +149,8 @@ public class Game implements Runnable {
         return false;
     }
 
-    public Board getBoard() {
-        return this.board;
+    public Board[] getBoard() {
+        return this.GameBoards;
     }
 
     public Player getTurn() {
@@ -164,7 +165,7 @@ public class Game implements Runnable {
         }
     }
 
-    public boolean fire(String coor) {
+    public boolean fire(String coor, Board defender) {
         if () {
 
 //TODO implement actuall fire and test here if fire failed
@@ -173,13 +174,21 @@ public class Game implements Runnable {
 
     }
 
-    public boolean clientFire(String coor) {
+    // fire but for client
+    public boolean clientFire(String coor, Board defender) {
         try {
-
-        } catch (MoveNotPossible e) {
+//TODO implement fire but for client
+        } catch (FireNotPossible e) {
             return false;
         }
         return true;
+    }
+
+    public boolean fireCheck(String coor, Board defender) {
+
+    }
+
+    public boolean clientFireCheck(String coor, Board defender) {
     }
 
     //======================================= SinglePlayer ============================================//

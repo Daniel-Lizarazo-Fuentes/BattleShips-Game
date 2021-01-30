@@ -10,7 +10,7 @@ public class humanPlayer implements Player {
     private String name;
     private int points;
     private Board board;
-
+    private boolean hasTurn;
     private ArrayList<ArrayList<? extends Ship>> shipLists;
 
 
@@ -24,6 +24,14 @@ public class humanPlayer implements Player {
         this.shipLists = shipLists;
         this.board = board;
     }
+
+    public boolean getTurn(){
+        return this.hasTurn;
+    }
+    public void setTurn(boolean turn){
+         this.hasTurn=turn;
+    }
+
 
     /**
      * Sets the board of a player
@@ -85,8 +93,8 @@ public class humanPlayer implements Player {
     /**
      * Setter for points
      */
-    public void setPoints(int i){
-        this.points=i;
+    public void setPoints(int i) {
+        this.points = i;
     }
 
     /**
@@ -128,7 +136,7 @@ public class humanPlayer implements Player {
 
                     // check if position was already hit
                     if (!board.getFields().get(board.getFieldIndex(input)).getIsHit()) {
-                        validField=true;
+                        validField = true;
                         boardPosition hitPosition = board.getFields().get(board.getFieldIndex(input));
                         hitPosition.setIsHit(true);
                         hitPosition.setPositionHidden(false);
@@ -158,7 +166,7 @@ public class humanPlayer implements Player {
                 } else {
                     System.out.println("Enter a valid field!");
                 }
-                updatePoints(attacker,defender);
+                updatePoints(attacker, defender);
 
 
             }
