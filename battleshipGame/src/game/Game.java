@@ -39,11 +39,11 @@ public class Game implements Runnable {
         Board player2Board;
         Player p1;
         Player p2;
-        switch(gameList.size()){
+        switch (gameList.size()) {
             case 1:
 
                 player1Board = new Board(true);
-                player2Board =  new Board(true);
+                player2Board = new Board(true);
                 GameBoards[0] = player1Board;
                 GameBoards[1] = player2Board;
 
@@ -57,12 +57,13 @@ public class Game implements Runnable {
             case 2:
 
                 player1Board = new Board(true);
-                player2Board =  new Board(true);
+                player2Board = new Board(true);
                 GameBoards[0] = player1Board;
                 GameBoards[1] = player2Board;
 
                 p1 = new humanPlayer(gameList.get(0).getName(), createShipArrays(), GameBoards[0]); //TODO edit humanPlayer to allow construct for multiplayer
-                p2 = new humanPlayer(gameList.get(1).getName(), createShipArrays(), GameBoards[1]);; //TODO edit humanPlayer to allow construct for multiplayer
+                p2 = new humanPlayer(gameList.get(1).getName(), createShipArrays(), GameBoards[1]);
+                ; //TODO edit humanPlayer to allow construct for multiplayer
                 p1.setTurn(true);
                 GamePlayers[0] = p1;
                 GamePlayers[0] = p2;
@@ -118,13 +119,13 @@ public class Game implements Runnable {
             if (move != null) {
                 String move = this.move;
                 if (moveCheck(move)) { // TODO get defender board from somewhere
-                    if(!getTurn().getName().equals("Random Computer Player")){
+                    if (!getTurn().getName().equals("Random Computer Player")) {
                         ch.writeOut(ProtocolMessages.VALID);
                     }
                     sendAll(move);
                     switchTurn();
                 } else {
-                    if(!getTurn().getName().equals("Random Computer Player")) {
+                    if (!getTurn().getName().equals("Random Computer Player")) {
                         ch.writeOut(ProtocolMessages.NOT_VALID);
                     }
                 }
@@ -241,101 +242,120 @@ public class Game implements Runnable {
     }
 
 
+    public boolean fire(String input) {
+        Player attacker;
+        Player defender;
+        if (GamePlayers[0].getTurn()) {
+            attacker = GamePlayers[0];
+            defender = GamePlayers[1];
+        } else {
+            attacker = GamePlayers[1];
+            defender = GamePlayers[0];
+        }
 
 
-    public boolean fire(Player attacker, Player defender) {
+        if (player1) {
+            Scanner scanner = new Scanner(System.in);
+            boolean validInput = false;
+            while (!validInput) {
 
-            if(player1) {
-                Scanner scanner = new Scanner(System.in);
-                boolean validInput = false;
-                while (!validInput) {
-                    System.out.println("Type 'Random' for automatic placement or 'Manual' for manual placement");
-                    if (scanner.nextLine().equals("Random")) {
-                        fillBoardRandom(getPlayer(0).getBoard(), getPlayer(0));
-                        player1 = false;
-                        validInput = true;
-                    } else if (scanner.nextLine().equals("Manual")) {
-                        fillBoardManual(getPlayer(0).getBoard(), getPlayer(0));
-                        player1 = false;
-                        validInput = true;
-                    }
+                if (input.equals("Random")) {
+                    fillBoardRandom(getPlayer(0).getBoard(), getPlayer(0));
+                    player1 = false;
+                    validInput = true;
+                } else if (input.equals("Manual")) {
+                    fillBoardManual(getPlayer(0).getBoard(), getPlayer(0));
+                    player1 = false;
+                    validInput = true;
                 }
-                return true;
-            }
-            else if (player2) {
-                Scanner scanner1 = new Scanner(System.in);
-                boolean validInput1 = false;
-                while (!validInput1) {
+                if (!validInput) {
                     System.out.println("Type 'Random' for automatic placement or 'Manual' for manual placement");
-                    if (scanner1.nextLine().equals("Random")) {
-                        fillBoardRandom(getPlayer(0).getBoard(), getPlayer(0));
-                        player1 = false;
-                        validInput1 = true;
-                    } else if (scanner1.nextLine().equals("Manual")) {
-                        fillBoardManual(getPlayer(0).getBoard(), getPlayer(0));
-                        player1 = false;
-                        validInput1 = true;
-                    }
+                    input = scanner.nextLine();
                 }
-                return true;
             }
-            if(validMove(attacker, defender)){
-                Scanner scanner = new Scanner(System.in);
-                boolean hasTurn = true;
-                Board board = defender.getBoard();
-                while (hasTurn) {
-                    boolean validField = false;
-                    while (!validField) {
-                        System.out.println("Enter field to fire on");
-                        String input = scanner.nextLine();
-                        // check if existing position
-                        if (board.getFieldIndex(input) != -1) {
+            return true;
+        } else if (player2) {
+            Scanner scanner1 = new Scanner(System.in);
+            boolean validInput1 = false;
+            while (!validInput1) {
 
-                            // check if position was already hit
-                            if (!board.getFields().get(board.getFieldIndex(input)).getIsHit()) {
-                                validField = true;
-                                boardPosition hitPosition = board.getFields().get(board.getFieldIndex(input));
-                                hitPosition.setIsHit(true);
-                                hitPosition.setPositionHidden(false);
-                                //check if there was a ship at the given position
-                                if (hitPosition.getState() == boardPosition.positionState.SHIP) {
+                if (input.equals("Random")) {
+                    fillBoardRandom(getPlayer(0).getBoard(), getPlayer(0));
+                    player1 = false;
+                    validInput1 = true;
+                } else if (input.equals("Manual")) {
+                    fillBoardManual(getPlayer(0).getBoard(), getPlayer(0));
+                    player1 = false;
+                    validInput1 = true;
+                }
+                if (!validInput1) {
+                    System.out.println("Type 'Random' for automatic placement or 'Manual' for manual placement");
+                    input = scanner1.nextLine();
+                }
+            }
+            return true;
+        }
+        if (validMove(attacker, defender, input)) {
+            Scanner scanner = new Scanner(System.in);
+            boolean hasTurn = true;
+            Board board = defender.getBoard();
+            while (hasTurn) {
+                boolean validField = false;
+                while (!validField) {
 
-                                    //find the ship and change it's hitPoints
-                                    for (ArrayList<? extends Ship> shipList : defender.getShipArrayList()) {
-                                        for (Ship sh : shipList) {
-                                            for (String position : sh.getPositions()) {
-                                                if (position.equals(input)) {
-                                                    sh.setHitPoints(sh.getHitPoints() - 1);
-                                                }
+                    // check if existing position
+                    if (board.getFieldIndex(input) != -1) {
+
+                        // check if position was already hit
+                        if (!board.getFields().get(board.getFieldIndex(input)).getIsHit()) {
+                            validField = true;
+                            boardPosition hitPosition = board.getFields().get(board.getFieldIndex(input));
+                            hitPosition.setIsHit(true);
+                            hitPosition.setPositionHidden(false);
+                            //check if there was a ship at the given position
+                            if (hitPosition.getState() == boardPosition.positionState.SHIP) {
+
+                                //find the ship and change it's hitPoints
+                                for (ArrayList<? extends Ship> shipList : defender.getShipArrayList()) {
+                                    for (Ship sh : shipList) {
+                                        for (String position : sh.getPositions()) {
+                                            if (position.equals(input)) {
+                                                sh.setHitPoints(sh.getHitPoints() - 1);
                                             }
-
                                         }
-                                    }
-                                    hitPosition.setState(boardPosition.positionState.WRECK);
-                                    System.out.println(defender.getBoard().toString());
-                                } else {
-                                    hasTurn = false;
 
+                                    }
                                 }
+                                hitPosition.setState(boardPosition.positionState.WRECK);
+                                System.out.println(defender.getBoard().toString());
                             } else {
-                                System.out.println("position already hit!");
+                                hasTurn = false;
+
                             }
                         } else {
-                            System.out.println("Enter a valid field!");
+                            System.out.println("position already hit!");
                         }
-                        updatePoints(attacker, defender);
-
-
+                    } else {
+                        System.out.println("Enter a valid field!");
                     }
+                    if (!validField) {
+                        System.out.println("Enter valid field to fire on");
+                        input = scanner.nextLine();
+                    }
+
+//                    updatePoints(attacker, defender); //TODO scores
+
+
                 }
-                System.out.println("Turn over");
-
-
             }
+            System.out.println("Turn over");
+
+
+        }
 
         return false;
-//TODO implement actual fire and test here if fire failed
-        }
+
+    }
 
 
     // fire but for client
@@ -351,7 +371,10 @@ public class Game implements Runnable {
         return true;
     }
 
-    public boolean fireCheck(String coor, Board defender) {
+
+    public boolean validMove(Player attacker, Player defender, String input) {
+
+
 
     }
 

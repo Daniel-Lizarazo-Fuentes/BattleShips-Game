@@ -28,9 +28,11 @@ public class ClientTUI {
                 if (input.split(";")[0].equals(ProtocolMessages.TURN) && input.split(";")[1].equals(getName())) {
                     Scanner scnr = new Scanner(System.in);
                     showMessage("----------------------------------------------------");
-                    showMessage("Input your salvo:");
+                    showMessage("Input your salvo or if you see this message for the first time type 'Random' for random placement or 'Manual' for manual placement:");
                     userInput = scnr.nextLine();
                     handleMove(userInput);
+
+
                 } else if (input.split(";")[0].equals(ProtocolMessages.NOT_VALID)) {
                     showMessage("Move not valid. try again!");
                 } else if (input.split(";")[0].equals(ProtocolMessages.MOVE)) {
@@ -39,7 +41,7 @@ public class ClientTUI {
                     for (int i = 2; i < inputSplit.length; i++) {
                         move += ";" + inputSplit[i];
                     }
-                    game.clientMoveCheck(move.split(";"));
+                    game.clientMoveCheck(move.split(";")); //TODO clientmoveCheck should have specific word for board creation (manual/random placement)
                     showMessage("----------------------------------------------------");
                     showMessage("Salvo shot by player " + inputSplit[1] + ":");
 
@@ -71,6 +73,7 @@ public class ClientTUI {
 
 
     public void handleMove(String input) throws game.exceptions.ExitProgram, game.exceptions.ServerUnavailableException {
+        game.fire(input); //TODO check if mvc coherent
         c.sendMessage(input);
     }
 
