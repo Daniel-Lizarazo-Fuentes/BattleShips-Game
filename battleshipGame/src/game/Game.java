@@ -205,7 +205,7 @@ public class Game implements Runnable {
     public boolean fire(String coor, Board defender) {
         if () {
 
-//TODO implement actuall fire and test here if fire failed
+//TODO implement actual fire and test here if fire failed
         }
         return false;
 
