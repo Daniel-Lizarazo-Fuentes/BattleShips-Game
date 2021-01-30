@@ -9,6 +9,7 @@ public class smartComputerPlayer implements Player {
     private final String name = "Smart Computer Player";
     private int points;
     private Board board;
+    private boolean hasTurn= false;
     private ArrayList<ArrayList<? extends Ship>> shipLists = new ArrayList<>();
 
     /**
@@ -19,6 +20,13 @@ public class smartComputerPlayer implements Player {
         this.shipLists = shipLists;
         this.board=board;
     }
+    public boolean getTurn(){
+        return this.hasTurn;
+    }
+    public void setTurn(boolean turn){
+        this.hasTurn=turn;
+    }
+
 
     /**
      * Sets the board of a player

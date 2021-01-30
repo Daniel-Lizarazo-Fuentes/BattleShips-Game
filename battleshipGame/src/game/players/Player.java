@@ -6,6 +6,14 @@ import game.board.*;
 import java.util.ArrayList;
 
 public interface Player {
+
+    public boolean getTurn();
+
+
+    public void setTurn(boolean turn);
+
+
+
     /**
      * Returns the name of the player
      *

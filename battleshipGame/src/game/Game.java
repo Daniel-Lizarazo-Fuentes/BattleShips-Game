@@ -154,7 +154,13 @@ public class Game implements Runnable {
     }
 
     public Player getTurn() {
-        return this.turn;
+        if (GamePlayers[0].hasTurn()) {
+            return GamePlayers[0];
+        } else {
+
+            return GamePlayers[0];
+        }
+
     }
 
     public boolean hasWinner() {
