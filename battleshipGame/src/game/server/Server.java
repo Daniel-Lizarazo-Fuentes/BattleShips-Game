@@ -1,6 +1,7 @@
 package game.server;
 
 
+
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -101,7 +102,7 @@ public class Server implements Runnable {
     }
 
     public void sendAll(String[] move, ClientHandler ch) {
-        String part1 = ProtocolMessages.SALVO + ";";
+        String part1 = ProtocolMessages.MOVE + ProtocolMessages.CS;
         int number = 0;
         for (Player p : ready) {
             number++;

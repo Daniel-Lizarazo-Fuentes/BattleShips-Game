@@ -8,7 +8,7 @@ public class ProtocolMessages {
     public static final String FIRST_PLAYER = "f";
     public static final String PLAYER_AMOUNT =  "p";
     public static final String READY = "r";
-    public static final String SALVO = "s";
+    public static final String MOVE = "m";
     public static final String NOT_VALID = "n";
     public static final String VALID = "v";
     public static final String TURN = "t";
