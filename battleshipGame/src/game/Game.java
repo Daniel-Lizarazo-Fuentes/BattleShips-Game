@@ -37,6 +37,17 @@ public class Game implements Runnable {
         }
     }
 
+    public ClientHandler getCH() {
+        for (ClientHandler ch : gameList) {
+            if (getTurn().getName().equals(ch.getName())) {
+                return ch;
+            }
+        }
+        return null;
+    }
+
+
+
     synchronized public void setMove(String move) {
         this.move = move;
         notify();
