@@ -36,9 +36,9 @@ public class Game implements Runnable {
         Board player2Board = new Board(true);
         GameBoards[0] = player1Board;
         GameBoards[1] = player2Board;
-        //TODO edit back to Player if computer player needs to be available as well
-        humanPlayer p1 = new humanPlayer(gameList.get(0).getName(), createShipArrays(), GameBoards[0]); //TODO edit humanPlayer to allow construct for multiplayer
-        humanPlayer p2 = new humanPlayer(gameList.get(1).getName(), createShipArrays(), GameBoards[1]); //TODO edit humanPlayer to allow construct for multiplayer
+
+        Player p1 = new humanPlayer(gameList.get(0).getName(), createShipArrays(), GameBoards[0]); //TODO edit humanPlayer to allow construct for multiplayer
+        Player p2 = new humanPlayer(gameList.get(1).getName(), createShipArrays(), GameBoards[1]); //TODO edit humanPlayer to allow construct for multiplayer
         p1.setTurn(true);
         GamePlayers[0] = p1;
         GamePlayers[0] = p2;
@@ -154,14 +154,25 @@ public class Game implements Runnable {
     }
 
     public Player getTurn() {
-        if (GamePlayers[0].hasTurn()) {
+        if (GamePlayers[0].getTurn()) {
             return GamePlayers[0];
         } else {
 
-            return GamePlayers[0];
+            return GamePlayers[1];
         }
 
     }
+
+    public void switchTurn() {
+        if (GamePlayers[0].getTurn()) {
+            GamePlayers[0].setTurn(false);
+        } else {
+
+            GamePlayers[1].setTurn(false);
+        }
+
+    }
+
 
     public boolean hasWinner() {
         if ((GamePlayers[0].getPoints() == (2 * 5 + 3 * 4 + 5 * 3 + 8 * 2 + 10 * 1 + 28)) || (GamePlayers[1].getPoints() == (2 * 5 + 3 * 4 + 5 * 3 + 8 * 2 + 10 * 1 + 28))) {
