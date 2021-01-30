@@ -27,6 +27,8 @@ public class Game implements Runnable {
     private ArrayList<ClientHandler> gameList;
     private Player[] GamePlayers = new Player[2];
     private String move;
+    private boolean player1 = true;
+    private boolean player2 = true;
 
 
     public Game(ArrayList<ClientHandler> gameList) {
@@ -82,10 +84,10 @@ public class Game implements Runnable {
     }
 
 
-    synchronized public void setMove(String move) {
-        this.move = move;
-        notify();
-    }
+//    synchronized public void setMove(String move) {
+//        this.move = move;
+//        notify();
+//    }
 
     @Override
     public void run() {
@@ -128,6 +130,42 @@ public class Game implements Runnable {
                 }
             }
         }
+
+    }
+
+    public ArrayList<ArrayList<? extends Ship>> createShipArrays() {
+        // create the ship arrays for player but without positions yet
+        ArrayList<String> positions = new ArrayList<>();
+        ArrayList<ArrayList<? extends Ship>> shipLists = new ArrayList<>();
+
+        ArrayList<Carrier> carriers = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            carriers.add(new Carrier("carrier" + i, positions));
+        }
+        ArrayList<Battleship> battleships = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            battleships.add(new Battleship("battleship" + i, positions));
+        }
+        ArrayList<Destroyer> destroyers = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            destroyers.add(new Destroyer("destroyer" + i, positions));
+        }
+        ArrayList<SuperPatrol> superPatrols = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            superPatrols.add(new SuperPatrol("SuperPatrol" + i, positions));
+        }
+        ArrayList<PatrolBoat> patrolBoats = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            patrolBoats.add(new PatrolBoat("PatrolBoat" + i, positions));
+        }
+
+        shipLists.add(carriers);
+        shipLists.add(battleships);
+        shipLists.add(destroyers);
+        shipLists.add(superPatrols);
+        shipLists.add(patrolBoats);
+
+        return shipLists;
 
     }
 
@@ -202,14 +240,103 @@ public class Game implements Runnable {
         }
     }
 
-    public boolean fire(String coor, Board defender) {
-        if () {
 
+
+
+    public boolean fire(Player attacker, Player defender) {
+
+            if(player1) {
+                Scanner scanner = new Scanner(System.in);
+                boolean validInput = false;
+                while (!validInput) {
+                    System.out.println("Type 'Random' for automatic placement or 'Manual' for manual placement");
+                    if (scanner.nextLine().equals("Random")) {
+                        fillBoardRandom(getPlayer(0).getBoard(), getPlayer(0));
+                        player1 = false;
+                        validInput = true;
+                    } else if (scanner.nextLine().equals("Manual")) {
+                        fillBoardManual(getPlayer(0).getBoard(), getPlayer(0));
+                        player1 = false;
+                        validInput = true;
+                    }
+                }
+                return true;
+            }
+            else if (player2) {
+                Scanner scanner1 = new Scanner(System.in);
+                boolean validInput1 = false;
+                while (!validInput1) {
+                    System.out.println("Type 'Random' for automatic placement or 'Manual' for manual placement");
+                    if (scanner1.nextLine().equals("Random")) {
+                        fillBoardRandom(getPlayer(0).getBoard(), getPlayer(0));
+                        player1 = false;
+                        validInput1 = true;
+                    } else if (scanner1.nextLine().equals("Manual")) {
+                        fillBoardManual(getPlayer(0).getBoard(), getPlayer(0));
+                        player1 = false;
+                        validInput1 = true;
+                    }
+                }
+                return true;
+            }
+            if(validMove(attacker, defender)){
+                Scanner scanner = new Scanner(System.in);
+                boolean hasTurn = true;
+                Board board = defender.getBoard();
+                while (hasTurn) {
+                    boolean validField = false;
+                    while (!validField) {
+                        System.out.println("Enter field to fire on");
+                        String input = scanner.nextLine();
+                        // check if existing position
+                        if (board.getFieldIndex(input) != -1) {
+
+                            // check if position was already hit
+                            if (!board.getFields().get(board.getFieldIndex(input)).getIsHit()) {
+                                validField = true;
+                                boardPosition hitPosition = board.getFields().get(board.getFieldIndex(input));
+                                hitPosition.setIsHit(true);
+                                hitPosition.setPositionHidden(false);
+                                //check if there was a ship at the given position
+                                if (hitPosition.getState() == boardPosition.positionState.SHIP) {
+
+                                    //find the ship and change it's hitPoints
+                                    for (ArrayList<? extends Ship> shipList : defender.getShipArrayList()) {
+                                        for (Ship sh : shipList) {
+                                            for (String position : sh.getPositions()) {
+                                                if (position.equals(input)) {
+                                                    sh.setHitPoints(sh.getHitPoints() - 1);
+                                                }
+                                            }
+
+                                        }
+                                    }
+                                    hitPosition.setState(boardPosition.positionState.WRECK);
+                                    System.out.println(defender.getBoard().toString());
+                                } else {
+                                    hasTurn = false;
+
+                                }
+                            } else {
+                                System.out.println("position already hit!");
+                            }
+                        } else {
+                            System.out.println("Enter a valid field!");
+                        }
+                        updatePoints(attacker, defender);
+
+
+                    }
+                }
+                System.out.println("Turn over");
+
+
+            }
+
+        return false;
 //TODO implement actual fire and test here if fire failed
         }
-        return false;
 
-    }
 
     // fire but for client
     public boolean clientFire(String coor, Board defender) {
@@ -280,41 +407,41 @@ public class Game implements Runnable {
     /**
      * @return
      */
-    public ArrayList<ArrayList<? extends Ship>> createShipArrays() {
-        // create the ship arrays for player but without positions yet
-        ArrayList<String> positions = new ArrayList<>();
-        ArrayList<ArrayList<? extends Ship>> shipLists = new ArrayList<>();
-
-        ArrayList<Carrier> carriers = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
-            carriers.add(new Carrier("carrier" + i, positions));
-        }
-        ArrayList<Battleship> battleships = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            battleships.add(new Battleship("battleship" + i, positions));
-        }
-        ArrayList<Destroyer> destroyers = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            destroyers.add(new Destroyer("destroyer" + i, positions));
-        }
-        ArrayList<SuperPatrol> superPatrols = new ArrayList<>();
-        for (int i = 0; i < 8; i++) {
-            superPatrols.add(new SuperPatrol("SuperPatrol" + i, positions));
-        }
-        ArrayList<PatrolBoat> patrolBoats = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            patrolBoats.add(new PatrolBoat("PatrolBoat" + i, positions));
-        }
-
-        shipLists.add(carriers);
-        shipLists.add(battleships);
-        shipLists.add(destroyers);
-        shipLists.add(superPatrols);
-        shipLists.add(patrolBoats);
-
-        return shipLists;
-
-    }
+//    public ArrayList<ArrayList<? extends Ship>> createShipArrays() {
+//        // create the ship arrays for player but without positions yet
+//        ArrayList<String> positions = new ArrayList<>();
+//        ArrayList<ArrayList<? extends Ship>> shipLists = new ArrayList<>();
+//
+//        ArrayList<Carrier> carriers = new ArrayList<>();
+//        for (int i = 0; i < 2; i++) {
+//            carriers.add(new Carrier("carrier" + i, positions));
+//        }
+//        ArrayList<Battleship> battleships = new ArrayList<>();
+//        for (int i = 0; i < 3; i++) {
+//            battleships.add(new Battleship("battleship" + i, positions));
+//        }
+//        ArrayList<Destroyer> destroyers = new ArrayList<>();
+//        for (int i = 0; i < 5; i++) {
+//            destroyers.add(new Destroyer("destroyer" + i, positions));
+//        }
+//        ArrayList<SuperPatrol> superPatrols = new ArrayList<>();
+//        for (int i = 0; i < 8; i++) {
+//            superPatrols.add(new SuperPatrol("SuperPatrol" + i, positions));
+//        }
+//        ArrayList<PatrolBoat> patrolBoats = new ArrayList<>();
+//        for (int i = 0; i < 10; i++) {
+//            patrolBoats.add(new PatrolBoat("PatrolBoat" + i, positions));
+//        }
+//
+//        shipLists.add(carriers);
+//        shipLists.add(battleships);
+//        shipLists.add(destroyers);
+//        shipLists.add(superPatrols);
+//        shipLists.add(patrolBoats);
+//
+//        return shipLists;
+//
+//    }
 
     /**
      * This method makes a "deep clone" of any object it is given.
