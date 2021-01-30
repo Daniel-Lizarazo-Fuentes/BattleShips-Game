@@ -1,5 +1,6 @@
 package game;
 
+import game.server.ClientHandler;
 import game.ships.*;
 import game.board.*;
 import game.players.*;
@@ -13,10 +14,89 @@ import java.util.List;
 import java.util.Scanner;
 
 
-public class Game {
-
+public class Game implements Runnable {
 
     //TODO network and threading
+
+
+    //======================================= Multiplayer ============================================//
+    private Board board;
+    private ArrayList<ClientHandler> gameList;
+    private Player turn;
+    private String move;
+
+
+    public Game(ArrayList<ClientHandler> gameList) {
+        this.gameList = gameList;
+        System.out.println("This number: " + gameList.size() + " must be 2");
+        Player p1 = new humanPlayer(gameList.get(0).getName()); //TODO edit humanPlayer to allow construct for multiplayer
+        Player p2 = new humanPlayer(gameList.get(1).getName()); //TODO edit humanPlayer to allow construct for multiplayer
+        this.board = new Board(p1, p2); //TODO edit board to allow multiplayer
+        for (ClientHandler ch : gameList) {
+            ch.setGame(this);
+        }
+    }
+
+    synchronized public void setMove(String move) {
+        this.move = move;
+        notify();
+    }
+
+    @Override
+    public void run() {
+        System.out.println("is it working? " + gameList.size());
+        for (ClientHandler ch : gameList) {
+            String msg = null;
+            if (gameList.size() == 1) {
+                msg = ProtocolMessages.NUM_OF_PLAYERS + ";" + 2 + ";" + getNumber(ch);
+            } else {
+                msg = ProtocolMessages.NUM_OF_PLAYERS + ";" + gameList.size() + ";" + getNumber(ch);
+            }
+            System.out.println(msg);
+            ch.writeOut(msg);
+        }
+        System.out.println("");
+        while (!hasWinner() && !connectionLossCheck()) {
+            ClientHandler ch = null;
+            ch = getCH();
+            if (ch != null) {
+                move = null;
+                ch.writeOut(ProtocolMessages.TURN);
+                try {
+                    wait(60000); //give 60s to reconnect
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (move != null) {
+                String move = this.move;
+                if (moveCheck(move)) {
+
+
+                    ch.writeOut(ProtocolMessages.VALID);
+
+
+                    sendAll(move);
+                    nextTurn();
+                } else {
+
+                    ch.writeOut(ProtocolMessages.NOT_VALID);
+
+                }
+            }
+        }
+
+    }
+
+    public void sendAll(String msg) {
+        for (ClientHandler ch : gameList) {
+            ch.writeOut(msg);
+        }
+    }
+
+
+    //======================================= SinglePlayer ============================================//
+
 
     private Board[] boards = new Board[2];
     private Player[] players = new Player[2];
@@ -484,16 +564,12 @@ public class Game {
     }
 
 
-
-
     // for testing purposes
     public static void main(String[] args) {
         Board board = new Board(true);
         board.toString();
         Game game = new Game(true);
         game.playSinglePlayerGame(game.getPlayer(0), game.getPlayer(1));
-
-
 
 
 //        // print out player board
