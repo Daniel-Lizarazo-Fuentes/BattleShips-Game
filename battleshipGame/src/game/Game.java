@@ -11,6 +11,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 
@@ -22,6 +23,7 @@ public class Game implements Runnable {
     //======================================= Multiplayer ============================================//
     private Board board;
     private ArrayList<ClientHandler> gameList;
+    private ArrayList<Player> players;
     private Player turn;
     private String move;
 
@@ -31,6 +33,8 @@ public class Game implements Runnable {
         System.out.println("This number: " + gameList.size() + " must be 2");
         Player p1 = new humanPlayer(gameList.get(0).getName()); //TODO edit humanPlayer to allow construct for multiplayer
         Player p2 = new humanPlayer(gameList.get(1).getName()); //TODO edit humanPlayer to allow construct for multiplayer
+        players.add(p1);
+        players.add(p2);
         this.board = new Board(p1, p2); //TODO edit board to allow multiplayer
         for (ClientHandler ch : gameList) {
             ch.setGame(this);
@@ -128,6 +132,28 @@ public class Game implements Runnable {
         return 0;
     }
 
+    public boolean connectionLossCheck() {
+        for (ClientHandler ch : gameList) {
+            if (ch.getSock().isInputShutdown() && ch.getSock().isOutputShutdown()) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public Board getBoard() {
+        return this.board;
+    }
+    public Player getTurn() {
+        return this.turn;
+    }
+
+    public boolean hasWinner() {
+        if ((players.get(0).getPoints() == (2 * 5 + 3 * 4 + 5 * 3 + 8 * 2 + 10 * 1 + 28)) || (players.get(1).getPoints() == (2 * 5 + 3 * 4 + 5 * 3 + 8 * 2 + 10 * 1 + 28))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     //======================================= SinglePlayer ============================================//
 
