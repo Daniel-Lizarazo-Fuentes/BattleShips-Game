@@ -24,11 +24,14 @@ public class Client {
         TUI = new ClientTUI(this);
     }
 
+
+
     public void start() {
         try {
             createConnection();
             while (true) {
-
+                String name = TUI.getNameQuestion();
+                handleJoin(name);
                 this.playersReady();
                 TUI.start();
                 TUI.showMessage("Would you like to play another game? (yes/no)");
@@ -126,7 +129,7 @@ public class Client {
         }
     }
     public void handleJoin(String playername) throws ServerUnavailableException {
-        sendMessage(ProtocolMessages.JOIN + ProtocolMessages.CS + playername);
+        sendMessage(ProtocolMessages.JOIN + ProtocolMessages.CS + playername+ProtocolMessages.CS+"false"+ProtocolMessages.CS+"false");
         String result = readLineFromServer();
         if (result.equals(ProtocolMessages.FIRST_PLAYER)) {
             TUI.showMessage("How many players are going to play?");
@@ -141,6 +144,7 @@ public class Client {
             throw new ServerUnavailableException("Invalid input");
         }
     }
+
 
 
     public void playersReady() throws ServerUnavailableException {

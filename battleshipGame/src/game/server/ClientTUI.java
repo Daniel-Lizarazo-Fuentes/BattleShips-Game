@@ -24,7 +24,8 @@ public class ClientTUI {
         try {
             while (true) {
                 String input = c.readLineFromServer();
-                if (input.equals(ProtocolMessages.TURN)) {
+
+                if (input.split(";")[0].equals(ProtocolMessages.TURN) && input.split(";")[1].equals(getName())) {
                     Scanner scnr = new Scanner(System.in);
                     showMessage("----------------------------------------------------");
                     showMessage("Input your salvo:");
@@ -41,7 +42,10 @@ public class ClientTUI {
                     game.clientMoveCheck(move.split(";"));
                     showMessage("----------------------------------------------------");
                     showMessage("Salvo shot by player " + inputSplit[1] + ":");
-                    showMessage(game.getBoard().toString() + "\n");
+
+                    showMessage(game.getBoard(0).toString() + "\n");
+                    showMessage(game.getBoard(1).toString() + "\n"); //TODO fix so that boards aren't visible
+
                     game.nextTurn();
                 } else if (input.split(";")[0].equals(ProtocolMessages.WINNER)) {
                     String[] inputSplit = input.split(";");
@@ -66,7 +70,8 @@ public class ClientTUI {
     }
 
 
-    public void handleSalvo(String input) throws game.exceptions.ExitProgram, game.exceptions.ServerUnavailableException {
+    public void handleMove(String input) throws game.exceptions.ExitProgram, game.exceptions.ServerUnavailableException {
+        c.sendMessage(input);
     }
 
     public void showMessage(String msg) {
@@ -83,6 +88,10 @@ public class ClientTUI {
 
     public String getName() {
         return this.name;
+    }
+
+    public int getNumberOfPlayers() {
+        return 2;
     }
 
     public boolean getBoolean(String question) {
