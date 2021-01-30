@@ -90,6 +90,7 @@ public class ClientHandler implements Runnable {
     }
 
     private void handleCommand(String msg) throws IOException {
+        //TODO
     }
 
     public void writeOut(String msg) {
