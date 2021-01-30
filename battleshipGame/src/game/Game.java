@@ -26,27 +26,47 @@ public class Game implements Runnable {
     private Board[] GameBoards = new Board[2];
     private ArrayList<ClientHandler> gameList;
     private Player[] GamePlayers = new Player[2];
-    private String salvo;
+    private String move;
 
 
     public Game(ArrayList<ClientHandler> gameList) {
         this.gameList = gameList;
-
         System.out.println("This number: " + gameList.size() + " must be 2");
 
-        Board player1Board = new Board(true);
-        Board player2Board = new Board(true);
-        GameBoards[0] = player1Board;
-        GameBoards[1] = player2Board;
+        Board player1Board;
+        Board player2Board;
+        Player p1;
+        Player p2;
+        switch(gameList.size()){
+            case 1:
 
-        Player p1 = new humanPlayer(gameList.get(0).getName(), createShipArrays(), GameBoards[0]); //TODO edit humanPlayer to allow construct for multiplayer
-        Player p2 = new humanPlayer(gameList.get(1).getName(), createShipArrays(), GameBoards[1]); //TODO edit humanPlayer to allow construct for multiplayer
-        p1.setTurn(true);
-        GamePlayers[0] = p1;
-        GamePlayers[0] = p2;
+                player1Board = new Board(true);
+                player2Board =  new Board(true);
+                GameBoards[0] = player1Board;
+                GameBoards[1] = player2Board;
 
-// boards both are empty at this stage
+                p1 = new humanPlayer(gameList.get(0).getName(), createShipArrays(), GameBoards[0]); //TODO edit humanPlayer to allow construct for multiplayer
+                p2 = new randomComputerPlayer(createShipArrays(), GameBoards[0]); //TODO edit humanPlayer to allow construct for multiplayer
+                p1.setTurn(true);
+                GamePlayers[0] = p1;
+                GamePlayers[0] = p2;
+                break;
 
+            case 2:
+
+                player1Board = new Board(true);
+                player2Board =  new Board(true);
+                GameBoards[0] = player1Board;
+                GameBoards[1] = player2Board;
+
+                p1 = new humanPlayer(gameList.get(0).getName(), createShipArrays(), GameBoards[0]); //TODO edit humanPlayer to allow construct for multiplayer
+                p2 = new humanPlayer(gameList.get(1).getName(), createShipArrays(), GameBoards[1]);; //TODO edit humanPlayer to allow construct for multiplayer
+                p1.setTurn(true);
+                GamePlayers[0] = p1;
+                GamePlayers[0] = p2;
+                break;
+
+        }
         for (ClientHandler ch : gameList) {
             ch.setGame(this);
         }
@@ -62,8 +82,8 @@ public class Game implements Runnable {
     }
 
 
-    synchronized public void setSalvo(String salvo) {
-        this.salvo = salvo;
+    synchronized public void setMove(String move) {
+        this.move = move;
         notify();
     }
 
@@ -72,11 +92,11 @@ public class Game implements Runnable {
         System.out.println("is it working? " + gameList.size());
         for (ClientHandler ch : gameList) {
             String msg = null;
-            if (gameList.size() == 1) {
-                msg = ProtocolMessages.NUM_OF_PLAYERS + ";" + 2 + ";" + getNumber(ch);
-            } else {
-                msg = ProtocolMessages.NUM_OF_PLAYERS + ";" + gameList.size() + ";" + getNumber(ch);
-            }
+//            if (gameList.size() == 1) {
+//            msg = ProtocolMessages.NUM_OF_PLAYERS + ";" + 2 + ";" + getNumber(ch);
+//            } else {
+//                msg = ProtocolMessages.NUM_OF_PLAYERS + ";" + gameList.size() + ";" + getNumber(ch);
+//            }
             System.out.println(msg);
             ch.writeOut(msg);
         }
@@ -85,28 +105,26 @@ public class Game implements Runnable {
             ClientHandler ch = null;
             ch = getCH();
             if (ch != null) {
-                salvo = null;
+                move = null;
                 ch.writeOut(ProtocolMessages.TURN);
                 try {
-                    wait(60000); //give 60s to reconnect
+                    wait(30000); //give 30s to reconnect
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            if (salvo != null) {
-                String salvo = this.salvo;
-                if (fireCheck(salvo)) { // TODO get defender board from somewhere
-
-
-                    ch.writeOut(ProtocolMessages.VALID);
-
-
-                    sendAll(salvo);
+            if (move != null) {
+                String move = this.move;
+                if (moveCheck(move)) { // TODO get defender board from somewhere
+                    if(!getTurn().getName().equals("Random Computer Player")){
+                        ch.writeOut(ProtocolMessages.VALID);
+                    }
+                    sendAll(move);
                     switchTurn();
                 } else {
-
-                    ch.writeOut(ProtocolMessages.NOT_VALID);
-
+                    if(!getTurn().getName().equals("Random Computer Player")) {
+                        ch.writeOut(ProtocolMessages.NOT_VALID);
+                    }
                 }
             }
         }
