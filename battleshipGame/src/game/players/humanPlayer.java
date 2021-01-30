@@ -10,8 +10,8 @@ public class humanPlayer implements Player {
     private String name;
     private int points;
     private Board board;
-    private boolean hasTurn=false;
     private ArrayList<ArrayList<? extends Ship>> shipLists;
+    private boolean hasTurn=false;
 
 
     /**
