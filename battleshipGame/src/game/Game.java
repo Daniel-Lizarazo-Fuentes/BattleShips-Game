@@ -2,6 +2,7 @@ package game;
 
 import game.exceptions.FireNotPossible;
 import game.server.ClientHandler;
+import game.server.ProtocolMessages;
 import game.ships.*;
 import game.board.*;
 import game.players.*;
@@ -61,7 +62,7 @@ public class Game implements Runnable {
     }
 
 
-    synchronized public void setMove(String salvo) {
+    synchronized public void setSalvo(String salvo) {
         this.salvo = salvo;
         notify();
     }
