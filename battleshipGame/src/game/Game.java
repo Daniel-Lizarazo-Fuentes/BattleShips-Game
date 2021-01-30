@@ -21,21 +21,29 @@ public class Game implements Runnable {
 
 
     //======================================= Multiplayer ============================================//
-    private Board board;
+    private Board[] board = new Board[2];
     private ArrayList<ClientHandler> gameList;
-    private ArrayList<Player> players;
+    private Player[] GamePlayers = new Player[2];
     private Player turn;
     private String move;
 
 
     public Game(ArrayList<ClientHandler> gameList) {
         this.gameList = gameList;
+
         System.out.println("This number: " + gameList.size() + " must be 2");
-        Player p1 = new humanPlayer(gameList.get(0).getName()); //TODO edit humanPlayer to allow construct for multiplayer
-        Player p2 = new humanPlayer(gameList.get(1).getName()); //TODO edit humanPlayer to allow construct for multiplayer
-        players.add(p1);
-        players.add(p2);
-        this.board = new Board(p1, p2); //TODO edit board to allow multiplayer
+
+        Board player1Board = new Board(true);
+        Board player2Board = new Board(true);
+        boards[0] = player1Board;
+        boards[1] = player2Board;
+        Player p1 = new humanPlayer(gameList.get(0).getName(), createShipArrays(), boards[0]); //TODO edit humanPlayer to allow construct for multiplayer
+        Player p2 = new humanPlayer(gameList.get(1).getName(), createShipArrays(), boards[1]); //TODO edit humanPlayer to allow construct for multiplayer
+        GamePlayers[0] = p1;
+        GamePlayers[0] = p2;
+
+// boards both are empty at this stage
+
         for (ClientHandler ch : gameList) {
             ch.setGame(this);
         }
@@ -49,7 +57,6 @@ public class Game implements Runnable {
         }
         return null;
     }
-
 
 
     synchronized public void setMove(String move) {
@@ -140,19 +147,39 @@ public class Game implements Runnable {
         }
         return false;
     }
+
     public Board getBoard() {
         return this.board;
     }
+
     public Player getTurn() {
         return this.turn;
     }
 
     public boolean hasWinner() {
-        if ((players.get(0).getPoints() == (2 * 5 + 3 * 4 + 5 * 3 + 8 * 2 + 10 * 1 + 28)) || (players.get(1).getPoints() == (2 * 5 + 3 * 4 + 5 * 3 + 8 * 2 + 10 * 1 + 28))) {
+        if ((GamePlayers[0].getPoints() == (2 * 5 + 3 * 4 + 5 * 3 + 8 * 2 + 10 * 1 + 28)) || (GamePlayers[1].getPoints() == (2 * 5 + 3 * 4 + 5 * 3 + 8 * 2 + 10 * 1 + 28))) {
             return true;
         } else {
             return false;
         }
+    }
+
+    public boolean fire(String coor) {
+        if () {
+
+//TODO implement actuall fire and test here if fire failed
+        }
+        return false;
+
+    }
+
+    public boolean clientFire(String coor) {
+        try {
+
+        } catch (MoveNotPossible e) {
+            return false;
+        }
+        return true;
     }
 
     //======================================= SinglePlayer ============================================//
@@ -243,6 +270,7 @@ public class Game implements Runnable {
     /**
      * This method makes a "deep clone" of any object it is given.
      */
+    // both multi and single player
     public static Object deepClone(Object object) {
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -257,6 +285,7 @@ public class Game implements Runnable {
         }
     }
 
+    // both multi and single player
     public Board hideBoard(Board board, boolean hideCopy) {
         if (hideCopy) {
             Board copy = (Board) deepClone(board);
@@ -276,6 +305,7 @@ public class Game implements Runnable {
         }
     }
 
+    // both multi and single player
     public Board unHideBoard(Board board, boolean unHideCopy) {
         if (unHideCopy) {
             Board copy = (Board) deepClone(board);
@@ -298,8 +328,9 @@ public class Game implements Runnable {
     /**
      * Fills board with all ships in a random fashion, ships only placed horizontally
      *
-     * @param board board to fill, can be player of computer
+     * @param board board to fill, can be player or computer
      */
+    // both multi and single player
     public void fillBoardRandom(Board board, Player player) {
 
 
