@@ -94,6 +94,20 @@ public class Game implements Runnable {
         }
     }
 
+    public int getNumber(ClientHandler ch) {
+        if (gameList.size() == 1) {
+            return 1;
+        } else if (ch == null) {
+            return 2;
+        }
+        for (int i = 0; i < gameList.size(); i++) {
+            if (gameList.get(i).getName().equals(ch.getName())) {
+                return (i + 1);
+            }
+        }
+        return 0;
+    }
+
 
     //======================================= SinglePlayer ============================================//
 
