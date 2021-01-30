@@ -1,5 +1,6 @@
 package game;
 
+import game.exceptions.FireNotPossible;
 import game.server.ClientHandler;
 import game.ships.*;
 import game.board.*;
@@ -193,9 +194,12 @@ public class Game implements Runnable {
 
     // fire but for client
     public boolean clientFire(String coor, Board defender) {
+
         try {
-//TODO implement fire but for client
+            //TODO implement fire but for client
+
         } catch (FireNotPossible e) {
+
             return false;
         }
         return true;
