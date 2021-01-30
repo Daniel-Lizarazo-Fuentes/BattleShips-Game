@@ -61,7 +61,7 @@ public class ClientHandler implements Runnable {
 
             String[] input = this.move.split(";");
             this.move = null;
-            if (input[0] == ProtocolMessages.MOVE && input.length >= 5 && input.length <= 9) {
+            if (input[0] == ProtocolMessages.SALVO && input.length >= 5 && input.length <= 9) {
                 return input;
             }
         }

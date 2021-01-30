@@ -11,8 +11,7 @@ import java.net.InetAddress;
 import game.players.*;
 import game.Game;
 
-
-import game.exceptions.ExitProgram;
+import game.exceptions.*;
 import game.server.ProtocolMessages;
 
 public class Server implements Runnable {
@@ -102,7 +101,7 @@ public class Server implements Runnable {
     }
 
     public void sendAll(String[] move, ClientHandler ch) {
-        String part1 = ProtocolMessages.MOVE + ";";
+        String part1 = ProtocolMessages.SALVO + ";";
         int number = 0;
         for (Player p : ready) {
             number++;

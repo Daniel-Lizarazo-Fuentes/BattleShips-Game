@@ -22,7 +22,9 @@ public class ClientTUI {
     public void start() throws game.exceptions.ServerUnavailableException {
         String userInput;
         try {
+
         } catch (ExitProgram e) {
+
             return;
         }
 
