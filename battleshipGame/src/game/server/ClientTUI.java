@@ -71,7 +71,7 @@ public class ClientTUI {
 
 
     public void handleMove(String input) throws game.exceptions.ExitProgram, game.exceptions.ServerUnavailableException {
-
+        c.sendMessage(input);
     }
 
     public void showMessage(String msg) {
