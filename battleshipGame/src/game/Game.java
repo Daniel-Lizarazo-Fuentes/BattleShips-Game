@@ -25,7 +25,7 @@ public class Game implements Runnable {
     private Board[] GameBoards = new Board[2];
     private ArrayList<ClientHandler> gameList;
     private Player[] GamePlayers = new Player[2];
-    private String move;
+    private String salvo;
 
 
     public Game(ArrayList<ClientHandler> gameList) {
@@ -61,8 +61,8 @@ public class Game implements Runnable {
     }
 
 
-    synchronized public void setMove(String move) {
-        this.move = move;
+    synchronized public void setMove(String salvo) {
+        this.salvo = salvo;
         notify();
     }
 
@@ -84,7 +84,7 @@ public class Game implements Runnable {
             ClientHandler ch = null;
             ch = getCH();
             if (ch != null) {
-                move = null;
+                salvo = null;
                 ch.writeOut(ProtocolMessages.TURN);
                 try {
                     wait(60000); //give 60s to reconnect
@@ -92,16 +92,16 @@ public class Game implements Runnable {
                     e.printStackTrace();
                 }
             }
-            if (move != null) {
-                String move = this.move;
-                if (fireCheck(move)) { // TODO get defender board from somewhere
+            if (salvo != null) {
+                String salvo = this.salvo;
+                if (fireCheck(salvo)) { // TODO get defender board from somewhere
 
 
                     ch.writeOut(ProtocolMessages.VALID);
 
 
-                    sendAll(move);
-                    nextTurn();
+                    sendAll(salvo);
+                    switchTurn();
                 } else {
 
                     ch.writeOut(ProtocolMessages.NOT_VALID);

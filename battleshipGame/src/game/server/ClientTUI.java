@@ -4,6 +4,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import game.Game;
+import game.exceptions.ExitProgram;
 
 public class ClientTUI {
     private Client c;
@@ -17,17 +18,27 @@ public class ClientTUI {
         this.c = c;
         turn = false;
     }
-    public void start() throws game.exceptions.ServerUnavailableException {
 
+    public void start() throws game.exceptions.ServerUnavailableException {
+        String userInput;
+        try {
+        } catch (ExitProgram e) {
+            return;
+        }
 
     }
+
     public String getSuggestion() {
 
     }
-    public void handleMove(String input) throws game.exceptions.ExitProgram, game.exceptions.ServerUnavailableException {}
+
+    public void handleMove(String input) throws game.exceptions.ExitProgram, game.exceptions.ServerUnavailableException {
+    }
+
     public void showMessage(String msg) {
         System.out.println(msg);
     }
+
     public String getNameQuestion() {
         this.showMessage("What is your name?");
         Scanner scnr = new Scanner(System.in);
@@ -35,6 +46,7 @@ public class ClientTUI {
         this.name = name;
         return name;
     }
+
     public String getName() {
         return this.name;
     }
@@ -42,9 +54,12 @@ public class ClientTUI {
     public boolean getBoolean(String question) {
         return false;
     }
+
     public String getReady() {
         Scanner scnr = new Scanner(System.in);
         return scnr.nextLine();
     }
-    public String getmove() {}
+
+    public String getmove() {
+    }
 }
