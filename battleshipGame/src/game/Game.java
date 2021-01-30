@@ -108,6 +108,15 @@ public class Game implements Runnable {
         return 0;
     }
 
+    public int getNumber(String name) {
+        for (int i = 0; i < gameList.size(); i++) {
+            if (gameList.get(i).getName().equals(name)) {
+                return (i + 1);
+            }
+        }
+        return 0;
+    }
+
 
     //======================================= SinglePlayer ============================================//
 
