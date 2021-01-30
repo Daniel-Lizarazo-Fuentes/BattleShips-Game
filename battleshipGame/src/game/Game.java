@@ -295,7 +295,7 @@ public class Game implements Runnable {
             }
             return true;
         }
-        if (validMove(attacker, defender, input)) {
+        if (existingField(attacker, defender, input)) {
             Scanner scanner = new Scanner(System.in);
             boolean hasTurn = true;
             Board board = defender.getBoard();
@@ -372,8 +372,38 @@ public class Game implements Runnable {
     }
 
 
-    public boolean validMove(Player attacker, Player defender, String input) {
+    public boolean existingField(Player attacker, Player defender, String input) {
+        try {
+            input.charAt(2);
+            Character.getNumericValue((input.charAt(2)));
+            return false;
+        } catch (IndexOutOfBoundsException e) {
+// continue as normal, there should be no index 2
 
+        }
+
+        char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+
+        int randomColumn = -1;
+        for (int z = 0; z < defender.getBoard().getColumns(); z++) {
+            if (alphabet[z] == (input.charAt(0))) {
+                randomColumn = z;
+            }
+        }
+        int randomRow = Character.getNumericValue((input.charAt(1)));
+        try {
+
+            if (randomColumn < 15 && randomRow < 10) {
+
+            } else {
+                return false;
+            }
+        } catch (IndexOutOfBoundsException e) {
+            return false;
+        }
+
+
+        return true;
 
 
     }
