@@ -1,7 +1,6 @@
 package game.server;
 
 
-
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -17,7 +16,8 @@ import game.server.ProtocolMessages;
 
 public class Server implements Runnable {
     private ServerSocket serverSock;
-    private List<ClientHandler> clients;
+    private ArrayList<String> playerNames = new ArrayList<>();
+    private ArrayList<ClientHandler> clients;
     private ServerTUI TUI;
     private static final String SERVERNAME = "BIT BattleShip Server";
     private Player p1;
@@ -28,9 +28,9 @@ public class Server implements Runnable {
     public boolean wait = false;
     public String result = null;
 
-    private ArrayList<ClientHandler> waitingList = new ArrayList<ClientHandler>();
-    private ArrayList<ClientHandler> readyList = new ArrayList<ClientHandler>();
-    private ArrayList<ClientHandler> gameList = new ArrayList<ClientHandler>();
+    private ArrayList<ClientHandler> waitingList = new ArrayList<>();
+    private ArrayList<ClientHandler> readyList = new ArrayList<>();
+    private ArrayList<Game> gameList = new ArrayList<>();
     private int gameSize = 0;
     private String address;
     private int port;
@@ -48,6 +48,15 @@ public class Server implements Runnable {
         this.port = port;
     }
 
+    public ArrayList<String> getPlayerNames() {
+        return this.playerNames;
+    }
+
+    public void addPlayerName(String name) {
+        this.playerNames.add(name);
+
+    }
+
     public void initGame(ArrayList<Player> ready2) {
     }
 
@@ -59,7 +68,7 @@ public class Server implements Runnable {
         return this.game;
     }
 
-    public ArrayList<ClientHandler> getGameList() {
+    public ArrayList<Game> getGameList() {
         return this.gameList;
     }
 
@@ -82,7 +91,7 @@ public class Server implements Runnable {
 
     @Override
     public synchronized void run() {
-
+//TODO
     }
 
     public void createGame() {
@@ -163,11 +172,13 @@ public class Server implements Runnable {
     public void printMessage(String msg) {
         System.out.println(msg);
     }
+
     public int getGameSize() {
         return this.playerCount;
     }
-    synchronized public void setGameSize(int pc) {
-        this.gameSize = pc;
+
+    synchronized public void setGameSize(int gs) {
+        this.gameSize = gs;
         notify();
     }
 }

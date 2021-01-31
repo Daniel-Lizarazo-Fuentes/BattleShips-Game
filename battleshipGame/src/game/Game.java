@@ -29,16 +29,25 @@ public class Game implements Runnable {
     private String move;
     private boolean player1 = true;
     private boolean player2 = true;
-
+    private Board player1Board;
+    private Board player2Board;
+    private Player p1;
+    private Player p2;
 
     public Game(ArrayList<ClientHandler> gameList) {
         this.gameList = gameList;
         System.out.println("This number: " + gameList.size() + " must be 2");
 
-        Board player1Board;
-        Board player2Board;
-        Player p1;
-        Player p2;
+
+
+    }
+
+
+
+
+
+    @Override
+    public void run() {
         switch (gameList.size()) {
             case 1:
 
@@ -47,8 +56,8 @@ public class Game implements Runnable {
                 GameBoards[0] = player1Board;
                 GameBoards[1] = player2Board;
 
-                p1 = new humanPlayer(gameList.get(0).getName(), createShipArrays(), GameBoards[0]); //TODO edit humanPlayer to allow construct for multiplayer
-                p2 = new randomComputerPlayer(createShipArrays(), GameBoards[0]); //TODO edit humanPlayer to allow construct for multiplayer
+                p1 = new humanPlayer(gameList.get(0).getName(), createShipArrays(), GameBoards[0]);
+                p2 = new randomComputerPlayer(createShipArrays(), GameBoards[0]);
                 p1.setTurn(true);
                 GamePlayers[0] = p1;
                 GamePlayers[0] = p2;
@@ -61,9 +70,9 @@ public class Game implements Runnable {
                 GameBoards[0] = player1Board;
                 GameBoards[1] = player2Board;
 
-                p1 = new humanPlayer(gameList.get(0).getName(), createShipArrays(), GameBoards[0]); //TODO edit humanPlayer to allow construct for multiplayer
+                p1 = new humanPlayer(gameList.get(0).getName(), createShipArrays(), GameBoards[0]);
                 p2 = new humanPlayer(gameList.get(1).getName(), createShipArrays(), GameBoards[1]);
-                ; //TODO edit humanPlayer to allow construct for multiplayer
+
                 p1.setTurn(true);
                 GamePlayers[0] = p1;
                 GamePlayers[0] = p2;
@@ -73,37 +82,11 @@ public class Game implements Runnable {
         for (ClientHandler ch : gameList) {
             ch.setGame(this);
         }
-    }
-
-    public ClientHandler getCH() {
-        for (ClientHandler ch : gameList) {
-            if (getTurn().getName().equals(ch.getName())) {
-                return ch;
-            }
-        }
-        return null;
-    }
 
 
-//    synchronized public void setMove(String move) {
-//        this.move = move;
-//        notify();
-//    }
 
-    @Override
-    public void run() {
-        System.out.println("is it working? " + gameList.size());
-        for (ClientHandler ch : gameList) {
-            String msg = null;
-//            if (gameList.size() == 1) {
-//            msg = ProtocolMessages.NUM_OF_PLAYERS + ";" + 2 + ";" + getNumber(ch);
-//            } else {
-//                msg = ProtocolMessages.NUM_OF_PLAYERS + ";" + gameList.size() + ";" + getNumber(ch);
-//            }
-            System.out.println(msg);
-            ch.writeOut(msg);
-        }
-        System.out.println("");
+
+
         while (!hasWinner() && !connectionLossCheck()) {
             ClientHandler ch = null;
             ch = getCH();
@@ -120,13 +103,13 @@ public class Game implements Runnable {
                 String move = this.move;
                 if (moveCheck(move)) { // TODO get defender board from somewhere
                     if (!getTurn().getName().equals("Random Computer Player")) {
-                        ch.writeOut(ProtocolMessages.VALID);
+
                     }
                     sendAll(move);
                     switchTurn();
                 } else {
                     if (!getTurn().getName().equals("Random Computer Player")) {
-                        ch.writeOut(ProtocolMessages.NOT_VALID);
+
                     }
                 }
             }
@@ -134,6 +117,14 @@ public class Game implements Runnable {
 
     }
 
+    public ClientHandler getCH() {
+        for (ClientHandler ch : gameList) {
+            if (getTurn().getName().equals(ch.getName())) {
+                return ch;
+            }
+        }
+        return null;
+    }
     public ArrayList<ArrayList<? extends Ship>> createShipArrays() {
         // create the ship arrays for player but without positions yet
         ArrayList<String> positions = new ArrayList<>();
@@ -419,11 +410,25 @@ public class Game implements Runnable {
     }
 
     public boolean clientFireCheck(String coor, Board defender) {
+
     }
 
     public void nextTurn() {
         //TODO
     }
+
+
+
+
+
+
+    synchronized public void setMove(String move) {
+        this.move = move;
+        notify();
+    }
+
+
+
 
     //======================================= SinglePlayer ============================================//
 

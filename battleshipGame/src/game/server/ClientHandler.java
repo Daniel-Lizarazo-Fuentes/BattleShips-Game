@@ -11,6 +11,7 @@ import game.Game;
 import game.server.ProtocolMessages;
 
 public class ClientHandler implements Runnable {
+
     private BufferedReader in;
     private BufferedWriter out;
     private Socket sock;
@@ -30,6 +31,7 @@ public class ClientHandler implements Runnable {
             turn = false;
             ready = false;
             move = null;
+
         } catch (IOException e) {
             shutdown();
         }
@@ -95,10 +97,18 @@ public class ClientHandler implements Runnable {
             switch (msgSplit[0]) {
 
                 case ProtocolMessages.JOIN:
-                    if (msgSplit[1] != null) { //TODO also check if anyone else has the same name
-                        this.name = msgSplit[1];
-                        writeOut(ProtocolMessages.SUCCESS); //TODO how do I add player with turn?
-                        ready = false;
+                    if (msgSplit[1] != null) {
+                        if (!srv.getPlayerNames().contains(msgSplit[1])) {
+                            srv.addPlayerName(msgSplit[1]);
+                            this.name = msgSplit[1];
+                            for (Game game : srv.getGameList()) {
+if(game.getPlayer(1))
+                            }
+                            writeOut(ProtocolMessages.SUCCESS);
+                            ready = false;
+                        } else {
+                            writeOut(ProtocolMessages.FAIL + ProtocolMessages.CS + "Name already taken");
+                        }
                     }
                     break;
 
@@ -114,12 +124,10 @@ public class ClientHandler implements Runnable {
                     } catch (NumberFormatException e) {
                         writeOut("Enter valid integer (1 or 2)");
                     }
-
-                    //TODO
                     break;
 
                 case ProtocolMessages.MOVE:
-                    //TODO
+                    this.game.setMove(msg);
                     break;
                 case ProtocolMessages.DEPLOY:
                     //TODO

@@ -25,7 +25,6 @@ public class Client {
     }
 
 
-
     public void start() {
         try {
             createConnection();
@@ -128,23 +127,20 @@ public class Client {
             e.printStackTrace();
         }
     }
+
     public void handleJoin(String playername) throws ServerUnavailableException {
-        sendMessage(ProtocolMessages.JOIN + ProtocolMessages.CS + playername+ProtocolMessages.CS+"false"+ProtocolMessages.CS+"false");
+        sendMessage(ProtocolMessages.JOIN + ProtocolMessages.CS + playername + ProtocolMessages.CS + "false" + ProtocolMessages.CS + "false");
         String result = readLineFromServer();
-        if (result.equals(ProtocolMessages.FIRST_PLAYER)) {
-            TUI.showMessage("How many players are going to play?");
-            int players = TUI.getNumberOfPlayers();
-            System.out.println("input: " + players);
-            sendMessage(ProtocolMessages.PLAYER_AMOUNT + ProtocolMessages.CS + players);
-            result = readLineFromServer();
-        }
         if (result.equals(ProtocolMessages.SUCCESS)) {
             TUI.showMessage("Game preference saved!\n");
-        } else {
+
+        }
+        else if(result.split(";")[0].equals(ProtocolMessages.FAIL)){
+            TUI.showMessage(result.split(";")[1]);
+        }else {
             throw new ServerUnavailableException("Invalid input");
         }
     }
-
 
 
     public void playersReady() throws ServerUnavailableException {

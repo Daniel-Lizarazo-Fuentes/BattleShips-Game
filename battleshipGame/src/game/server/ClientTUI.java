@@ -63,7 +63,7 @@ public class ClientTUI {
                     //TODO we won't have a chat
 
                 }
-                else if(input.split(";")[0].equals(ProtocolMessages.LOBBY)){
+                else if(input.split(";")[0].equals(ProtocolMessages.LIST)){
                     //TODO we won't have a chat
 
                 }
@@ -143,5 +143,6 @@ public class ClientTUI {
     }
 
     public String getmove() {
+        //TODO
     }
 }
