@@ -9,7 +9,7 @@ import java.util.Scanner;
 import game.server.Client;
 import game.server.Server;
 
-public class BattleShip {
+public class BattleShips {
     public static void main(String[] args) {
         Scanner scnr = new Scanner(System.in);
         boolean conditon = true;
