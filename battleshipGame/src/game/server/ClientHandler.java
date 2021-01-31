@@ -102,7 +102,19 @@ public class ClientHandler implements Runnable {
                     }
                     break;
 
-                case ProtocolMessages.PLAY: //TODO how to also add singleplayer player?
+                case ProtocolMessages.PLAY:
+                    try {
+                        int numberOfPlayers = Integer.parseInt(msgSplit[1]);
+                        if (numberOfPlayers == 1 && numberOfPlayers == 2) {
+                            srv.setGameSize(numberOfPlayers);
+
+                        } else {
+                            writeOut("Enter amount (1 for Singleplayer or 2 for Multiplayer)");
+                        }
+                    } catch (NumberFormatException e) {
+                        writeOut("Enter valid integer (1 or 2)");
+                    }
+
                     //TODO
                     break;
 
