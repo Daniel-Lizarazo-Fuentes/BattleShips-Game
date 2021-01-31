@@ -24,8 +24,26 @@ public class ClientTUI {
         try {
             while (true) {
                 String input = c.readLineFromServer();
+                if (input.split(";")[0].equals(ProtocolMessages.SUCCESS)) {
 
-                if (input.split(";")[0].equals(ProtocolMessages.TURN) && input.split(";")[1].equals(getName())) {
+                    //TODO
+
+                }else if (input.split(";")[0].equals(ProtocolMessages.FAIL)){
+                    showMessage(input.split(";")[1]);
+                }
+                else if(input.split(";")[0].equals(ProtocolMessages.CREATED)&&input.split(";")[1].equals("Game Created")){
+                    //TODO
+
+                }
+                else if(input.split(";")[0].equals(ProtocolMessages.BEGIN)){
+                    //TODO
+
+                }
+                else if(input.split(";")[0].equals(ProtocolMessages.READY)){
+                    //TODO
+
+                }
+                else if (input.split(";")[0].equals(ProtocolMessages.TURN) && input.split(";")[1].equals(getName())) {
                     Scanner scnr = new Scanner(System.in);
                     showMessage("----------------------------------------------------");
                     showMessage("Input your salvo or if you see this message for the first time type 'Random' for random placement or 'Manual' for manual placement:");
@@ -33,15 +51,33 @@ public class ClientTUI {
                     handleMove(userInput);
 
 
-                } else if (input.split(";")[0].equals(ProtocolMessages.NOT_VALID)) {
+                }
+                else if(input.split(";")[0].equals(ProtocolMessages.HIT)){
+                    //TODO
+
+                } else if(input.split(";")[0].equals(ProtocolMessages.END)){
+                    //TODO
+
+                }
+                else if(input.split(";")[0].equals(ProtocolMessages.CHAT)){
+                    //TODO we won't have a chat
+
+                }
+                else if(input.split(";")[0].equals(ProtocolMessages.LOBBY)){
+                    //TODO we won't have a chat
+
+                }
+
+
+
+
+                else if (input.split(";")[0].equals(ProtocolMessages.NOT_VALID)) {
                     showMessage("Move not valid. try again!");
                 } else if (input.split(";")[0].equals(ProtocolMessages.MOVE)) {
                     String[] inputSplit = input.split(";");
-                    String move = inputSplit[0];
-                    for (int i = 2; i < inputSplit.length; i++) {
-                        move += ";" + inputSplit[i];
-                    }
-                    game.clientMoveCheck(move.split(";")); //TODO clientmoveCheck should have specific word for board creation (manual/random placement)
+                    String move = inputSplit[1];
+
+                    game.clientMoveCheck(move);
                     showMessage("----------------------------------------------------");
                     showMessage("Salvo shot by player " + inputSplit[1] + ":");
 

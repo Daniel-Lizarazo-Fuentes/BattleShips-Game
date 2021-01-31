@@ -58,10 +58,10 @@ public class ClientHandler implements Runnable {
     public String[] getMove() {
         writeOut(ProtocolMessages.TURN);
         while (move.isEmpty()) {
-
+//TODO edit so plyaer that has turn and scores are sent
             String[] input = this.move.split(";");
             this.move = null;
-            if (input[0] == ProtocolMessages.SALVO && input.length >= 5 && input.length <= 9) {
+            if (input[0] == ProtocolMessages.MOVE && input.length >= 5 && input.length <= 9) {
                 return input;
             }
         }
@@ -90,7 +90,46 @@ public class ClientHandler implements Runnable {
     }
 
     private void handleCommand(String msg) throws IOException {
-        //TODO
+        if (msg != null && !msg.isEmpty()) {
+            String[] msgSplit = msg.split(ProtocolMessages.CS);
+            switch (msgSplit[0]) {
+
+                case ProtocolMessages.JOIN:
+                    if (msgSplit[1] != null) {
+                        this.name = msgSplit[1];
+                        writeOut(ProtocolMessages.SUCCESS); //TODO how do I add player with turn?
+                        ready = false;
+                    }
+                    break;
+
+                case ProtocolMessages.PLAYER_AMOUNT:
+                    try {
+                        int numberOfPlayers = Integer.parseInt(msgSplit[1]);
+                        if (numberOfPlayers > 0 && numberOfPlayers < 5) {
+                            srv.setGameSize(numberOfPlayers);
+                            writeOut(ProtocolMessages.SUCCESS);
+                        } else {
+                            writeOut(ProtocolMessages.UNEXPECTED_MESSAGE);
+                        }
+                    } catch (NumberFormatException e) {
+                        writeOut(ProtocolMessages.UNEXPECTED_MESSAGE);
+                    }
+                    break;
+
+                case ProtocolMessages.READY:
+                    if (!ready) {
+                        ready = true;
+                        srv.addToReadyList(this);
+                    } else {
+                        writeOut(ProtocolMessages.UNEXPECTED_MESSAGE);
+                    }
+                    break;
+
+                case ProtocolMessages.MOVE:
+                    this.game.setMove(msg);
+                    break;
+            }
+        }
     }
 
     public void writeOut(String msg) {

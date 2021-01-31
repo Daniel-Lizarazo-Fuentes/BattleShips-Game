@@ -295,7 +295,7 @@ public class Game implements Runnable {
             }
             return true;
         }
-        if (existingField(attacker, defender, input)) {
+        if (moveCheck(attacker, defender, input)) {
             Scanner scanner = new Scanner(System.in);
             boolean hasTurn = true;
             Board board = defender.getBoard();
@@ -372,15 +372,20 @@ public class Game implements Runnable {
     }
 
 
-    public boolean existingField(Player attacker, Player defender, String input) {
+    public boolean moveCheck(Player attacker, Player defender, String input) {
+        // check if input actually is meant as the order for placing.
+        if (input.equals("Manual") || input.equals("Random")) {
+
+            return true;
+        }
         try {
             input.charAt(2);
             Character.getNumericValue((input.charAt(2)));
             return false;
         } catch (IndexOutOfBoundsException e) {
 // continue as normal, there should be no index 2
-
         }
+
 
         char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
 
@@ -401,14 +406,23 @@ public class Game implements Runnable {
         } catch (IndexOutOfBoundsException e) {
             return false;
         }
+        if (!defender.getBoard().getFields().get(defender.getBoard().getFieldIndex(input)).getIsHit()) {
+            return true;
+        }
+        else{
+            return false;
+        }
 
 
-        return true;
 
 
     }
 
     public boolean clientFireCheck(String coor, Board defender) {
+    }
+
+    public void nextTurn() {
+        //TODO
     }
 
     //======================================= SinglePlayer ============================================//
