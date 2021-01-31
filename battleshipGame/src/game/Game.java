@@ -340,11 +340,12 @@ public class Game implements Runnable {
         } catch (IndexOutOfBoundsException e) {
             return false;
         }
-        if (!defender.getBoard().getFields().get(defender.getBoard().getFieldIndex(input)).getIsHit()) {
-            return true;
-        } else {
-            return false;
-        }
+        return true;
+//        if (!defender.getBoard().getFields().get(defender.getBoard().getFieldIndex(input)).getIsHit()) {
+//            return true;
+//        } else {
+//            return false;
+//        }
 
 
     }
