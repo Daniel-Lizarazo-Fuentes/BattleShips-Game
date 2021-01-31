@@ -21,11 +21,15 @@ public class ClientTUI {
 
     public void start() throws game.exceptions.ServerUnavailableException {
         String userInput;
+
         try {
             while (true) {
+                System.out.println("Before readlinefromserver: ");
                 String input = c.readLineFromServer();
+                System.out.println("After readline and input: "+input);
                 if (input.split(";")[0].equals(ProtocolMessages.SUCCESS)) {
                     showMessage(ProtocolMessages.SUCCESS);
+
 
                 } else if (input.split(";")[0].equals(ProtocolMessages.FAIL)) {
                     showMessage(ProtocolMessages.FAIL + ProtocolMessages.CS + input.split(";")[1]);
@@ -80,6 +84,9 @@ public class ClientTUI {
                 } else if (input.split(";")[0].equals(ProtocolMessages.LIST)) {
                     //TODO we won't have a chat
 
+                }
+                else{
+                    System.out.println("Something went wrong the following was received: "+input);
                 }
 
 

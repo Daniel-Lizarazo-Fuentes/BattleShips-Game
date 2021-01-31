@@ -81,25 +81,23 @@ public class Server implements Runnable {
             setup();
             while (true) {
                 connect();
-                startGame();
+              //  startGame();
             }
         }
         TUI.showMessage("See you later!");
     }
 
-    public void startGame() {
-        ArrayList<Game> players = new ArrayList<>();
-        players.addAll(gameList);
-        for (Game game : gameList) {
-            if (game.getGamePlayer(0) != null && game.getGamePlayer(1) != null) {
-                new Thread(game).start();
-
-                gameList.clear();
-                TUI.showMessage("New game created.");
-            }
-        }
-
-    }
+//    public void startGame() {
+//        ArrayList<Game> players = new ArrayList<>();
+//        players.addAll(gameList);
+//        for (Game game : gameList) {
+//            if (game.getGamePlayer(0) != null && game.getGamePlayer(1) != null) {
+//                gameList.clear();
+//                TUI.showMessage("New game created.");
+//            }
+//        }
+//
+//    }
 
     public void addToReadyList(ClientHandler ch) {
         if (waitingList.contains(ch)) {

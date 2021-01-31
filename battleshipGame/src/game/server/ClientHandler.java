@@ -20,7 +20,7 @@ public class ClientHandler implements Runnable {
     private Server srv;
     private String name;
     public boolean turn;
-    private boolean ready;
+    // private boolean ready;
     private String move;
     private Game game;
 
@@ -31,7 +31,7 @@ public class ClientHandler implements Runnable {
             this.sock = sock;
             this.srv = srv;
             turn = false;
-            ready = false;
+            // ready = false;
             move = null;
 
         } catch (IOException e) {
@@ -72,9 +72,9 @@ public class ClientHandler implements Runnable {
         return null;
     }
 
-    public boolean isReady() {
-        return this.ready;
-    }
+    //  public boolean isReady() {
+//        return this.ready;
+//    }
 
 
     @Override
@@ -94,22 +94,33 @@ public class ClientHandler implements Runnable {
     }
 
     private void handleCommand(String msg) throws IOException {
+        System.out.println("handlecommand called");
         if (msg != null && !msg.isEmpty()) {
             String[] msgSplit = msg.split(ProtocolMessages.CS);
             switch (msgSplit[0]) {
 
                 case ProtocolMessages.JOIN:
+                    System.out.println("after join read");
                     if (msgSplit[1] != null) {
                         if (!srv.getPlayerNames().contains(msgSplit[1])) {
                             srv.addPlayerName(msgSplit[1]);
                             this.name = msgSplit[1];
+                            boolean hasRunGame = false;
                             for (Game game : srv.getGameList()) {
-                                if (game.getGamePlayer(1) == null) {
-                                    game.addPlayer(new humanPlayer(msgSplit[1], game.getBoard()[1]));
+                                if (game.doesStillNeedPlayers()) {
+
+                                    game.addClientHandler(this);
+                                    writeOut(ProtocolMessages.SUCCESS);
+                                    hasRunGame = true;
+                                    new Thread(game).start();
+
                                 }
                             }
-                            writeOut(ProtocolMessages.SUCCESS);
-                            ready = false;
+                            if (!hasRunGame) {
+                                writeOut(ProtocolMessages.SUCCESS);
+                            }
+
+//                            ready = true;
                         } else {
                             writeOut(ProtocolMessages.FAIL + ProtocolMessages.CS + "Name already taken");
                         }

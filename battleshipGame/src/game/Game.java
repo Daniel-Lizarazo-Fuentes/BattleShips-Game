@@ -21,66 +21,72 @@ import static game.server.ServerProtocol.protocolMessage;
 
 public class Game implements Runnable {
 
-    //TODO network and threading
-
 
     //======================================= Multiplayer ============================================//
     private Board[] GameBoards = new Board[2];
     private ArrayList<ClientHandler> gameList;
     private Player[] GamePlayers = new Player[2];
     private String move;
-    private Board player1Board;
-    private Board player2Board;
-    private Player p1;
-    private Player p2;
+
 
     public Game(ArrayList<ClientHandler> gameList) {
         this.gameList = gameList;
-        System.out.println("This number: " + gameList.size() + " must be 2");
+
+
     }
 
-    public Player getGamePlayer(int i) {
-        return this.GamePlayers[i];
+    //check how many players are connected
+    public boolean doesStillNeedPlayers() {
+       return gameList.size()<2;
+
+
     }
 
-    public void addPlayer(Player p) {
-        if (p1 == null) {
-            p1= p;
-        } else if (p2 == null) {
-            p2= p;
-        }
+
+    public void addClientHandler(ClientHandler cl) {
+        gameList.add(cl);
     }
 
     @Override
     public void run() {
+        System.out.println("RUNNING");
+        String nameList = "";
+        for (ClientHandler ch : gameList) {
+            nameList = nameList + "," + ch.getName();
+
+        }
+
+        nameList = nameList + ProtocolMessages.CS + false;
+        nameList = nameList.substring(1);
+        for (ClientHandler ch : gameList) {
+
+            ch.writeOut(ProtocolMessages.BEGIN + ProtocolMessages.CS + nameList);
+        }
+
         switch (gameList.size()) {
             case 1:
 
-                player1Board = new Board(true);
-                player2Board = new Board(true);
-                GameBoards[0] = player1Board;
-                GameBoards[1] = player2Board;
+                GameBoards[0] = new Board(true);
+                GameBoards[1] = new Board(true);
 
-                p1 = new humanPlayer(gameList.get(0).getName(), GameBoards[0]);
-                p2 = new randomComputerPlayer( GameBoards[0]);
-                p1.setTurn(true);
-                GamePlayers[0] = p1;
-                GamePlayers[0] = p2;
+
+                GamePlayers[0] = new humanPlayer(gameList.get(0).getName(), GameBoards[0]);
+                GamePlayers[1] = new randomComputerPlayer(GameBoards[0]);
+
+                GamePlayers[0].setTurn(true);
+
                 break;
 
             case 2:
 
-                player1Board = new Board(true);
-                player2Board = new Board(true);
-                GameBoards[0] = player1Board;
-                GameBoards[1] = player2Board;
+                GameBoards[0] = new Board(true);
+                GameBoards[1] = new Board(true);
 
-                p1 = new humanPlayer(gameList.get(0).getName(), GameBoards[0]);
-                p2 = new humanPlayer(gameList.get(1).getName(), GameBoards[1]);
+                GamePlayers[0] = new humanPlayer(gameList.get(0).getName(), GameBoards[0]);
+                GamePlayers[1] = new humanPlayer(gameList.get(1).getName(), GameBoards[1]);
 
-                p1.setTurn(true);
-                GamePlayers[0] = p1;
-                GamePlayers[0] = p2;
+                GamePlayers[0].setTurn(true);
+
                 break;
 
         }
@@ -94,7 +100,7 @@ public class Game implements Runnable {
             ch = getCH();
             if (ch != null) {
                 move = null;
-                ch.writeOut(ProtocolMessages.TURN + ProtocolMessages.CS + ch.getName() + ProtocolMessages.CS + protocolMessage(updatePoints(p1, p2))); //TODO ch.getName() might not work
+                ch.writeOut(ProtocolMessages.TURN + ProtocolMessages.CS + ch.getName() + ProtocolMessages.CS + protocolMessage(updatePoints(GamePlayers[0],GamePlayers[1]))); //TODO ch.getName() might not work
                 try {
                     wait(30000); //give 30s to make move/reconnect
                     //TODO check if actually works
@@ -104,8 +110,8 @@ public class Game implements Runnable {
             }
             if (move != null) {
                 String move = this.move;
-                if (p1.getTurn()) {
-                    if (moveCheck(p2, move)) {
+                if (GamePlayers[0].getTurn()) {
+                    if (moveCheck(GamePlayers[1], move)) {
                         fire(move);
                         sendAll(move);
                         switchTurn();
@@ -113,7 +119,7 @@ public class Game implements Runnable {
                         //TODO message to tui
                     }
                 } else {
-                    if (moveCheck(p1, move)) {
+                    if (moveCheck(GamePlayers[0], move)) {
                         fire(move);
                         sendAll(move);
                         switchTurn();

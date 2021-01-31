@@ -31,7 +31,7 @@ public class Client {
             while (true) {
                 String name = TUI.getNameQuestion();
                 handleJoin(name);
-                this.playersReady();
+//                this.playersReady();
                 TUI.start();
                 TUI.showMessage("Would you like to play another game? (yes/no)");
 
@@ -104,7 +104,10 @@ public class Client {
         if (in != null) {
             try {
                 // Read and return answer from Server
+
                 String answer = in.readLine();
+
+
                 if (answer == null) {
                     throw new ServerUnavailableException("Could not read from server.");
                 }
@@ -134,14 +137,33 @@ public class Client {
         if (result.equals(ProtocolMessages.SUCCESS)) {
             TUI.showMessage("Game preference saved!\n");
 
-        }
-        else if(result.split(";")[0].equals(ProtocolMessages.FAIL)){
+            boolean correctAnswer = false;
+            while (!correctAnswer) {
+                TUI.showMessage("Do you want to create own game ('mp') or join available one if possible? ('join') or singleplayer? (Type 'sp', 'mp','join')");
+                Scanner scnr = new Scanner(System.in);
+                if (scnr.nextLine().equals("mp")) {
+                    sendMessage(ProtocolMessages.PLAY + ProtocolMessages.CS + 2);
+                    correctAnswer = true;
+                } else if (scnr.nextLine().equals("sp")) {
+                    sendMessage(ProtocolMessages.PLAY + ProtocolMessages.CS + 1);
+
+                    correctAnswer = true;
+                } else if (scnr.nextLine().equals("join")) {
+
+
+                    correctAnswer = true;
+                } else {
+                    TUI.showMessage("Type 'sp', 'mp','join'");
+                }
+
+            }
+
+        } else if (result.split(";")[0].equals(ProtocolMessages.FAIL)) {
             TUI.showMessage(result.split(";")[1]);
-        }else {
+        } else {
             throw new ServerUnavailableException("Invalid input");
         }
     }
-
 
     public void playersReady() throws ServerUnavailableException {
         Scanner scnr = new Scanner(System.in);
