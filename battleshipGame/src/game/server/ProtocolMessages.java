@@ -18,22 +18,14 @@ public class ProtocolMessages {
     public static final String RADAR = "W";
 
 
-
-
-
-
-
     //Server
     public static final String FAIL = "F";
     public static final String SUCCESS = "S";
-    public static final String CREATED = "C";
     public static final String BEGIN = "B";
     public static final String READY = "R";
     public static final String TURN = "T";
     public static final String HIT = "H";
     public static final String END = "E";
-
-
 
 
 }

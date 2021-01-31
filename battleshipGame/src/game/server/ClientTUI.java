@@ -25,77 +25,46 @@ public class ClientTUI {
             while (true) {
                 String input = c.readLineFromServer();
                 if (input.split(";")[0].equals(ProtocolMessages.SUCCESS)) {
+                    showMessage(ProtocolMessages.SUCCESS);
 
+                } else if (input.split(";")[0].equals(ProtocolMessages.FAIL)) {
+                    showMessage(ProtocolMessages.FAIL + ProtocolMessages.CS + input.split(";")[1]);
 
-                }else if (input.split(";")[0].equals(ProtocolMessages.FAIL)){
-                    showMessage(input.split(";")[1]);
-                }
-                else if(input.split(";")[0].equals(ProtocolMessages.CREATED)&&input.split(";")[1].equals("Game Created")){
-                    //TODO
-                }
-                else if(input.split(";")[0].equals(ProtocolMessages.BEGIN)){
-                    //TODO
+                } else if (input.split(";")[0].equals(ProtocolMessages.BEGIN)) {
 
-                }
-                else if(input.split(";")[0].equals(ProtocolMessages.READY)){
-                    //TODO
+                    game.run(); //TODO probably not right
 
-                }
-                else if (input.split(";")[0].equals(ProtocolMessages.TURN) && input.split(";")[1].equals(getName())) {
+                } else if (input.split(";")[0].equals(ProtocolMessages.READY)) {
+                    //TODO only for manual placement
+
+                } else if (input.split(";")[0].equals(ProtocolMessages.TURN) && input.split(";")[1].equals(getName())) {
+                    if (!game.getTurn().getName().equals(this.getName())) {
+                        game.setTurn(playerNumber);
+                    }
+
                     Scanner scnr = new Scanner(System.in);
                     showMessage("----------------------------------------------------");
-                    showMessage("Input your salvo or if you see this message for the first time type 'Random' for random placement or 'Manual' for manual placement:");
+                    showMessage("Input your salvo:");
                     userInput = scnr.nextLine();
                     handleMove(userInput);
 
+                    //TODO scores
 
-                }
-                else if(input.split(";")[0].equals(ProtocolMessages.HIT)){
+                } else if (input.split(";")[0].equals(ProtocolMessages.HIT)) {
                     //TODO
 
-                } else if(input.split(";")[0].equals(ProtocolMessages.END)){
+                } else if (input.split(";")[0].equals(ProtocolMessages.END)) {
                     //TODO
 
-                }
-                else if(input.split(";")[0].equals(ProtocolMessages.CHAT)){
+                } else if (input.split(";")[0].equals(ProtocolMessages.CHAT)) {
+                    //TODO we won't have a chat
+
+                } else if (input.split(";")[0].equals(ProtocolMessages.LIST)) {
                     //TODO we won't have a chat
 
                 }
-                else if(input.split(";")[0].equals(ProtocolMessages.LIST)){
-                    //TODO we won't have a chat
-
-                }
 
 
-
-
-                else if (input.split(";")[0].equals(ProtocolMessages.NOT_VALID)) {
-                    showMessage("Move not valid. try again!");
-                } else if (input.split(";")[0].equals(ProtocolMessages.MOVE)) {
-                    String[] inputSplit = input.split(";");
-                    String move = inputSplit[1];
-
-                    game.clientMoveCheck(move);
-                    showMessage("----------------------------------------------------");
-                    showMessage("Salvo shot by player " + inputSplit[1] + ":");
-
-                    showMessage(game.getBoard(0).toString() + "\n");
-                    showMessage(game.getBoard(1).toString() + "\n"); //TODO fix so that boards aren't visible
-
-                    game.nextTurn();
-                } else if (input.split(";")[0].equals(ProtocolMessages.WINNER)) {
-                    String[] inputSplit = input.split(";");
-                    if (inputSplit.length == 2) {
-                        if (inputSplit[1].equals("0")) {
-                            showMessage("It's a draw!");
-                        } else {
-                            showMessage("Player " + inputSplit[1] + " has won the game! Congratulations!");
-                        }
-                    }
-                    return;
-                } else if (input.split(";")[0].equals(ProtocolMessages.UNEXPECTED_MESSAGE)) {
-                    showMessage("unexpected message");
-                }
             }
 
         } catch (ExitProgram e) {
