@@ -94,13 +94,13 @@ public class ClientHandler implements Runnable {
     }
 
     private void handleCommand(String msg) throws IOException {
-        System.out.println("handlecommand called");
+//        System.out.println("handlecommand called");
         if (msg != null && !msg.isEmpty()) {
             String[] msgSplit = msg.split(ProtocolMessages.CS);
             switch (msgSplit[0]) {
 
                 case ProtocolMessages.JOIN:
-                    System.out.println("after join read");
+                 //   System.out.println("after join read");
                     if (msgSplit[1] != null) {
                         if (!srv.getPlayerNames().contains(msgSplit[1])) {
                             srv.addPlayerName(msgSplit[1]);

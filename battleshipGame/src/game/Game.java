@@ -49,7 +49,7 @@ public class Game implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("RUNNING");
+        //System.out.println("RUNNING");
         String nameList = "";
         for (ClientHandler ch : gameList) {
             nameList = nameList + "," + ch.getName();

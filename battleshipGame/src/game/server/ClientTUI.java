@@ -24,9 +24,9 @@ public class ClientTUI {
 
         try {
             while (true) {
-                System.out.println("Before readlinefromserver: ");
+               // System.out.println("Before readlinefromserver: ");
                 String input = c.readLineFromServer();
-                System.out.println("After readline and input: "+input);
+             //   System.out.println("After readline and input: "+input);
                 if (input.split(";")[0].equals(ProtocolMessages.SUCCESS)) {
                     showMessage(ProtocolMessages.SUCCESS);
 
