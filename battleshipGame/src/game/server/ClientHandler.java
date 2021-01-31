@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 import game.Game;
+import game.players.humanPlayer;
 import game.server.ProtocolMessages;
 
 public class ClientHandler implements Runnable {
@@ -102,7 +103,9 @@ public class ClientHandler implements Runnable {
                             srv.addPlayerName(msgSplit[1]);
                             this.name = msgSplit[1];
                             for (Game game : srv.getGameList()) {
-if(game.getPlayer(1))
+                                if (game.getGamePlayer(1) == null) {
+                                    game.addPlayer(new humanPlayer(msgSplit[1], game.getBoard()[1]));
+                                }
                             }
                             writeOut(ProtocolMessages.SUCCESS);
                             ready = false;
@@ -117,7 +120,7 @@ if(game.getPlayer(1))
                         int numberOfPlayers = Integer.parseInt(msgSplit[1]);
                         if (numberOfPlayers == 1 && numberOfPlayers == 2) {
                             srv.setGameSize(numberOfPlayers);
-
+//TODO multi/single player
                         } else {
                             writeOut("Enter amount (1 for Singleplayer or 2 for Multiplayer)");
                         }
@@ -127,7 +130,7 @@ if(game.getPlayer(1))
                     break;
 
                 case ProtocolMessages.MOVE:
-                    this.game.setMove(msg);
+                    this.game.setMove(msgSplit[1]);
                     break;
                 case ProtocolMessages.DEPLOY:
                     //TODO
@@ -136,6 +139,7 @@ if(game.getPlayer(1))
                     //TODO prob no implementation
                     break;
                 case ProtocolMessages.GET:
+                    //TODO prob no implementation
                     break;
             }
         }

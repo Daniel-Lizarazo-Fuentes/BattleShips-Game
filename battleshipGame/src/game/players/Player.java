@@ -48,7 +48,7 @@ public interface Player {
      * @param shipLists
      */
     public void setShipArrayList(ArrayList<ArrayList<? extends Ship>> shipLists);
-
+    public ArrayList<ArrayList<? extends Ship>> createShipArrays();
 
     /**
      * Returns the arraylist whith ship arraylists, used for scores
@@ -62,17 +62,8 @@ public interface Player {
      */
     public void setPoints(int i);
 
-    /**
-     * Adds points based on what ship was sunk
-     */
-    public void updatePoints(Player attacker, Player defender);
 
 
-    /**
-     * Fires at specified field
-     *
-     * @requires field is valid field
-     */
-    public void fire( Player attacker, Player defender);
+
 
 }

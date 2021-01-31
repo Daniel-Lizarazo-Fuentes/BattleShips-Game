@@ -72,32 +72,25 @@ public class Server implements Runnable {
         return this.gameList;
     }
 
-    public Player getP1() {
-        return this.p1;
-    }
-
-    public void setP1(String name) {
-        this.p1 = new humanPlayer(name);//TODO edit stuff so human player doesn't need nested arraylists
-    }
-
-    public Player getP2() {
-        return this.p2;
-    }
-
-    public void setP2(String name) {
-        this.p2 = new humanPlayer(name);//TODO edit stuff so human player doesn't need nested arraylists
-    }
-
 
     @Override
     public synchronized void run() {
-//TODO
+        boolean openNewSocket = true;
+        while (openNewSocket) {
+            setup();
+            while (true) {
+                connect();
+                createGame();
+
+            }
+        }
+        TUI.showMessage("See you later!");
     }
 
     public void createGame() {
         ArrayList<ClientHandler> players = new ArrayList<ClientHandler>();
         players.addAll(gameList);
-        (new Thread(new Game(players))).start(); //TODO make additional constructor in game for multiplayer
+        (new Thread(new Game(players))).start();
         gameSize = 0;
         gameList.clear();
         TUI.showMessage("New game created.");

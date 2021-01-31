@@ -26,14 +26,12 @@ public class ClientTUI {
                 String input = c.readLineFromServer();
                 if (input.split(";")[0].equals(ProtocolMessages.SUCCESS)) {
 
-                    //TODO
 
                 }else if (input.split(";")[0].equals(ProtocolMessages.FAIL)){
                     showMessage(input.split(";")[1]);
                 }
                 else if(input.split(";")[0].equals(ProtocolMessages.CREATED)&&input.split(";")[1].equals("Game Created")){
                     //TODO
-
                 }
                 else if(input.split(";")[0].equals(ProtocolMessages.BEGIN)){
                     //TODO

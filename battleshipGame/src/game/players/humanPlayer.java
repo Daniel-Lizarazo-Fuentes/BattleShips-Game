@@ -18,10 +18,10 @@ public class humanPlayer implements Player {
      * @param name of the player
      * @ensures the Player starts with 0 points
      */
-    public humanPlayer(String name, ArrayList<ArrayList<? extends Ship>> shipLists, Board board) {
+    public humanPlayer(String name, Board board) {
         this.name = name;
         this.points = 0;
-        this.shipLists = shipLists;
+        this.shipLists = createShipArrays();
         this.board = board;
     }
 
@@ -32,7 +32,41 @@ public class humanPlayer implements Player {
          this.hasTurn=turn;
     }
 
+    public ArrayList<ArrayList<? extends Ship>> createShipArrays() {
+        // create the ship arrays for player but without positions yet
+        ArrayList<String> positions = new ArrayList<>();
+        ArrayList<ArrayList<? extends Ship>> shipLists = new ArrayList<>();
 
+        ArrayList<Carrier> carriers = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            carriers.add(new Carrier("carrier" + i, positions));
+        }
+        ArrayList<Battleship> battleships = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            battleships.add(new Battleship("battleship" + i, positions));
+        }
+        ArrayList<Destroyer> destroyers = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            destroyers.add(new Destroyer("destroyer" + i, positions));
+        }
+        ArrayList<SuperPatrol> superPatrols = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            superPatrols.add(new SuperPatrol("SuperPatrol" + i, positions));
+        }
+        ArrayList<PatrolBoat> patrolBoats = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            patrolBoats.add(new PatrolBoat("PatrolBoat" + i, positions));
+        }
+
+        shipLists.add(carriers);
+        shipLists.add(battleships);
+        shipLists.add(destroyers);
+        shipLists.add(superPatrols);
+        shipLists.add(patrolBoats);
+
+        return shipLists;
+
+    }
     /**
      * Sets the board of a player
      *
@@ -97,81 +131,7 @@ public class humanPlayer implements Player {
         this.points = i;
     }
 
-    /**
-     * Adds points based on what ship was sunk
-     */
-    @Override
-    public void updatePoints(Player attacker, Player defender) {
-        int points = 0;
-        for (ArrayList<? extends Ship> shipList : defender.getShipArrayList()) {
-            for (Ship sh : shipList) {
-                points += sh.getSize() - sh.getHitPoints();
-                if (sh.getHitPoints() == 0) {
-                    points++;
-                }
-
-            }
-        }
-        attacker.setPoints(points);
-
-    }
-
-    /**
-     * Fires at specified field on enemy board, includes functionallity for added turn upon hitting an enemy vessel
-     *
-     * @requires @param board to be enemy board
-     */
-    @Override
-    public void fire(Player attacker, Player defender) {
-        Scanner scanner = new Scanner(System.in);
-        boolean hasTurn = true;
-        Board board = defender.getBoard();
-        while (hasTurn) {
-            boolean validField = false;
-            while (!validField) {
-                System.out.println("Enter field to fire on");
-                String input = scanner.nextLine();
-                // check if existing position
-                if (board.getFieldIndex(input) != -1) {
-
-                    // check if position was already hit
-                    if (!board.getFields().get(board.getFieldIndex(input)).getIsHit()) {
-                        validField = true;
-                        boardPosition hitPosition = board.getFields().get(board.getFieldIndex(input));
-                        hitPosition.setIsHit(true);
-                        hitPosition.setPositionHidden(false);
-                        //check if there was a ship at the given position
-                        if (hitPosition.getState() == boardPosition.positionState.SHIP) {
-
-                            //find the ship and change it's hitPoints
-                            for (ArrayList<? extends Ship> shipList : defender.getShipArrayList()) {
-                                for (Ship sh : shipList) {
-                                    for (String position : sh.getPositions()) {
-                                        if (position.equals(input)) {
-                                            sh.setHitPoints(sh.getHitPoints() - 1);
-                                        }
-                                    }
-
-                                }
-                            }
-                            hitPosition.setState(boardPosition.positionState.WRECK);
-                            System.out.println(defender.getBoard().toString());
-                        } else {
-                            hasTurn = false;
-
-                        }
-                    } else {
-                        System.out.println("position already hit!");
-                    }
-                } else {
-                    System.out.println("Enter a valid field!");
-                }
-                updatePoints(attacker, defender);
 
 
-            }
-        }
-        System.out.println("Turn over");
 
-    }
 }
