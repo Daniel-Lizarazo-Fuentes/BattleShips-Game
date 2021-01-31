@@ -6,7 +6,7 @@ public class ProtocolMessages {
     public static final String CS = ";";
 
     public static final String CHAT = "C";
-    public static final String LOBBY = "L";
+    public static final String LIST = "L";
 
     //Client
     public static final String JOIN = "J";
@@ -14,6 +14,7 @@ public class ProtocolMessages {
     public static final String MOVE = "M";
 
     public static final String DEPLOY = "D";
+    public static final String GET = "G";
     public static final String RADAR = "W";
 
 
@@ -26,7 +27,7 @@ public class ProtocolMessages {
 
     public static final String NOT_VALID = "n";
     public static final String VALID = "v";
-    public static final String TURN = "t";
+
     public static final String WINNER = "w";
     public static final String DISCONNECT_WINNER = "d";
 
@@ -43,6 +44,7 @@ public class ProtocolMessages {
     public static final String CREATED = "C";
     public static final String BEGIN = "B";
     public static final String READY = "R";
+    public static final String TURN = "T";
     public static final String HIT = "H";
     public static final String END = "E";
 

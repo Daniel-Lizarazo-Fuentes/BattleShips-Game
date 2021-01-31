@@ -95,38 +95,27 @@ public class ClientHandler implements Runnable {
             switch (msgSplit[0]) {
 
                 case ProtocolMessages.JOIN:
-                    if (msgSplit[1] != null) {
+                    if (msgSplit[1] != null) { //TODO also check if anyone else has the same name
                         this.name = msgSplit[1];
                         writeOut(ProtocolMessages.SUCCESS); //TODO how do I add player with turn?
                         ready = false;
                     }
                     break;
 
-                case ProtocolMessages.PLAYER_AMOUNT:
-                    try {
-                        int numberOfPlayers = Integer.parseInt(msgSplit[1]);
-                        if (numberOfPlayers > 0 && numberOfPlayers < 5) {
-                            srv.setGameSize(numberOfPlayers);
-                            writeOut(ProtocolMessages.SUCCESS);
-                        } else {
-                            writeOut(ProtocolMessages.UNEXPECTED_MESSAGE);
-                        }
-                    } catch (NumberFormatException e) {
-                        writeOut(ProtocolMessages.UNEXPECTED_MESSAGE);
-                    }
-                    break;
-
-                case ProtocolMessages.READY:
-                    if (!ready) {
-                        ready = true;
-                        srv.addToReadyList(this);
-                    } else {
-                        writeOut(ProtocolMessages.UNEXPECTED_MESSAGE);
-                    }
+                case ProtocolMessages.PLAY: //TODO how to also add singleplayer player?
+                    //TODO
                     break;
 
                 case ProtocolMessages.MOVE:
-                    this.game.setMove(msg);
+                    //TODO
+                    break;
+                case ProtocolMessages.DEPLOY:
+                    //TODO
+                    break;
+                case ProtocolMessages.RADAR:
+                    //TODO prob no implementation
+                    break;
+                case ProtocolMessages.GET:
                     break;
             }
         }
