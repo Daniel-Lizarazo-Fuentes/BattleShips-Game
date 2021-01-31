@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import game.Game;
 import game.players.humanPlayer;
@@ -118,9 +119,21 @@ public class ClientHandler implements Runnable {
                 case ProtocolMessages.PLAY:
                     try {
                         int numberOfPlayers = Integer.parseInt(msgSplit[1]);
-                        if (numberOfPlayers == 1 && numberOfPlayers == 2) {
-                            srv.setGameSize(numberOfPlayers);
-//TODO multi/single player
+                        if (numberOfPlayers == 1) {
+
+                            ArrayList<ClientHandler> singlePlayerList = new ArrayList<>();
+                            singlePlayerList.add(this);
+                            Game singlePlayerGame = new Game(singlePlayerList);
+                            new Thread(singlePlayerGame).start();
+                            srv.getGameList().add(singlePlayerGame);
+
+                        } else if (numberOfPlayers == 2) {
+
+                            ArrayList<ClientHandler> multiPlayerList = new ArrayList<>();
+                            multiPlayerList.add(this);
+                            Game multiPlayerGame = new Game(multiPlayerList);
+                            srv.getGameList().add(multiPlayerGame);
+
                         } else {
                             writeOut("Enter amount (1 for Singleplayer or 2 for Multiplayer)");
                         }

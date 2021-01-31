@@ -343,10 +343,6 @@ public class Game implements Runnable {
 
     }
 
-    public void nextTurn() {
-        //TODO
-    }
-
 
     synchronized public void setMove(String move) {
         this.move = move;

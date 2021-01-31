@@ -20,26 +20,26 @@ public class Server implements Runnable {
     private ArrayList<ClientHandler> clients;
     private ServerTUI TUI;
     private static final String SERVERNAME = "BIT BattleShip Server";
-    private Player p1;
-    private Player p2;
-    private int playerCount;
+
     private ArrayList<Player> ready;
     private Game game;
+
+
+    private int playerCount;
     public boolean wait = false;
     public String result = null;
 
     private ArrayList<ClientHandler> waitingList = new ArrayList<>();
     private ArrayList<ClientHandler> readyList = new ArrayList<>();
     private ArrayList<Game> gameList = new ArrayList<>();
-    private int gameSize = 0;
+
     private String address;
     private int port;
 
     public Server(String address, int port) {
         clients = new ArrayList<>();
         TUI = new ServerTUI();
-        p1 = null;
-        p2 = null;
+
 
         ready = new ArrayList<Player>();
         game = null;
@@ -57,7 +57,8 @@ public class Server implements Runnable {
 
     }
 
-    public void initGame(ArrayList<Player> ready2) {
+    public void initGame(ArrayList<Player> ready) {
+
     }
 
     public String getServerName() {
@@ -80,44 +81,30 @@ public class Server implements Runnable {
             setup();
             while (true) {
                 connect();
-                createGame();
-
+                startGame();
             }
         }
         TUI.showMessage("See you later!");
     }
 
-    public void createGame() {
-        ArrayList<ClientHandler> players = new ArrayList<ClientHandler>();
+    public void startGame() {
+        ArrayList<Game> players = new ArrayList<>();
         players.addAll(gameList);
-        (new Thread(new Game(players))).start();
-        gameSize = 0;
-        gameList.clear();
-        TUI.showMessage("New game created.");
+        for (Game game : gameList) {
+            if (game.getGamePlayer(0) != null && game.getGamePlayer(1) != null) {
+                new Thread(game).start();
+
+                gameList.clear();
+                TUI.showMessage("New game created.");
+            }
+        }
+
     }
 
     public void addToReadyList(ClientHandler ch) {
         if (waitingList.contains(ch)) {
             readyList.add(ch);
             waitingList.remove(ch);
-        }
-    }
-
-    public void sendAll(String[] move, ClientHandler ch) {
-        String part1 = ProtocolMessages.MOVE + ProtocolMessages.CS;
-        int number = 0;
-        for (Player p : ready) {
-            number++;
-            if (ch.getName().equals(p.getName())) {
-                part1 += number;
-                break;
-            }
-        }
-        for (int i = 1; i < move.length; i++) {
-            part1 += ";" + move[i];
-        }
-        for (ClientHandler c : clients) {
-            c.writeOut(part1);
         }
     }
 
@@ -162,16 +149,5 @@ public class Server implements Runnable {
         return false;
     }
 
-    public void printMessage(String msg) {
-        System.out.println(msg);
-    }
 
-    public int getGameSize() {
-        return this.playerCount;
-    }
-
-    synchronized public void setGameSize(int gs) {
-        this.gameSize = gs;
-        notify();
-    }
 }

@@ -31,15 +31,19 @@ public class ClientTUI {
                     showMessage(ProtocolMessages.FAIL + ProtocolMessages.CS + input.split(";")[1]);
 
                 } else if (input.split(";")[0].equals(ProtocolMessages.BEGIN)) {
-
-                    game.run(); //TODO probably not right
+                    if (input.split(";")[0].contains(name)) {
+                        new Thread(game).start();
+                    }
 
                 } else if (input.split(";")[0].equals(ProtocolMessages.READY)) {
                     //TODO only for manual placement
 
                 } else if (input.split(";")[0].equals(ProtocolMessages.TURN) && input.split(";")[1].equals(getName())) {
+                    //show scores
+                    showMessage(input.split(";")[2]);
+
                     if (!game.getTurn().getName().equals(this.getName())) {
-                        game.setTurn(playerNumber);
+                        game.switchTurn();
                     }
 
                     Scanner scnr = new Scanner(System.in);
@@ -48,13 +52,27 @@ public class ClientTUI {
                     userInput = scnr.nextLine();
                     handleMove(userInput);
 
-                    //TODO scores
 
                 } else if (input.split(";")[0].equals(ProtocolMessages.HIT)) {
-                    //TODO
+                    if (input.split(";")[1].equals("0")) {
+
+                    } else if (input.split(";")[1].equals("1")) {
+                        Scanner scnr = new Scanner(System.in);
+                        showMessage("----------------------------------------------------");
+                        showMessage("Input your salvo:");
+                        userInput = scnr.nextLine();
+                        handleMove(userInput);
+                    } else if (input.split(";")[1].equals("-1")) {
+                    }
+
 
                 } else if (input.split(";")[0].equals(ProtocolMessages.END)) {
-                    //TODO
+
+                    if (input.split(";")[1].equals("-1")) {
+                    } else {
+                        showMessage(input.split(";")[1]);
+
+                    }
 
                 } else if (input.split(";")[0].equals(ProtocolMessages.CHAT)) {
                     //TODO we won't have a chat
@@ -76,8 +94,8 @@ public class ClientTUI {
 
 
     public void handleMove(String input) throws game.exceptions.ExitProgram, game.exceptions.ServerUnavailableException {
-        game.fire(input); //TODO check if mvc coherent
-        c.sendMessage(input);
+        game.fire(input);
+        c.sendMessage(input); //TODO check if double fire
     }
 
     public void showMessage(String msg) {
@@ -109,7 +127,5 @@ public class ClientTUI {
         return scnr.nextLine();
     }
 
-    public String getmove() {
-        //TODO
-    }
+
 }
