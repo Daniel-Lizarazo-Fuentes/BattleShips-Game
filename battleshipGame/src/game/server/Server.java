@@ -116,6 +116,7 @@ public class Server implements Runnable {
             ClientHandler handler = new ClientHandler(sock, this);
             new Thread(handler).start();
             waitingList.add(handler);
+
         } catch (IOException e) {
         }
     }

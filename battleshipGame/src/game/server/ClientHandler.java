@@ -146,7 +146,7 @@ public class ClientHandler implements Runnable {
                     this.game.setMove(msgSplit[1]);
                     break;
                 case ProtocolMessages.DEPLOY:
-                    //TODO
+                    //TODO prob no implementation
                     break;
                 case ProtocolMessages.RADAR:
                     //TODO prob no implementation
