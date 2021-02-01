@@ -54,14 +54,18 @@ public class Client {
         clearConnection();
         while (clientSock == null) {
 
-            Scanner scnr = new Scanner(System.in);
-            TUI.showMessage("What is the address of the Server?");
-            String host = scnr.nextLine();
-            TUI.showMessage("What is the port of the server?");
-            int port = 0;
+//            Scanner scnr = new Scanner(System.in);
+//            TUI.showMessage("What is the address of the Server?"); //TODO uncomment when done testing
+//            String host = scnr.nextLine();
+//            TUI.showMessage("What is the port of the server?");
+//            int port = 0;
+
+            String host = "localhost"; //TODO delete when done testing
+            int port = 5000; //TODO delete when done testing
 
             try {
-                port = scnr.nextInt();
+//                port = scnr.nextInt(); //TODO uncomment when done testing
+
                 InetAddress addr = InetAddress.getByName(host);
                 System.out.println("Attempting to connect to " + addr + ":" + port + "...");
                 clientSock = new Socket(addr, port);
@@ -70,11 +74,11 @@ public class Client {
                 System.out.println("Connected!\n----------------------------------------------------");
             } catch (IOException | InputMismatchException e) {
                 System.out.println("ERROR: could not create a socket on " + host + " and port " + port);
-                System.out.println("Do you want to try again? (yes/no)");
-                scnr.nextLine();
-                if (!scnr.nextLine().equals("yes")) {
-                    throw new ExitProgram("Exiting...");
-                }
+//                System.out.println("Do you want to try again? (yes/no)");
+//                scnr.nextLine();
+//                if (!scnr.nextLine().equals("yes")) { //TODO uncomment when done testing
+//                    throw new ExitProgram("Exiting...");
+//                }
             }
         }
     }
@@ -141,23 +145,21 @@ public class Client {
             while (!correctAnswer) {
                 TUI.showMessage("Do you want to create own game ('mp') or join available one if possible? ('join') or singleplayer? (Type 'sp', 'mp','join')");
                 Scanner scnr = new Scanner(System.in);
-                if (scnr.nextLine().equals("mp")) {
+                String input = scnr.nextLine();
+                if (input.equals("mp")) {
                     sendMessage(ProtocolMessages.PLAY + ProtocolMessages.CS + 2);
                     correctAnswer = true;
-                } else if (scnr.nextLine().equals("sp")) {
+                } else if (input.equals("sp")) {
                     sendMessage(ProtocolMessages.PLAY + ProtocolMessages.CS + 1);
-
                     correctAnswer = true;
-                } else if (scnr.nextLine().equals("join")) {
-
-
+                } else if (input.equals("join")) {
                     correctAnswer = true;
                 } else {
                     TUI.showMessage("Type 'sp', 'mp','join'");
                 }
 
             }
-
+            System.out.println("After a while"); //TODO
         } else if (result.split(";")[0].equals(ProtocolMessages.FAIL)) {
             TUI.showMessage(result.split(";")[1]);
         } else {

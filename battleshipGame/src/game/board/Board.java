@@ -2,6 +2,7 @@ package game.board;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class Board implements Serializable {
     private static final int ROWS = 10;
@@ -70,8 +71,7 @@ public class Board implements Serializable {
         //System.out.println(getFields().size()); // for testing purposes
         for (int i = 0; i < getFields().size(); i++) {
             // System.out.println(s+"TEST: "+getFields().get(i).getCoordinate()); //for testing purposes
-            if ((getFields().get(i).getCoordinate()).equals(s)) {
-
+            if ((getFields().get(i).getCoordinate()).equals(s.toLowerCase(Locale.ROOT))) {
                 result = i;
             }
         }
@@ -174,6 +174,11 @@ public class Board implements Serializable {
 
         }
         result += "\n" + append;
+        // Enter board representation so the board can be constructed from this string as well, syntax (BoardRepresentation:coordinate;positionState;hidden;shipType;isHit,...) so the string can be split using : into boardreperesentation (just for the case it's printed), then using , into seperate boardpostions and within boardpositon using ; the aspects of it can be seperated
+        result += "\nBoardRepresentation:";
+        for (boardPosition bp : this.getFields()) {
+            result += bp.getCoordinate() + ";" + bp.getState() + ";" + bp.getPositionHidden() + ";" + bp.getShipType() + ";" + bp.getIsHit() + ",";
+        }
         return result;
     }
 

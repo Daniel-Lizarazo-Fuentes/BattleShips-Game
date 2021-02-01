@@ -9,19 +9,21 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import game.Game;
+import game.board.Board;
+import game.board.boardPosition;
 import game.players.humanPlayer;
 import game.server.ProtocolMessages;
 
 public class ClientHandler implements Runnable {
-
+    private Board board;
     private BufferedReader in;
     private BufferedWriter out;
     private Socket sock;
     private Server srv;
     private String name;
     public boolean turn;
-    // private boolean ready;
-    private String move;
+
+
     private Game game;
 
     public ClientHandler(Socket sock, Server srv) {
@@ -31,8 +33,7 @@ public class ClientHandler implements Runnable {
             this.sock = sock;
             this.srv = srv;
             turn = false;
-            // ready = false;
-            move = null;
+
 
         } catch (IOException e) {
             shutdown();
@@ -59,21 +60,17 @@ public class ClientHandler implements Runnable {
         return this.out;
     }
 
-    public String[] getMove() {
-        writeOut(ProtocolMessages.TURN);
-        while (move.isEmpty()) {
-//TODO edit so plyaer that has turn and scores are sent
-            String[] input = this.move.split(";");
-            this.move = null;
-            if (input[0] == ProtocolMessages.MOVE && input.length >= 5 && input.length <= 9) {
-                return input;
-            }
-        }
-        return null;
-    }
-
-    //  public boolean isReady() {
-//        return this.ready;
+//    public String getMove() {
+//
+//
+////TODO edit so plyaer that has turn and scores are sent
+//        String[] input = this.move.split(";");
+//        this.move = null;
+//        if (input[0].equals(ProtocolMessages.MOVE)) {
+//            return input[1];
+//        }
+//
+//        return null;
 //    }
 
 
@@ -100,7 +97,7 @@ public class ClientHandler implements Runnable {
             switch (msgSplit[0]) {
 
                 case ProtocolMessages.JOIN:
-                 //   System.out.println("after join read");
+                    //   System.out.println("after join read");
                     if (msgSplit[1] != null) {
                         if (!srv.getPlayerNames().contains(msgSplit[1])) {
                             srv.addPlayerName(msgSplit[1]);
@@ -157,7 +154,8 @@ public class ClientHandler implements Runnable {
                     this.game.setMove(msgSplit[1]);
                     break;
                 case ProtocolMessages.DEPLOY:
-                    //TODO prob no implementation
+                    String boardString = msgSplit[1];
+                    toBoard(boardString);
                     break;
                 case ProtocolMessages.RADAR:
                     //TODO prob no implementation
@@ -177,6 +175,23 @@ public class ClientHandler implements Runnable {
         } catch (IOException e) {
             System.out.println("> [" + name + "] ERROR: could not send write a message out.");
         }
+    }
+
+    public Board toBoard(String boardString) {
+        Board result = new Board(false);
+        String lines[] = boardString.split("\\r?\\n");
+        String[] boardRepresentation = lines[12].split(":");
+        String[] boardPositions = boardRepresentation[1].split(",");
+        for (String boardPositionString : boardPositions) {
+            String[] boardPositionArray = boardPositionString.split(";");
+
+            boardPosition bp = new boardPosition(boardPositionArray[0], boardPosition.positionState.valueOf(boardPositionArray[1]), Boolean.parseBoolean(boardPositionArray[2]));
+            bp.setShipType(boardPositionArray[3]);
+            bp.setIsHit(Boolean.parseBoolean(boardPositionArray[4]));
+            result.getFields().set(result.getFieldIndex(boardPositionArray[0]), bp);
+
+        }
+        return result;
     }
 
     private void shutdown() {

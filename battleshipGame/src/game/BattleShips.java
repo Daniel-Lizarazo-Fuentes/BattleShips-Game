@@ -20,22 +20,24 @@ public class BattleShips {
             if (input.equals("Client")) {
                 System.out.println("----------------------------------------------------");
                 (new Client()).start();
-                System.out.println("\n----------------------------------------------------\nGoodbye!");
+                System.out.println("\n-----" +
+                        "-----------------------------------------------\nGoodbye!");
                 break;
             } else if (input.equals("Server")) {
                 boolean conditon2 = true;
                 while (conditon2) {
-                    System.out.println("What is the address?");
-                    String address = scnr.nextLine();
-                    int port = 5000;
-                    System.out.println("Want to change default port? Type 'Yes' if yes or press any other key to continue with default port 5000.");
+                    //System.out.println("What is the address?");
+                    //  String address = scnr.nextLine(); //TODO uncommented when done testing!
+                    String address = "localhost";//TODO delete when done testing
+                    int port = 5000; //TODO delete when done testing!
+                    // System.out.println("Want to change default port? Type 'Yes' if yes or press any other key to continue with default port 5000."); //TODO uncommented when done testing!
 
                     try {
-                        if (scnr.nextLine().equals("Yes")) {
-                            System.out.println("What is the port?");
-                            port = scnr.nextInt();
-
-                        }
+//                        if (scnr.nextLine().equals("Yes")) {
+//                            System.out.println("What is the port?"); //TODO uncommented when done testing!
+//                            port = scnr.nextInt();
+//
+//                        }
 
 
                         ServerSocket serverSock = new ServerSocket(port, 0, InetAddress.getByName(address));
@@ -44,7 +46,6 @@ public class BattleShips {
                         (new Thread(new Server(address, port))).start();
                         conditon = false;
                         conditon2 = false;
-
                     } catch (InputMismatchException e) {
                         System.out.println("The port needs to be an integer value!");
                     } catch (IOException e) {
@@ -52,7 +53,8 @@ public class BattleShips {
                     }
 
                     if (conditon && conditon2) {
-                        System.out.println("Would you like to try again? (yes/no)");
+                        System.out.println("Would you" +
+                                " like to try again? (yes/no)");
                         scnr.nextLine();
                         if (!scnr.nextLine().trim().equals("yes")) {
                             conditon = false;
