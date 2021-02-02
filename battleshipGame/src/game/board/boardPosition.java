@@ -8,7 +8,7 @@ public class boardPosition implements Serializable {
         SHIP,
         WRECK
     }
-
+    
     private String coordinate;
     private positionState state;
     private String shipType;

@@ -175,10 +175,10 @@ public class Board implements Serializable {
         }
         result += "\n" + append;
         // Enter board representation so the board can be constructed from this string as well, syntax (BoardRepresentation:coordinate;positionState;hidden;shipType;isHit,...) so the string can be split using : into boardreperesentation (just for the case it's printed), then using , into seperate boardpostions and within boardpositon using ; the aspects of it can be seperated
-        result += "\nBoardRepresentation:";
-        for (boardPosition bp : this.getFields()) {
-            result += bp.getCoordinate() + ";" + bp.getState() + ";" + bp.getPositionHidden() + ";" + bp.getShipType() + ";" + bp.getIsHit() + ",";
-        }
+//        result += "\nBoardRepresentation:";
+//        for (boardPosition bp : this.getFields()) {
+//            result += bp.getCoordinate() + ";" + bp.getState() + ";" + bp.getPositionHidden() + ";" + bp.getShipType() + ";" + bp.getIsHit() + ",";
+//        }
         return result;
     }
 

@@ -87,8 +87,25 @@ public class Game implements Runnable {
 
                 GamePlayers[0].setTurn(true);
 
-                fillBoardRandom(GameBoards[0], GamePlayers[0]);
-                fillBoardRandom(GameBoards[1], GamePlayers[1]);
+                // fillBoardRandom(GameBoards[0], GamePlayers[0]);
+                //  fillBoardRandom(GameBoards[1], GamePlayers[1]);
+                try {
+                    synchronized (gameList.get(0)) {
+                        gameList.get(0).wait();
+                    }
+                    System.out.println("Ready to play");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    synchronized (gameList.get(1)) {
+                        gameList.get(1).wait();
+                    }
+                    System.out.println("Ready to play");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
 //                System.out.println( GamePlayers[0].getName()+" board\n"+GameBoards[0].toString()); //TODO for testing
 //                System.out.println(GamePlayers[1].getName()+" board\n"+GameBoards[1].toString());
                 break;
@@ -103,6 +120,7 @@ public class Game implements Runnable {
             ClientHandler ch = getCH();
 
             if (ch != null) {
+
 
                 ch.writeOut(ProtocolMessages.TURN + ProtocolMessages.CS + ch.getName() + ProtocolMessages.CS + protocolMessage(updatePoints(GamePlayers[0], GamePlayers[1]))); //TODO ch.getName() might not work
                 try {
@@ -461,7 +479,6 @@ public class Game implements Runnable {
                     } catch (IndexOutOfBoundsException e) {
                         foundFittingField = false;
                     }
-
                 } else {
                     foundFittingField = false;
                 }
@@ -478,17 +495,14 @@ public class Game implements Runnable {
                     } catch (IndexOutOfBoundsException e) {
                         foundFittingField = false;
                     }
-
                 }
                 ArrayList<ArrayList<? extends Ship>> shipLists = player.getShipArrayList();
                 switch (shipName) {
                     case "CV":
-
                         shipLists.get(0).get(shipIndexInArrayList).setPositions(positions);
                         player.setShipArrayList(shipLists);
                         break;
                     case "BB":
-
                         shipLists.get(1).get(shipIndexInArrayList).setPositions(positions);
                         player.setShipArrayList(shipLists);
                         break;

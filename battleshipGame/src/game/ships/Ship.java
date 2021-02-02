@@ -6,7 +6,7 @@ public abstract class Ship {
     private int size;
     private int hitPoints;
     private String name;
-    private ArrayList<String> positions = new ArrayList<String>();
+    private ArrayList<String> positions = new ArrayList<>();
 
     public Ship(int size, int hitPoints, String name, ArrayList<String> positions) {
         this.size = size;

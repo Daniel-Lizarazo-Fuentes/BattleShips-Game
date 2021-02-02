@@ -39,23 +39,23 @@ public class humanPlayer implements Player {
 
         ArrayList<Carrier> carriers = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
-            carriers.add(new Carrier("carrier" + i, positions));
+            carriers.add(new Carrier("c" + i, positions));
         }
         ArrayList<Battleship> battleships = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            battleships.add(new Battleship("battleship" + i, positions));
+            battleships.add(new Battleship("b" + i, positions));
         }
         ArrayList<Destroyer> destroyers = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            destroyers.add(new Destroyer("destroyer" + i, positions));
+            destroyers.add(new Destroyer("d" + i, positions));
         }
         ArrayList<SuperPatrol> superPatrols = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
-            superPatrols.add(new SuperPatrol("SuperPatrol" + i, positions));
+            superPatrols.add(new SuperPatrol("s" + i, positions));
         }
         ArrayList<PatrolBoat> patrolBoats = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            patrolBoats.add(new PatrolBoat("PatrolBoat" + i, positions));
+            patrolBoats.add(new PatrolBoat("p" + i, positions));
         }
 
         shipLists.add(carriers);

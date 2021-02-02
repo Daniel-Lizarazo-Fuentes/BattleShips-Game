@@ -13,9 +13,12 @@ import game.board.Board;
 import game.board.boardPosition;
 import game.players.humanPlayer;
 import game.server.ProtocolMessages;
+import game.ships.Ship;
 
 public class ClientHandler implements Runnable {
     private Board board;
+    private ArrayList<ArrayList<? extends Ship>> shipLists;
+
     private BufferedReader in;
     private BufferedWriter out;
     private Socket sock;
@@ -39,6 +42,16 @@ public class ClientHandler implements Runnable {
             shutdown();
         }
     }
+
+    public Board getBoard() {
+        return this.board;
+    }
+
+
+    public ArrayList<ArrayList<? extends Ship>> getShipLists() {
+        return this.shipLists;
+    }
+
 
     public String getName() {
         return this.name;
@@ -155,7 +168,12 @@ public class ClientHandler implements Runnable {
                     break;
                 case ProtocolMessages.DEPLOY:
                     String boardString = msgSplit[1];
-                    toBoard(boardString);
+                    this.board = gridToBoard(boardString);
+                    ArrayList<ArrayList<? extends Ship>> shipLists = new ArrayList<>();
+                    this.shipLists = gridToShips(boardString);
+
+                    this.notifyAll();
+                    //   toBoard(boardString);
                     break;
                 case ProtocolMessages.RADAR:
                     //TODO prob no implementation
@@ -177,22 +195,109 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    public Board toBoard(String boardString) {
+    public ArrayList<ArrayList<? extends Ship>> gridToShips(String grid) {
+        ArrayList<ArrayList<? extends Ship>> result = new ArrayList<>();
+
+
+
+
+        String[] rows = grid.split(":");
+
+        int rowIndex = 0;
+        int collumIndex = 0;
+        char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+
+        for (String row : rows) {
+            String[] fields = row.split(",");
+            for (String field : fields) {
+                if (!field.equals("")) {
+                    String coordinate = alphabet[alphabet[collumIndex]] + Integer.toString(rowIndex);
+                    switch (field.charAt(0)) {
+                        case 'c':
+                            if (field.length() == 3) {
+                                result.get(0).get(field.charAt(1)).setPositions(result.get(0).get());
+                            }
+                            else if(field.length()==2) {
+                                result.get(0).get(field.charAt(1)).setPositions(result.get(0).get());
+
+                            }
+
+
+                            break;
+
+                        case 'b':
+
+                            break;
+
+                        case 'd':
+
+                            break;
+
+                        case 's':
+
+                            break;
+
+                        case 'p':
+
+                            break;
+
+                    }
+                    collumIndex++;
+                }
+            }
+            rowIndex++;
+        }
+
+
+    }
+    }
+
+    /**
+     * , for separating values in an array.
+     * : for separating arrays in a two dimensional array
+     *
+     * @param grid
+     * @return
+     */
+    public Board gridToBoard(String grid) {
         Board result = new Board(false);
-        String lines[] = boardString.split("\\r?\\n");
-        String[] boardRepresentation = lines[12].split(":");
-        String[] boardPositions = boardRepresentation[1].split(",");
-        for (String boardPositionString : boardPositions) {
-            String[] boardPositionArray = boardPositionString.split(";");
+        String[] rows = grid.split(":");
 
-            boardPosition bp = new boardPosition(boardPositionArray[0], boardPosition.positionState.valueOf(boardPositionArray[1]), Boolean.parseBoolean(boardPositionArray[2]));
-            bp.setShipType(boardPositionArray[3]);
-            bp.setIsHit(Boolean.parseBoolean(boardPositionArray[4]));
-            result.getFields().set(result.getFieldIndex(boardPositionArray[0]), bp);
+        int rowIndex = 0;
+        int collumIndex = 0;
+        char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
 
+        for (String row : rows) {
+            String[] fields = row.split(",");
+            for (String field : fields) {
+                if (!field.equals("")) {
+                    String coordinate = alphabet[alphabet[collumIndex]] + Integer.toString(rowIndex);
+                    result.getFields().get(result.getFieldIndex(coordinate)).setShipType(field);
+                    result.getFields().get(result.getFieldIndex(coordinate)).setState(boardPosition.positionState.SHIP);
+                }
+                collumIndex++;
+            }
+            rowIndex++;
         }
         return result;
+
     }
+
+//    public Board toBoard(String boardString) {
+//        Board result = new Board(false);
+//        String lines[] = boardString.split("\\r?\\n");
+//        String[] boardRepresentation = lines[12].split(":");
+//        String[] boardPositions = boardRepresentation[1].split(",");
+//        for (String boardPositionString : boardPositions) {
+//            String[] boardPositionArray = boardPositionString.split(";");
+//            boardPosition bp = new boardPosition(boardPositionArray[0], boardPosition.positionState.valueOf(boardPositionArray[1]), Boolean.parseBoolean(boardPositionArray[2]));
+//            bp.setShipType(boardPositionArray[3]);
+//            bp.setIsHit(Boolean.parseBoolean(boardPositionArray[4]));
+//            result.getFields().set(result.getFieldIndex(boardPositionArray[0]), bp);
+//
+//        }
+//        return result;
+//    }
 
     private void shutdown() {
         System.out.println("> [" + name + "] Shutting down.");
