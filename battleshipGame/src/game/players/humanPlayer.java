@@ -18,10 +18,10 @@ public class humanPlayer implements Player {
      * @param name of the player
      * @ensures the Player starts with 0 points
      */
-    public humanPlayer(String name, Board board) {
+    public humanPlayer(String name, Board board,ArrayList<ArrayList<? extends Ship>> shipLists) {
         this.name = name;
         this.points = 0;
-        this.shipLists = createShipArrays();
+        this.shipLists = shipLists;
         this.board = board;
     }
 

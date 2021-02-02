@@ -169,10 +169,13 @@ public class ClientHandler implements Runnable {
                 case ProtocolMessages.DEPLOY:
                     String boardString = msgSplit[1];
                     this.board = gridToBoard(boardString);
-                    ArrayList<ArrayList<? extends Ship>> shipLists = new ArrayList<>();
                     this.shipLists = gridToShips(boardString);
+                    writeOut(ProtocolMessages.READY);
 
-                    this.notifyAll();
+                    synchronized (this) {
+                        this.notifyAll();
+                    }
+
                     //   toBoard(boardString);
                     break;
                 case ProtocolMessages.RADAR:
@@ -237,19 +240,70 @@ public class ClientHandler implements Runnable {
             String[] fields = row.split(",");
             for (String field : fields) {
                 if (!field.equals("")) {
-                    String coordinate = alphabet[alphabet[collumIndex]] + Integer.toString(rowIndex);
-                    if (field.length() == 3) {
-                        //get carrierList, then carrier with two characters (number), the get is positions and add the coordinate
-                        result.get(0).get((field.charAt(1) + field.charAt(2))).getPositions().add(coordinate);
-                    } else if (field.length() == 2) {
-                        //get carrierList, then carrier with character (number), the get is positions and add the coordinate
-                        result.get(0).get(field.charAt(1)).getPositions().add(coordinate);
-                    } else {
-                        writeOut("Something went wrong when getting the ships from the grid");
+                    String coordinate = alphabet[collumIndex] + Integer.toString(rowIndex);
+                    switch (field.charAt(0)) {
+                        case 'c':
+                            if (field.length() == 3) {
+                                //get carrierList, then carrier with two characters (number), the get is positions and add the coordinate
+                                result.get(0).get((Character.getNumericValue(field.charAt(1) + field.charAt(2)))).getPositions().add(coordinate);
+                            } else if (field.length() == 2) {
+                                //get carrierList, then carrier with character (number), the get is positions and add the coordinate
+                                result.get(0).get(Character.getNumericValue(field.charAt(1))).getPositions().add(coordinate);
+                            } else {
+                                writeOut("Something went wrong when getting the ships from the grid");
+                            }
+                            break;
+                        case 'b':
+                            if (field.length() == 3) {
+                                //get carrierList, then carrier with two characters (number), the get is positions and add the coordinate
+                                result.get(1).get((Character.getNumericValue(field.charAt(1) + field.charAt(2)))).getPositions().add(coordinate);
+                            } else if (field.length() == 2) {
+                                //get carrierList, then carrier with character (number), the get is positions and add the coordinate
+                                result.get(1).get(Character.getNumericValue(field.charAt(1))).getPositions().add(coordinate);
+                            } else {
+                                writeOut("Something went wrong when getting the ships from the grid");
+                            }
+                            break;
+                        case 'd':
+                            if (field.length() == 3) {
+                                //get carrierList, then carrier with two characters (number), the get is positions and add the coordinate
+                                result.get(2).get((Character.getNumericValue(field.charAt(1) + field.charAt(2)))).getPositions().add(coordinate);
+                            } else if (field.length() == 2) {
+                                //get carrierList, then carrier with character (number), the get is positions and add the coordinate
+                                result.get(2).get(Character.getNumericValue(field.charAt(1))).getPositions().add(coordinate);
+                            } else {
+                                writeOut("Something went wrong when getting the ships from the grid");
+                            }
+                            break;
+                        case 's':
+                            if (field.length() == 3) {
+                                //get carrierList, then carrier with two characters (number), the get is positions and add the coordinate
+                                result.get(3).get((Character.getNumericValue(field.charAt(1) + field.charAt(2)))).getPositions().add(coordinate);
+                            } else if (field.length() == 2) {
+                                //get carrierList, then carrier with character (number), the get is positions and add the coordinate
+                                result.get(3).get(Character.getNumericValue(field.charAt(1))).getPositions().add(coordinate);
+                            } else {
+                                writeOut("Something went wrong when getting the ships from the grid");
+                            }
+                            break;
+                        case 'p':
+                            if (field.length() == 3) {
+                                //get carrierList, then carrier with two characters (number), the get is positions and add the coordinate
+                                result.get(4).get((Character.getNumericValue(field.charAt(1) + field.charAt(2)))).getPositions().add(coordinate);
+                            } else if (field.length() == 2) {
+                                //get carrierList, then carrier with character (number), the get is positions and add the coordinate
+                                result.get(4).get(Character.getNumericValue(field.charAt(1))).getPositions().add(coordinate);
+                            } else {
+                                writeOut("Something went wrong when getting the ships from the grid");
+                            }
+                            break;
+
                     }
+
                     collumIndex++;
                 }
             }
+            collumIndex = 0;
             rowIndex++;
         }
         return result;
@@ -260,6 +314,8 @@ public class ClientHandler implements Runnable {
         Board result = new Board(false);
         String[] rows = grid.split(":");
 
+        System.out.println(result.getFields().size());
+
         int rowIndex = 0;
         int collumIndex = 0;
         char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
@@ -268,16 +324,16 @@ public class ClientHandler implements Runnable {
             String[] fields = row.split(",");
             for (String field : fields) {
                 if (!field.equals("")) {
-                    String coordinate = alphabet[alphabet[collumIndex]] + Integer.toString(rowIndex);
+                    String coordinate = alphabet[collumIndex] + Integer.toString(rowIndex);
                     result.getFields().get(result.getFieldIndex(coordinate)).setShipType(field);
                     result.getFields().get(result.getFieldIndex(coordinate)).setState(boardPosition.positionState.SHIP);
                 }
                 collumIndex++;
             }
+            collumIndex = 0;
             rowIndex++;
         }
         return result;
-
     }
 
 //    public Board toBoard(String boardString) {

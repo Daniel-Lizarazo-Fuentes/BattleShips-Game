@@ -16,6 +16,7 @@ public class Board implements Serializable {
         this.fields = new ArrayList<>();
         this.coordinates = new ArrayList<>();
         fillCoordinates();
+       // System.out.println(coordinates.toString());
         fillFields(visible);
     }
 
@@ -105,9 +106,7 @@ public class Board implements Serializable {
         // (note that we also could've chosen to do each collum and add the row numbers as that would result in exactly the same)
         for (int k = 0; k < ROWS; k++) {
             for (int i = 0; i < COLUMNS; i++) {
-
                 setCoordinate(alphabet[i], k);
-
             }
 
         }

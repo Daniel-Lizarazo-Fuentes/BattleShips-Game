@@ -24,7 +24,6 @@ public class Client {
         TUI = new ClientTUI(this);
     }
 
-
     public void start() {
         try {
             createConnection();
