@@ -225,23 +225,23 @@ public class Game implements Runnable {
 
         ArrayList<Carrier> carriers = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
-            carriers.add(new Carrier("carrier" + i, positions));
+            carriers.add(new Carrier("c" + i, positions));
         }
         ArrayList<Battleship> battleships = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            battleships.add(new Battleship("battleship" + i, positions));
+            battleships.add(new Battleship("b" + i, positions));
         }
         ArrayList<Destroyer> destroyers = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            destroyers.add(new Destroyer("destroyer" + i, positions));
+            destroyers.add(new Destroyer("d" + i, positions));
         }
         ArrayList<SuperPatrol> superPatrols = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
-            superPatrols.add(new SuperPatrol("SuperPatrol" + i, positions));
+            superPatrols.add(new SuperPatrol("s" + i, positions));
         }
         ArrayList<PatrolBoat> patrolBoats = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            patrolBoats.add(new PatrolBoat("PatrolBoat" + i, positions));
+            patrolBoats.add(new PatrolBoat("p" + i, positions));
         }
 
         shipLists.add(carriers);
@@ -415,7 +415,7 @@ public class Game implements Runnable {
         String shipName;
         int i = 0;
         for (Ship sh : player.getShipArrayList().get(0)) {
-            shipName = "CV";
+            shipName = "c";
 
             checkAndPlaceRandom(board, sh, shipName, player, i);
             i++;
@@ -423,26 +423,26 @@ public class Game implements Runnable {
         }
         i = 0;
         for (Ship sh : player.getShipArrayList().get(1)) {
-            shipName = "BB";
+            shipName = "b";
             checkAndPlaceRandom(board, sh, shipName, player, i);
             i++;
         }
         i = 0;
         for (Ship sh : player.getShipArrayList().get(2)) {
-            shipName = "DD";
+            shipName = "d";
             checkAndPlaceRandom(board, sh, shipName, player, i);
             i++;
 
         }
         i = 0;
         for (Ship sh : player.getShipArrayList().get(3)) {
-            shipName = "SV";
+            shipName = "s";
             checkAndPlaceRandom(board, sh, shipName, player, i);
             i++;
         }
         i = 0;
         for (Ship sh : player.getShipArrayList().get(4)) {
-            shipName = "PV";
+            shipName = "p";
             checkAndPlaceRandom(board, sh, shipName, player, i);
             i++;
         }
@@ -498,23 +498,23 @@ public class Game implements Runnable {
                 }
                 ArrayList<ArrayList<? extends Ship>> shipLists = player.getShipArrayList();
                 switch (shipName) {
-                    case "CV":
+                    case "c":
                         shipLists.get(0).get(shipIndexInArrayList).setPositions(positions);
                         player.setShipArrayList(shipLists);
                         break;
-                    case "BB":
+                    case "b":
                         shipLists.get(1).get(shipIndexInArrayList).setPositions(positions);
                         player.setShipArrayList(shipLists);
                         break;
-                    case "DD":
+                    case "d":
                         shipLists.get(2).get(shipIndexInArrayList).setPositions(positions);
                         player.setShipArrayList(shipLists);
                         break;
-                    case "SV":
+                    case "s":
                         shipLists.get(3).get(shipIndexInArrayList).setPositions(positions);
                         player.setShipArrayList(shipLists);
                         break;
-                    case "PV":
+                    case "p":
                         shipLists.get(4).get(shipIndexInArrayList).setPositions(positions);
                         player.setShipArrayList(shipLists);
                         break;

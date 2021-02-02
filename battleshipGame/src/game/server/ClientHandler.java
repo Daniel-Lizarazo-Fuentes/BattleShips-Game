@@ -13,7 +13,7 @@ import game.board.Board;
 import game.board.boardPosition;
 import game.players.humanPlayer;
 import game.server.ProtocolMessages;
-import game.ships.Ship;
+import game.ships.*;
 
 public class ClientHandler implements Runnable {
     private Board board;
@@ -196,9 +196,35 @@ public class ClientHandler implements Runnable {
     }
 
     public ArrayList<ArrayList<? extends Ship>> gridToShips(String grid) {
+        ArrayList<String> positions = new ArrayList<>();
         ArrayList<ArrayList<? extends Ship>> result = new ArrayList<>();
 
+        ArrayList<Carrier> carriers = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            carriers.add(new Carrier("c" + i, positions));
+        }
+        ArrayList<Battleship> battleships = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            battleships.add(new Battleship("b" + i, positions));
+        }
+        ArrayList<Destroyer> destroyers = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            destroyers.add(new Destroyer("d" + i, positions));
+        }
+        ArrayList<SuperPatrol> superPatrols = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            superPatrols.add(new SuperPatrol("s" + i, positions));
+        }
+        ArrayList<PatrolBoat> patrolBoats = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            patrolBoats.add(new PatrolBoat("p" + i, positions));
+        }
 
+        result.add(carriers);
+        result.add(battleships);
+        result.add(destroyers);
+        result.add(superPatrols);
+        result.add(patrolBoats);
 
 
         String[] rows = grid.split(":");
@@ -212,53 +238,24 @@ public class ClientHandler implements Runnable {
             for (String field : fields) {
                 if (!field.equals("")) {
                     String coordinate = alphabet[alphabet[collumIndex]] + Integer.toString(rowIndex);
-                    switch (field.charAt(0)) {
-                        case 'c':
-                            if (field.length() == 3) {
-                                result.get(0).get(field.charAt(1)).setPositions(result.get(0).get());
-                            }
-                            else if(field.length()==2) {
-                                result.get(0).get(field.charAt(1)).setPositions(result.get(0).get());
-
-                            }
-
-
-                            break;
-
-                        case 'b':
-
-                            break;
-
-                        case 'd':
-
-                            break;
-
-                        case 's':
-
-                            break;
-
-                        case 'p':
-
-                            break;
-
+                    if (field.length() == 3) {
+                        //get carrierList, then carrier with two characters (number), the get is positions and add the coordinate
+                        result.get(0).get((field.charAt(1) + field.charAt(2))).getPositions().add(coordinate);
+                    } else if (field.length() == 2) {
+                        //get carrierList, then carrier with character (number), the get is positions and add the coordinate
+                        result.get(0).get(field.charAt(1)).getPositions().add(coordinate);
+                    } else {
+                        writeOut("Something went wrong when getting the ships from the grid");
                     }
                     collumIndex++;
                 }
             }
             rowIndex++;
         }
-
-
-    }
+        return result;
     }
 
-    /**
-     * , for separating values in an array.
-     * : for separating arrays in a two dimensional array
-     *
-     * @param grid
-     * @return
-     */
+
     public Board gridToBoard(String grid) {
         Board result = new Board(false);
         String[] rows = grid.split(":");
