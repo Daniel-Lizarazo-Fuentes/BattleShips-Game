@@ -3,6 +3,11 @@ package game.server;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
+/**
+ * --------------------------------------------------------------------------------------------
+ *
+ * --------------------------------------------------------------------------------------------
+ */
 public class ServerTUI {
     private PrintWriter console;
 

@@ -9,7 +9,11 @@ import game.players.*;
 import game.Game;
 
 
-
+/**
+ * --------------------------------------------------------------------------------------------
+ *
+ * --------------------------------------------------------------------------------------------
+ */
 public class Server implements Runnable {
     private ServerSocket serverSock;
     private ArrayList<String> playerNames = new ArrayList<>();

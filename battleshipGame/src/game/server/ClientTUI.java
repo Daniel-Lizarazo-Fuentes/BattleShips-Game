@@ -10,6 +10,12 @@ import game.board.boardPosition;
 import game.exceptions.ExitProgram;
 import game.ships.*;
 
+
+/**
+ * --------------------------------------------------------------------------------------------
+ *
+ * --------------------------------------------------------------------------------------------
+ */
 public class ClientTUI {
     private Client c;
     public boolean turn;

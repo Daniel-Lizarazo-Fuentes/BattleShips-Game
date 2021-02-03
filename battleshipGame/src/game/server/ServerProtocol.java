@@ -2,7 +2,11 @@ package game.server;
 
 
 import java.util.ArrayList;
-
+/**
+ * --------------------------------------------------------------------------------------------
+ *
+ * --------------------------------------------------------------------------------------------
+ */
 public class ServerProtocol {
     /**
      * Server Listens for connections on port 5000 by default.

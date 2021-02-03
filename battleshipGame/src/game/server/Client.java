@@ -13,7 +13,11 @@ import java.util.Scanner;
 import game.exceptions.ExitProgram;
 import game.exceptions.ServerUnavailableException;
 
-
+/**
+ * --------------------------------------------------------------------------------------------
+ *
+ * --------------------------------------------------------------------------------------------
+ */
 public class Client {
     private Socket clientSock;
     private BufferedReader in;
