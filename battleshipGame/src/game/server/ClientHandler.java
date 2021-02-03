@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import game.Game;
 import game.board.Board;
 import game.board.boardPosition;
-import game.players.humanPlayer;
-import game.server.ProtocolMessages;
 import game.ships.*;
 
 public class ClientHandler implements Runnable {
@@ -73,18 +71,7 @@ public class ClientHandler implements Runnable {
         return this.out;
     }
 
-//    public String getMove() {
-//
-//
-////TODO edit so plyaer that has turn and scores are sent
-//        String[] input = this.move.split(";");
-//        this.move = null;
-//        if (input[0].equals(ProtocolMessages.MOVE)) {
-//            return input[1];
-//        }
-//
-//        return null;
-//    }
+
 
 
     @Override
@@ -145,7 +132,7 @@ public class ClientHandler implements Runnable {
                             ArrayList<ClientHandler> singlePlayerList = new ArrayList<>();
                             singlePlayerList.add(this);
                             Game singlePlayerGame = new Game(singlePlayerList);
-                            new Thread(singlePlayerGame).start();
+                            new Thread(singlePlayerGame).start(); //TODO
                             srv.getGameList().add(singlePlayerGame);
 
                         } else if (numberOfPlayers == 2) {
@@ -165,6 +152,7 @@ public class ClientHandler implements Runnable {
 
                 case ProtocolMessages.MOVE:
                     this.game.setMove(msgSplit[1]);
+
                     break;
                 case ProtocolMessages.DEPLOY:
                     String boardString = msgSplit[1];

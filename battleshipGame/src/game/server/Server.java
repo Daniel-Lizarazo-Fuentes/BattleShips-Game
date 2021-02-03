@@ -1,18 +1,14 @@
 package game.server;
 
-
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.List;
 import java.io.IOException;
 import java.net.InetAddress;
-
 import game.players.*;
 import game.Game;
 
-import game.exceptions.*;
-import game.server.ProtocolMessages;
+
 
 public class Server implements Runnable {
     private ServerSocket serverSock;
@@ -23,10 +19,6 @@ public class Server implements Runnable {
 
     private ArrayList<Player> ready;
     private Game game;
-
-
-    private int playerCount;
-    public boolean wait = false;
     public String result = null;
 
     private ArrayList<ClientHandler> waitingList = new ArrayList<>();
@@ -43,7 +35,6 @@ public class Server implements Runnable {
 
         ready = new ArrayList<Player>();
         game = null;
-        playerCount = 1;
         this.address = address;
         this.port = port;
     }
@@ -54,10 +45,6 @@ public class Server implements Runnable {
 
     public void addPlayerName(String name) {
         this.playerNames.add(name);
-
-    }
-
-    public void initGame(ArrayList<Player> ready) {
 
     }
 
@@ -81,7 +68,7 @@ public class Server implements Runnable {
             setup();
             while (true) {
                 connect();
-              //  startGame();
+                //  startGame();
             }
         }
         TUI.showMessage("See you later!");
@@ -118,6 +105,20 @@ public class Server implements Runnable {
         } catch (IOException e) {
         }
     }
+
+//    public void connectBot() {
+//        Socket sock;
+//        try {
+//            sock = serverSock.accept();
+//            TUI.showMessage("[Server] New AI connected!");
+//            ClientHandler handler = new ClientHandler(sock, this);
+//            new Thread(handler).start();
+//            waitingList.add(handler);
+//
+//        } catch (IOException e) {
+//
+//        }
+//    } //TODO
 
     public void setup() {
         serverSock = null;

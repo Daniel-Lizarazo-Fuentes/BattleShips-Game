@@ -7,16 +7,12 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class randomComputerPlayer implements Player {
-
-    private  String name ;
+    private String name;
     private int points;
     private Board board;
-    private boolean hasTurn= false;
-    private ArrayList<ArrayList<? extends Ship>> shipLists = new ArrayList<>();
+    private ArrayList<ArrayList<? extends Ship>> shipLists;
+    private boolean hasTurn=false;
 
-    /**
-     * @ensures the Player starts with 0 points
-     */
     public randomComputerPlayer(Board board) {
         this.points = 0;
         this.shipLists = createShipArrays();
@@ -24,6 +20,24 @@ public class randomComputerPlayer implements Player {
         this.name= "Random Computer Player-"+((int) (Math.random() * (1000000) + 1));
 
     }
+//    /**
+//     * @param name of the player
+//     * @ensures the Player starts with 0 points
+//     */
+//    public randomComputerPlayer(String name, Board board,ArrayList<ArrayList<? extends Ship>> shipLists) {
+//        this.name = name;
+//        this.points = 0;
+//        this.shipLists = shipLists;
+//        this.board = board;
+//    }
+
+    public boolean getTurn(){
+        return this.hasTurn;
+    }
+    public void setTurn(boolean turn){
+        this.hasTurn=turn;
+    }
+
     public ArrayList<ArrayList<? extends Ship>> createShipArrays() {
         // create the ship arrays for player but without positions yet
         ArrayList<String> positions = new ArrayList<>();
@@ -31,23 +45,23 @@ public class randomComputerPlayer implements Player {
 
         ArrayList<Carrier> carriers = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
-            carriers.add(new Carrier("carrier" + i, positions));
+            carriers.add(new Carrier("c" + i, positions));
         }
         ArrayList<Battleship> battleships = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            battleships.add(new Battleship("battleship" + i, positions));
+            battleships.add(new Battleship("b" + i, positions));
         }
         ArrayList<Destroyer> destroyers = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            destroyers.add(new Destroyer("destroyer" + i, positions));
+            destroyers.add(new Destroyer("d" + i, positions));
         }
         ArrayList<SuperPatrol> superPatrols = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
-            superPatrols.add(new SuperPatrol("SuperPatrol" + i, positions));
+            superPatrols.add(new SuperPatrol("s" + i, positions));
         }
         ArrayList<PatrolBoat> patrolBoats = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            patrolBoats.add(new PatrolBoat("PatrolBoat" + i, positions));
+            patrolBoats.add(new PatrolBoat("p" + i, positions));
         }
 
         shipLists.add(carriers);
@@ -58,13 +72,6 @@ public class randomComputerPlayer implements Player {
 
         return shipLists;
 
-    }
-
-    public boolean getTurn(){
-        return this.hasTurn;
-    }
-    public void setTurn(boolean turn){
-        this.hasTurn=turn;
     }
     /**
      * Sets the board of a player
@@ -92,6 +99,7 @@ public class randomComputerPlayer implements Player {
     public void setShipArrayList(ArrayList<ArrayList<? extends Ship>> shipLists) {
         this.shipLists = shipLists;
     }
+
 
     /**
      * Returns the arraylist whith ship arraylists, used for scores
@@ -128,10 +136,6 @@ public class randomComputerPlayer implements Player {
     public void setPoints(int i) {
         this.points = i;
     }
-
-    /**
-     * Adds points based on what ship was sunk
-     */
 
 
 }

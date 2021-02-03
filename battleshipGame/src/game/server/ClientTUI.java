@@ -55,42 +55,46 @@ public class ClientTUI {
                     //show scores
                     //   Integer[] scoreArray = stringToIntArray(input.split(";")[2]);
                     //  showMessage("p1 score: "+scoreArray[0]+"p2 score: "+scoreArray[1]);
+                //    if (this.name.contains("Random Computer Player-")) {
 
 
-                    Scanner scnr = new Scanner(System.in);
-                    showMessage("----------------------------------------------------");
-                    showMessage("Input your salvo:");
-                    userInput = scnr.nextLine();
-                    handleMove(userInput);
+                  //  } else {
+                        Scanner scnr = new Scanner(System.in);
+                        showMessage("----------------------------------------------------");
+                        showMessage("Input your salvo:");
+                        userInput = scnr.nextLine();
+                        handleMove(userInput);
 
-                    String[] messageFromServer = c.readLineFromServer().split(ProtocolMessages.CS);
-                    if (messageFromServer[0].equals(ProtocolMessages.HIT)) {
+                        String[] messageFromServer = c.readLineFromServer().split(ProtocolMessages.CS);
+                        if (messageFromServer[0].equals(ProtocolMessages.HIT)) {
 
-                        if (messageFromServer[1].equals("-1")) {
+                            if (messageFromServer[1].equals("-1")) {
+
+                            } else {
+                                boardPosition bp = enemyBoard.getFields().get(enemyBoard.getFieldIndex(userInput));
+                                bp.setPositionHidden(false);
+                                if (!messageFromServer[1].equals("0")) {
+                                    bp.setState(boardPosition.positionState.WRECK);
+                                    bp.setIsHit(true);
+                                }
+                            }
+                            if (messageFromServer[1].equals("0")) {
+                                showMessage("Miss");
+                            } else if (messageFromServer[1].equals("1")) {
+                                showMessage("Hit");
+                                points++;
+                            } else if (messageFromServer[1].equals("2")) {
+                                showMessage("Hit and Sunk");
+                                points += 2;
+                            } else if (messageFromServer[1].equals("-1")) {
+                                showMessage("Invalid coordinate");
+                            }
 
                         } else {
-                            boardPosition bp = enemyBoard.getFields().get(enemyBoard.getFieldIndex(userInput));
-                            bp.setPositionHidden(false);
-                            if (!messageFromServer[1].equals("0")) {
-                                bp.setState(boardPosition.positionState.WRECK);
-                                bp.setIsHit(true);
-                            }
+                            showMessage("Invalid message");
                         }
-                        if (messageFromServer[1].equals("0")) {
-                            showMessage("Miss");
-                        } else if (messageFromServer[1].equals("1")) {
-                            showMessage("Hit");
-                            points++;
-                        } else if (messageFromServer[1].equals("2")) {
-                            showMessage("Hit and Sunk");
-                            points+=2;
-                        } else if (messageFromServer[1].equals("-1")) {
-                            showMessage("Invalid coordinate");
-                        }
+                   // }
 
-                    } else {
-                        showMessage("Invalid message");
-                    }
 
                 } else if (input.split(";")[0].equals(ProtocolMessages.HIT)) {
 
@@ -292,6 +296,7 @@ public class ClientTUI {
 
     public void handleMove(String input) throws game.exceptions.ExitProgram, game.exceptions.ServerUnavailableException {
         c.sendMessage(ProtocolMessages.MOVE + ProtocolMessages.CS + input);
+
     }
 
     public void showMessage(String msg) {
