@@ -5,13 +5,14 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.io.IOException;
 import java.net.InetAddress;
+
 import game.players.*;
 import game.Game;
 
 
 /**
  * --------------------------------------------------------------------------------------------
- *
+ * <p>
  * --------------------------------------------------------------------------------------------
  */
 public class Server implements Runnable {
@@ -78,6 +79,7 @@ public class Server implements Runnable {
         TUI.showMessage("See you later!");
     }
 
+//------------------- Old implementation  ---------------------//
 //    public void startGame() {
 //        ArrayList<Game> players = new ArrayList<>();
 //        players.addAll(gameList);
@@ -90,13 +92,27 @@ public class Server implements Runnable {
 //
 //    }
 
-    public void addToReadyList(ClientHandler ch) {
-        if (waitingList.contains(ch)) {
-            readyList.add(ch);
-            waitingList.remove(ch);
-        }
-    }
+//    public void addToReadyList(ClientHandler ch) {
+//        if (waitingList.contains(ch)) {
+//            readyList.add(ch);
+//            waitingList.remove(ch);
+//        }
+    // }
 
+
+    //    public void connectBot() {
+//        Socket sock;
+//        try {
+//            sock = serverSock.accept();
+//            TUI.showMessage("[Server] New AI connected!");
+//            ClientHandler handler = new ClientHandler(sock, this);
+//            new Thread(handler).start();
+//            waitingList.add(handler);
+//
+//        } catch (IOException e) {
+//
+//        }
+//    }
     public void connect() {
         Socket sock;
         try {
@@ -109,20 +125,6 @@ public class Server implements Runnable {
         } catch (IOException e) {
         }
     }
-
-//    public void connectBot() {
-//        Socket sock;
-//        try {
-//            sock = serverSock.accept();
-//            TUI.showMessage("[Server] New AI connected!");
-//            ClientHandler handler = new ClientHandler(sock, this);
-//            new Thread(handler).start();
-//            waitingList.add(handler);
-//
-//        } catch (IOException e) {
-//
-//        }
-//    } //TODO
 
     public void setup() {
         serverSock = null;
@@ -142,16 +144,18 @@ public class Server implements Runnable {
         this.clients.remove(client);
     }
 
-    public void getReady(Player player) {
-        ready.add(player);
-    }
+    //------------------- Old implementation  ---------------------//
 
-    public boolean inList(Player player) {
-        if (ready.contains(player)) {
-            return true;
-        }
-        return false;
-    }
+//    public void getReady(Player player) {
+//        ready.add(player);
+//    }
+//
+//    public boolean inList(Player player) {
+//        if (ready.contains(player)) {
+//            return true;
+//        }
+//        return false;
+//    }
 
 
 }

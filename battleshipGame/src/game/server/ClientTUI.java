@@ -1,10 +1,7 @@
 package game.server;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.Scanner;
-
-import game.Game;
 import game.board.Board;
 import game.board.boardPosition;
 import game.exceptions.ExitProgram;
@@ -61,45 +58,45 @@ public class ClientTUI {
                     //show scores
                     //   Integer[] scoreArray = stringToIntArray(input.split(";")[2]);
                     //  showMessage("p1 score: "+scoreArray[0]+"p2 score: "+scoreArray[1]);
-                //    if (this.name.contains("Random Computer Player-")) {
+                    //    if (this.name.contains("Random Computer Player-")) {
 
 
-                  //  } else {
-                        Scanner scnr = new Scanner(System.in);
-                        showMessage("----------------------------------------------------");
-                        showMessage("Input your salvo:");
-                        userInput = scnr.nextLine();
-                        handleMove(userInput);
+                    //  } else {
+                    Scanner scnr = new Scanner(System.in);
+                    showMessage("----------------------------------------------------");
+                    showMessage("Input your salvo:");
+                    userInput = scnr.nextLine();
+                    handleMove(userInput);
 
-                        String[] messageFromServer = c.readLineFromServer().split(ProtocolMessages.CS);
-                        if (messageFromServer[0].equals(ProtocolMessages.HIT)) {
+                    String[] messageFromServer = c.readLineFromServer().split(ProtocolMessages.CS);
+                    if (messageFromServer[0].equals(ProtocolMessages.HIT)) {
 
-                            if (messageFromServer[1].equals("-1")) {
-
-                            } else {
-                                boardPosition bp = enemyBoard.getFields().get(enemyBoard.getFieldIndex(userInput));
-                                bp.setPositionHidden(false);
-                                if (!messageFromServer[1].equals("0")) {
-                                    bp.setState(boardPosition.positionState.WRECK);
-                                    bp.setIsHit(true);
-                                }
-                            }
-                            if (messageFromServer[1].equals("0")) {
-                                showMessage("Miss");
-                            } else if (messageFromServer[1].equals("1")) {
-                                showMessage("Hit");
-                                points++;
-                            } else if (messageFromServer[1].equals("2")) {
-                                showMessage("Hit and Sunk");
-                                points += 2;
-                            } else if (messageFromServer[1].equals("-1")) {
-                                showMessage("Invalid coordinate");
-                            }
+                        if (messageFromServer[1].equals("-1")) {
 
                         } else {
-                            showMessage("Invalid message");
+                            boardPosition bp = enemyBoard.getFields().get(enemyBoard.getFieldIndex(userInput));
+                            bp.setPositionHidden(false);
+                            if (!messageFromServer[1].equals("0")) {
+                                bp.setState(boardPosition.positionState.WRECK);
+                                bp.setIsHit(true);
+                            }
                         }
-                   // }
+                        if (messageFromServer[1].equals("0")) {
+                            showMessage("Miss");
+                        } else if (messageFromServer[1].equals("1")) {
+                            showMessage("Hit");
+                            points++;
+                        } else if (messageFromServer[1].equals("2")) {
+                            showMessage("Hit and Sunk");
+                            points += 2;
+                        } else if (messageFromServer[1].equals("-1")) {
+                            showMessage("Invalid coordinate");
+                        }
+
+                    } else {
+                        showMessage("Invalid message");
+                    }
+                    // }
 
 
                 } else if (input.split(";")[0].equals(ProtocolMessages.HIT)) {
@@ -145,7 +142,7 @@ public class ClientTUI {
         }
 
     }
-
+//------------------- Old implementation  ---------------------//
 //    public Integer[] stringToIntArray(String input) {
 //        Integer[] intArray = new Integer[2];
 //        String[] intValues = input.split(",");
@@ -357,19 +354,19 @@ public class ClientTUI {
 
     }
 
-
-    public int getNumberOfPlayers() {
-        return 2;
-    }
-
-    public boolean getBoolean(String question) {
-        return false;
-    }
-
-    public String getReady() {
-        Scanner scnr = new Scanner(System.in);
-        return scnr.nextLine();
-    }
+    //------------------- Old implementation  ---------------------//
+//    public int getNumberOfPlayers() {
+//        return 2;
+//    }
+//
+//    public boolean getBoolean(String question) {
+//        return false;
+//    }
+//
+//    public String getReady() {
+//        Scanner scnr = new Scanner(System.in);
+//        return scnr.nextLine();
+//    }
 
 
 }

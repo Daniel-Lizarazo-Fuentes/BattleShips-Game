@@ -329,6 +329,7 @@ public class ClientHandler implements Runnable {
         return result;
     }
 
+    //------------------- Old implementation  ---------------------//
 //    public Board toBoard(String boardString) {
 //        Board result = new Board(false);
 //        String lines[] = boardString.split("\\r?\\n");
