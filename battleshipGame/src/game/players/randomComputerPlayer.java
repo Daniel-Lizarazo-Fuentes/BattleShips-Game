@@ -4,20 +4,30 @@ import game.ships.*;
 import game.board.*;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
+/**
+ * --------------------------------------------------------------------------------------------
+ * This class is the blueprint for a randomComputerPlayer, meaning an ai which fires on valid
+ * fields randomly. It also implements the Player interface. It has similar characteristics
+ * to the humanPlayer.
+ * The main characteristics are that this player implementation has a name, a board and an
+ * ArrayList containing multiple ArrayLists which in turn have ships in them.
+ * So this is one single ArrayList for all ArrayLists which contain all different ships.
+ * --------------------------------------------------------------------------------------------
+ */
 public class randomComputerPlayer implements Player {
     private String name;
     private int points;
     private Board board;
     private ArrayList<ArrayList<? extends Ship>> shipLists;
-    private boolean hasTurn=false;
+    private boolean hasTurn = false;
+
 
     public randomComputerPlayer(Board board) {
         this.points = 0;
         this.shipLists = createShipArrays();
         this.board = board;
-        this.name= "Random Computer Player-"+((int) (Math.random() * (1000000) + 1));
+        this.name = "Random Computer Player-" + ((int) (Math.random() * (1000000) + 1));
 
     }
 //    /**
@@ -31,11 +41,12 @@ public class randomComputerPlayer implements Player {
 //        this.board = board;
 //    }
 
-    public boolean getTurn(){
+    public boolean getTurn() {
         return this.hasTurn;
     }
-    public void setTurn(boolean turn){
-        this.hasTurn=turn;
+
+    public void setTurn(boolean turn) {
+        this.hasTurn = turn;
     }
 
     public ArrayList<ArrayList<? extends Ship>> createShipArrays() {
@@ -73,6 +84,7 @@ public class randomComputerPlayer implements Player {
         return shipLists;
 
     }
+
     /**
      * Sets the board of a player
      *
@@ -137,5 +149,22 @@ public class randomComputerPlayer implements Player {
         this.points = i;
     }
 
+    public String fire(Board defenderBoard) {
+        char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+        Board board = defenderBoard;
+        while (true) {
+            int randomColumn = (int) (Math.random() * (board.getColumns() + 1));
+            int randomRow = (int) (Math.random() * (board.getRows() + 1));
+            String input = alphabet[randomColumn] + Integer.toString(randomRow);
+            // check if existing position
+            if (board.getFieldIndex(input) != -1) {
+                // check if position was already hit
+                if (!board.getFields().get(board.getFieldIndex(input)).getIsHit()) {
+                   System.out.println("On fire: "+input);
+                    return input;
+                }
+            }
+        }
+    }
 
 }

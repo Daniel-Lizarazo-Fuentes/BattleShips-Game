@@ -5,6 +5,12 @@ import game.board.*;
 
 import java.util.ArrayList;
 
+/**
+ * --------------------------------------------------------------------------------------------
+ * This class is the interface for creating Players and it states the main methods which a
+ * Player (be it computer or human) would use.
+ * --------------------------------------------------------------------------------------------
+ */
 public interface Player {
 
     public boolean getTurn();

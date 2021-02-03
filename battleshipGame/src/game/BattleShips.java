@@ -16,7 +16,8 @@ import game.server.Server;
  * will create a Server or a Client (when a client is created the user can play the game).
  * To play the game 1 server must be started, then multiple clients can connect and play the game.
  * --------------------------------------------------------------------------------------------
- * This class has to be run 1 time for each client/server which the user want's to create.
+ * This class has to be run 1 time for each client/server which the user wants to create.
+ * (so for multiplayer at least 3 times, 1 server and two clients)
  * --------------------------------------------------------------------------------------------
  */
 public class BattleShips {
@@ -48,7 +49,6 @@ public class BattleShips {
 //                            port = scnr.nextInt();
 //
 //                        }
-
 
                         ServerSocket serverSock = new ServerSocket(port, 0, InetAddress.getByName(address));
                         System.out.println("----------------------------------------------------");

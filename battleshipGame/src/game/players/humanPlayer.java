@@ -4,8 +4,15 @@ import game.ships.*;
 import game.board.*;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
+/**
+ * --------------------------------------------------------------------------------------------
+ * This class is the blueprint for a humanPlayer. It also impelemts the Player interface.
+ * The main characteristics are that the player has a name, a board and an ArrayList containing
+ * multiple ArrayLists which in turn have ships in them. So this is one single ArrayList for
+ * all ArrayLists which contain all different ships.
+ * --------------------------------------------------------------------------------------------
+ */
 public class humanPlayer implements Player {
     private String name;
     private int points;

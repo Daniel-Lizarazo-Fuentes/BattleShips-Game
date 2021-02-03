@@ -4,6 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Locale;
 
+/**
+ * --------------------------------------------------------------------------------------------
+ * This class is the blueprint for the board, it's main characteristic is an ArrayList of
+ * boardPositions which are fields of the board.
+ * The coordinates ArrayList is contains all coordinates in on the board and are used for a
+ * mutlitude of functions but mainly searching and creating fields.
+ * --------------------------------------------------------------------------------------------
+ */
 public class Board implements Serializable {
     private static final int ROWS = 10;
     private static final int COLUMNS = 15;
