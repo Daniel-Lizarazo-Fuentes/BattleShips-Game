@@ -13,11 +13,7 @@ import game.board.Board;
 import game.board.boardPosition;
 import game.ships.*;
 
-/**
- * --------------------------------------------------------------------------------------------
- *
- * --------------------------------------------------------------------------------------------
- */
+
 public class ClientHandler implements Runnable {
     private Board board;
     private ArrayList<ArrayList<? extends Ship>> shipLists;
@@ -77,8 +73,12 @@ public class ClientHandler implements Runnable {
     }
 
 
-
-
+    /**
+     * -------------------------------------------------------------------
+     * Make ClientHandler implement Runnable
+     * Displays message on server and shuts down afterwards
+     * -------------------------------------------------------------------
+     */
     @Override
     public void run() {
         String msg;
@@ -95,14 +95,19 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Handles string command which it receives from the server
+     * @param msg message to handle
+     * @throws IOException exception which is thrown
+     */
     private void handleCommand(String msg) throws IOException {
-//        System.out.println("handlecommand called");
+//        System.out.println("handlecommand called"); //testing
         if (msg != null && !msg.isEmpty()) {
             String[] msgSplit = msg.split(ProtocolMessages.CS);
             switch (msgSplit[0]) {
 
                 case ProtocolMessages.JOIN:
-                    //   System.out.println("after join read");
+                    //   System.out.println("after join read"); //testing
                     if (msgSplit[1] != null) {
                         if (!srv.getPlayerNames().contains(msgSplit[1])) {
                             srv.addPlayerName(msgSplit[1]);
@@ -191,6 +196,11 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Creates Arraylist with of arraylist ships whith ships which don't have positions
+     * @param grid
+     * @return Arraylist with of arraylist ships whith ships which don't have positions
+     */
     public ArrayList<ArrayList<? extends Ship>> gridToShips(String grid) {
         ArrayList<String> positions = new ArrayList<>();
         ArrayList<ArrayList<? extends Ship>> result = new ArrayList<>();
@@ -302,7 +312,11 @@ public class ClientHandler implements Runnable {
         return result;
     }
 
-
+    /**
+     * Creates a board from a gird received from the server
+     * @param grid grid received from server
+     * @return a Board created from the grid
+     */
     public Board gridToBoard(String grid) {
         Board result = new Board(false);
         String[] rows = grid.split(":");
@@ -346,6 +360,9 @@ public class ClientHandler implements Runnable {
 //        return result;
 //    }
 
+    /**
+     * Shuts the Clienthandler down and removes it from the server
+     */
     private void shutdown() {
         System.out.println("> [" + name + "] Shutting down.");
         try {
