@@ -12,7 +12,7 @@ import game.Game;
 
 /**
  * --------------------------------------------------------------------------------------------
- * <p>
+ * This class implements the Server and communicates what is happening in the server to the user
  * --------------------------------------------------------------------------------------------
  */
 public class Server implements Runnable {

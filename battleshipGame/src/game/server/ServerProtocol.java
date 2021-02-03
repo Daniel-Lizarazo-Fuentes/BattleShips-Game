@@ -4,7 +4,7 @@ package game.server;
 import java.util.ArrayList;
 /**
  * --------------------------------------------------------------------------------------------
- *
+ * The was the  Server Protocol that we received and had to implement in our program.
  * --------------------------------------------------------------------------------------------
  */
 public class ServerProtocol {

@@ -37,18 +37,18 @@ public class BattleShips {
             } else if (input.toLowerCase(Locale.ROOT).equals("server")) {
                 boolean conditon2 = true;
                 while (conditon2) {
-                    //System.out.println("What is the address?");
-                    //  String address = scnr.nextLine(); //TODO uncommented when done testing!
-                    String address = "localhost";//TODO delete when done testing
-                    int port = 5000; //TODO delete when done testing!
-                    // System.out.println("Want to change default port? Type 'Yes' if yes or press any other key to continue with default port 5000."); //TODO uncommented when done testing!
+                    System.out.println("What is the address?");
+                     String address = scnr.nextLine();
+                  //  String address = "localhost";
+                    int port = 5000;
+                    System.out.println("Want to change default port? Type 'Yes' if yes or press any other key to continue with default port 5000."); //testing
 
                     try {
-//                        if (scnr.nextLine().equals("Yes")) {
-//                            System.out.println("What is the port?"); //TODO uncommented when done testing!
-//                            port = scnr.nextInt();
-//
-//                        }
+                        if (scnr.nextLine().equals("Yes")) {
+                            System.out.println("What is the port?"); //testing
+                            port = scnr.nextInt();
+
+                        }
 
                         ServerSocket serverSock = new ServerSocket(port, 0, InetAddress.getByName(address));
                         System.out.println("----------------------------------------------------");

@@ -13,7 +13,9 @@ import game.board.Board;
 import game.board.boardPosition;
 import game.ships.*;
 
-
+/**
+ *  This class receives data from the ClientTUI
+ */
 public class ClientHandler implements Runnable {
     private Board board;
     private ArrayList<ArrayList<? extends Ship>> shipLists;
