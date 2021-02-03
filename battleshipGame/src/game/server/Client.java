@@ -158,7 +158,7 @@ public class Client {
                 }
 
             }
-            System.out.println("After a while"); //TODO
+           // System.out.println("After a while");
         } else if (result.split(";")[0].equals(ProtocolMessages.FAIL)) {
             TUI.showMessage(result.split(";")[1]);
         } else {

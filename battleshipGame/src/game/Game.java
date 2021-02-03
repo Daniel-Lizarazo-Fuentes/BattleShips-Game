@@ -27,6 +27,7 @@ public class Game implements Runnable {
     private ArrayList<ClientHandler> clientHandlers;
     private Player[] GamePlayers = new Player[2];
     private String move;
+   // private boolean timedOut = false;
 
     public Game(ArrayList<ClientHandler> clientHandlers) {
         this.clientHandlers = clientHandlers;
@@ -46,6 +47,31 @@ public class Game implements Runnable {
         clientHandlers.add(cl);
     }
 
+//    private class timer implements Runnable {
+//
+//        private ClientHandler clientHand;
+//
+//        public timer(ClientHandler ch) {
+//            this.clientHand = ch;
+//        }
+//
+//        @Override
+//        public void run() {
+//            while (!timedOut) {
+//                try {
+//                    synchronized (this) {
+//                        wait(5000); //give 30s to make move/reconnect
+//                        switchTurn();
+//                        timedOut = true;
+//                        clientHand.writeOut(ProtocolMessages.TURN + ProtocolMessages.CS + clientHand.getName());
+//                    }
+//                } catch (InterruptedException e) {
+//
+//                }
+//            }
+//        }
+//    }
+
     @Override
     public void run() {
         //System.out.println("RUNNING");
@@ -58,32 +84,32 @@ public class Game implements Runnable {
         nameList = nameList + ProtocolMessages.CS + false;
         nameList = nameList.substring(1);
         for (ClientHandler ch : clientHandlers) {
-
             ch.writeOut(ProtocolMessages.BEGIN + ProtocolMessages.CS + nameList);
         }
 
         switch (clientHandlers.size()) {
-            case 1:
-
-                try {
-                    synchronized (clientHandlers.get(0)) {
-                        clientHandlers.get(0).wait();
-                    }
-                    System.out.println("Ready to play");
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                GameBoards[0] = clientHandlers.get(0).getBoard();
-                GameBoards[1] = new Board(false);
-
-
-                GamePlayers[0] = new humanPlayer(clientHandlers.get(0).getName(), GameBoards[0], clientHandlers.get(0).getShipLists());
-                GamePlayers[1] = new randomComputerPlayer(GameBoards[0]);
-
-                GamePlayers[0].setTurn(true);
-
-                break;
+//            case 1:
+//
+//                try {
+//                    synchronized (clientHandlers.get(0)) {
+//                        clientHandlers.get(0).wait();
+//                    }
+//                    System.out.println("Ready to play");
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//
+//
+//                GameBoards[0] = clientHandlers.get(0).getBoard();
+//                GameBoards[1] = clientHandlers.get(1).getBoard();
+//
+//
+//                GamePlayers[0] = new humanPlayer(clientHandlers.get(0).getName(), GameBoards[0], clientHandlers.get(0).getShipLists());
+//                GamePlayers[1] = new randomComputerPlayer(clientHandlers.get(0).getName(), GameBoards[0], clientHandlers.get(0).getShipLists());
+//
+//                GamePlayers[0].setTurn(true);
+//
+//                break;
 
             case 2:
 
@@ -133,8 +159,10 @@ public class Game implements Runnable {
 
             if (ch != null) {
 
+                ch.writeOut(ProtocolMessages.TURN + ProtocolMessages.CS + ch.getName()); // add the following to send scores as well, protocol doesn't send scores in the examples and TA said we should not as well. + ProtocolMessages.CS + pointsToArray(updatePoints(GamePlayers[0], GamePlayers[1]))
 
-                ch.writeOut(ProtocolMessages.TURN + ProtocolMessages.CS + ch.getName() + ProtocolMessages.CS + protocolMessage(updatePoints(GamePlayers[0], GamePlayers[1]))); //TODO ch.getName() might not work
+                //  Thread thread = new Thread(new timer(ch));
+                //      thread.start();
                 try {
                     synchronized (this) {
                         this.wait();
@@ -143,83 +171,86 @@ public class Game implements Runnable {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+//                if (timedOut) {
+//                    ch.writeOut(ProtocolMessages.TURN + ProtocolMessages.CS + ch.getName());
+//                } else {
 
+                if (move != null) {
+                    if (GamePlayers[0].getTurn()) {
+                        if (moveCheck(GamePlayers[1], move)) {
+                            int fireResult = fire(move);
+                            sendAll(ProtocolMessages.HIT + ProtocolMessages.CS + fireResult);
 
-//                try {
-//                    synchronized (this) {  //TODO check if actually works
-//                        wait(30000); //give 30s to make move/reconnect
-//
-//                    }
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
+                            //      synchronized (thread) {
+                            //          timedOut = false;
+                            //         thread.notify();
+                            //      }
+
+                            if (fireResult == 0) {
+                                switchTurn();
+                            }
+                        } else {
+                            sendAll(ProtocolMessages.HIT + ProtocolMessages.CS + "-1");
+                        }
+                    } else {
+                        if (moveCheck(GamePlayers[0], move)) {
+                            int fireResult = fire(move);
+                            sendAll(ProtocolMessages.HIT + ProtocolMessages.CS + fireResult);
+
+                            if (fireResult == 0) {
+                                switchTurn();
+                            }
+                        } else {
+                            sendAll(ProtocolMessages.HIT + ProtocolMessages.CS + "-1");
+                        }
+                    }
+                }
+                //   }
+            }
+        }
+    }
+
+//    /**
+//     * Adds points based on what ship was sunk
+//     */
+//    public Integer[] updatePoints(Player p0, Player p1) {
+//        Integer[] playerPoints = new Integer[2];
+//        int points = 0;
+//        for (ArrayList<? extends Ship> shipList : p0.getShipArrayList()) {
+//            System.out.println("Points at each shiparraylist p0 "+points);
+//            for (Ship sh : shipList) {
+//                points += sh.getSize() - sh.getHitPoints();
+//                if (sh.getHitPoints() == 0) {
+//                    points++;
 //                }
-            }
-
-            if (move != null) {
-                if (GamePlayers[0].getTurn()) {
-                    if (moveCheck(GamePlayers[1], move)) {
-                        int fireResult = fire(move);
-                        sendAll(ProtocolMessages.HIT + ProtocolMessages.CS + fireResult);
-
-                        if (fireResult == 0) {
-                            switchTurn();
-                        }
-                    } else {
-                        sendAll(ProtocolMessages.HIT + ProtocolMessages.CS + "-1");
-                    }
-                } else {
-                    if (moveCheck(GamePlayers[0], move)) {
-                        int fireResult = fire(move);
-                        sendAll(ProtocolMessages.HIT + ProtocolMessages.CS + fireResult);
-
-                        if (fireResult == 0) {
-                            switchTurn();
-                        }
-                    } else {
-                        sendAll(ProtocolMessages.HIT + ProtocolMessages.CS + "-1");
-                    }
-                }
-
-            }
-        }
-
-    }
-
-    /**
-     * Adds points based on what ship was sunk
-     */
-    public Integer[] updatePoints(Player p0, Player p1) {
-        Integer[] playerPoints = new Integer[2];
-        int points = 0;
-        for (ArrayList<? extends Ship> shipList : p0.getShipArrayList()) {
-            for (Ship sh : shipList) {
-                points += sh.getSize() - sh.getHitPoints();
-                if (sh.getHitPoints() == 0) {
-                    points++;
-                }
-
-            }
-        }
-        p1.setPoints(points);
-
-        points = 0;
-        for (ArrayList<? extends Ship> shipList : p1.getShipArrayList()) {
-            for (Ship sh : shipList) {
-                points += sh.getSize() - sh.getHitPoints();
-                if (sh.getHitPoints() == 0) {
-                    points++;
-                }
-
-            }
-        }
-        p0.setPoints(points);
-
-        playerPoints[0] = p0.getPoints();
-        playerPoints[1] = p1.getPoints();
-
-        return playerPoints;
-
-    }
+//
+//            }
+//        }
+//        p1.setPoints(points);
+//
+//        points = 0;
+//        for (ArrayList<? extends Ship> shipList : p1.getShipArrayList()) {
+//            System.out.println("Points at each shiparraylist p1 "+points);
+//            for (Ship sh : shipList) {
+//                points += sh.getSize() - sh.getHitPoints();
+//                if (sh.getHitPoints() == 0) {
+//                    points++;
+//                }
+//
+//            }
+//        }
+//        p0.setPoints(points);
+//
+//        playerPoints[0] = p0.getPoints();
+//        playerPoints[1] = p1.getPoints();
+//
+//        return playerPoints;
+//
+//    }
+//
+//    public String pointsToArray(Integer[] intArray){
+//       return intArray[0]+","+intArray[1];
+//    }
 
     public ClientHandler getCH() {
         for (ClientHandler ch : clientHandlers) {
@@ -349,27 +380,30 @@ public class Game implements Runnable {
                 randomColumn = z;
             }
         }
-        int randomRow = Character.getNumericValue((input.charAt(1)));
         try {
+            int randomRow = Character.getNumericValue((input.charAt(1)));
+            try {
 
-            if (randomColumn < 15 && randomRow < 10) {
+                if (randomColumn < 15 && randomRow < 10) {
 
-            } else {
+                } else {
+                    return false;
+                }
+            } catch (IndexOutOfBoundsException e) {
                 return false;
+            }
+
+            Board defenderBoard = defender.getBoard();
+            ArrayList<boardPosition> defenderFields = defenderBoard.getFields();
+            int index = defenderBoard.getFieldIndex(input);
+            if (index == -1) {
+                return false;
+            } else {
+                return !defenderFields.get(index).getIsHit();
             }
         } catch (IndexOutOfBoundsException e) {
             return false;
         }
-
-        Board defenderBoard = defender.getBoard();
-        ArrayList<boardPosition> defenderFields = defenderBoard.getFields();
-        int index = defenderBoard.getFieldIndex(input);
-        if (index == -1) {
-            return false;
-        } else {
-            return !defenderFields.get(index).getIsHit();
-        }
-
 
     }
 
