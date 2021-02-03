@@ -1,12 +1,20 @@
 package game.ships;
 
 import java.util.ArrayList;
-//abstract parent class ship
+/**
+ * --------------------------------------------------------------------------------------------
+ * This abstract class is the parent class for all ships. All different types of ships are it's
+ * child classes. A ship has a size (fixed for it's child classes) and an amount of hitpoints
+ * for which 0<=hitPoints<=size
+ * Each ship also has an Arraylist of positions, these are coordinates of fields on which the
+ * ship is placed. For positions the following also holds: positions.size()=size
+ * --------------------------------------------------------------------------------------------
+ */
 public abstract class Ship {
     private int size;
     private int hitPoints;
     private String name;
-    private ArrayList<String> positions = new ArrayList<String>();
+    private ArrayList<String> positions = new ArrayList<>();
 
     public Ship(int size, int hitPoints, String name, ArrayList<String> positions) {
         this.size = size;

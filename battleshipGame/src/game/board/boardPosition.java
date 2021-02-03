@@ -2,13 +2,27 @@ package game.board;
 
 import java.io.Serializable;
 
+/**
+ * --------------------------------------------------------------------------------------------
+ * This class is the blueprint for a field on the board, it is characterized by it's coordinate
+ * and stores all relevant information to a field on the board.
+ * --------------------------------------------------------------------------------------------
+ * Information stored is:
+ * - The state (meaning if the field is empty, has a ship or has a wreck)
+ * - The shipType describes which particular ship is connected to this field
+ * - The positionHidden stores if a field is visible, currently if a position is hit it's set to
+ *   visible, but if more time would have been given a radar could have been implemented which
+ *   would change this as well while not chaning isHit
+ * - The isHit boolean describes if a field was fired on or not.
+ * --------------------------------------------------------------------------------------------
+ */
 public class boardPosition implements Serializable {
     public enum positionState {
         EMPTY,
         SHIP,
         WRECK
     }
-
+    
     private String coordinate;
     private positionState state;
     private String shipType;

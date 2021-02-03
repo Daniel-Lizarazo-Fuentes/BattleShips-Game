@@ -2,7 +2,16 @@ package game.board;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Locale;
 
+/**
+ * --------------------------------------------------------------------------------------------
+ * This class is the blueprint for the board, it's main characteristic is an ArrayList of
+ * boardPositions which are fields of the board.
+ * The coordinates ArrayList is contains all coordinates in on the board and are used for a
+ * mutlitude of functions but mainly searching and creating fields.
+ * --------------------------------------------------------------------------------------------
+ */
 public class Board implements Serializable {
     private static final int ROWS = 10;
     private static final int COLUMNS = 15;
@@ -15,6 +24,7 @@ public class Board implements Serializable {
         this.fields = new ArrayList<>();
         this.coordinates = new ArrayList<>();
         fillCoordinates();
+       // System.out.println(coordinates.toString());
         fillFields(visible);
     }
 
@@ -70,8 +80,7 @@ public class Board implements Serializable {
         //System.out.println(getFields().size()); // for testing purposes
         for (int i = 0; i < getFields().size(); i++) {
             // System.out.println(s+"TEST: "+getFields().get(i).getCoordinate()); //for testing purposes
-            if ((getFields().get(i).getCoordinate()).equals(s)) {
-
+            if ((getFields().get(i).getCoordinate()).equals(s.toLowerCase(Locale.ROOT))) {
                 result = i;
             }
         }
@@ -105,9 +114,7 @@ public class Board implements Serializable {
         // (note that we also could've chosen to do each collum and add the row numbers as that would result in exactly the same)
         for (int k = 0; k < ROWS; k++) {
             for (int i = 0; i < COLUMNS; i++) {
-
                 setCoordinate(alphabet[i], k);
-
             }
 
         }
@@ -174,6 +181,11 @@ public class Board implements Serializable {
 
         }
         result += "\n" + append;
+        // Enter board representation so the board can be constructed from this string as well, syntax (BoardRepresentation:coordinate;positionState;hidden;shipType;isHit,...) so the string can be split using : into boardreperesentation (just for the case it's printed), then using , into seperate boardpostions and within boardpositon using ; the aspects of it can be seperated
+//        result += "\nBoardRepresentation:";
+//        for (boardPosition bp : this.getFields()) {
+//            result += bp.getCoordinate() + ";" + bp.getState() + ";" + bp.getPositionHidden() + ";" + bp.getShipType() + ";" + bp.getIsHit() + ",";
+//        }
         return result;
     }
 
