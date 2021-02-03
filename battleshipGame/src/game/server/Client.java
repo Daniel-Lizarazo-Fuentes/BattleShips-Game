@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 import game.exceptions.ExitProgram;
 import game.exceptions.ServerUnavailableException;
-import game.server.ProtocolMessages;
+
 
 public class Client {
     private Socket clientSock;
@@ -179,8 +179,8 @@ public class Client {
     }
 
 
-    public static void main(String args[]) {
-        (new Client()).start();
-
-    }
+//    public static void main(String args[]) {
+//        (new Client()).start();
+//
+//    }
 }
