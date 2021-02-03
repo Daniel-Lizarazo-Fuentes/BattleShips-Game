@@ -314,7 +314,7 @@ public class ClientHandler implements Runnable {
         Board result = new Board(false);
         String[] rows = grid.split(":");
 
-        System.out.println(result.getFields().size());
+        //System.out.println(result.getFields().size());
 
         int rowIndex = 0;
         int collumIndex = 0;

@@ -13,9 +13,7 @@ import game.ships.*;
 public class ClientTUI {
     private Client c;
     public boolean turn;
-
-    private int numOfPlayers;
-    private int playerNumber;
+    private int points;
     private String name;
     private Board enemyBoard = new Board(false);
 
@@ -44,7 +42,7 @@ public class ClientTUI {
                     fillBoardRandom(board, createShipArrays());
                     this.c.sendMessage(ProtocolMessages.DEPLOY + ProtocolMessages.CS + toGrid(board));
                     showMessage("Starting game with the following players: " + input.split(";")[1]);
-                    // showMessage("Your board"+board.toString()); //TODO
+                    // showMessage("Your board"+board.toString());
 
                 } else if (input.split(";")[0].equals(ProtocolMessages.READY)) {
                     showMessage("Ready to play!");
@@ -52,10 +50,11 @@ public class ClientTUI {
                 } else if (input.split(";")[0].equals(ProtocolMessages.TURN) && input.split(";")[1].equals(getName())) {
 
                     showMessage(this.enemyBoard.toString());
-
+                    showMessage("Your points: " + this.points);
 
                     //show scores
-                    showMessage(input.split(";")[2]);
+                    //   Integer[] scoreArray = stringToIntArray(input.split(";")[2]);
+                    //  showMessage("p1 score: "+scoreArray[0]+"p2 score: "+scoreArray[1]);
 
 
                     Scanner scnr = new Scanner(System.in);
@@ -81,8 +80,10 @@ public class ClientTUI {
                             showMessage("Miss");
                         } else if (messageFromServer[1].equals("1")) {
                             showMessage("Hit");
+                            points++;
                         } else if (messageFromServer[1].equals("2")) {
                             showMessage("Hit and Sunk");
+                            points+=2;
                         } else if (messageFromServer[1].equals("-1")) {
                             showMessage("Invalid coordinate");
                         }
@@ -98,8 +99,10 @@ public class ClientTUI {
                         showMessage("Miss");
                     } else if (input.split(";")[1].equals("1")) {
                         showMessage("Hit");
+
                     } else if (input.split(";")[1].equals("2")) {
                         showMessage("Hit and Sunk");
+
                     } else if (input.split(";")[1].equals("-1")) {
                         showMessage("Invalid coordinate");
                     }
@@ -114,10 +117,10 @@ public class ClientTUI {
                     }
 
                 } else if (input.split(";")[0].equals(ProtocolMessages.CHAT)) {
-                    //TODO we won't have a chat
+                    // we won't have a chat
 
                 } else if (input.split(";")[0].equals(ProtocolMessages.LIST)) {
-                    //TODO we won't have a chat
+                    // we won't have a chat
 
                 } else {
                     System.out.println("Something went wrong the following was received: " + input);
@@ -132,6 +135,14 @@ public class ClientTUI {
         }
 
     }
+
+//    public Integer[] stringToIntArray(String input) {
+//        Integer[] intArray = new Integer[2];
+//        String[] intValues = input.split(",");
+//        intArray[0] = Integer.parseInt(intValues[0]);
+//        intArray[1] = Integer.parseInt(intValues[1]);
+//        return intArray;
+//    }
 
 
     public String toGrid(Board board) {
