@@ -28,6 +28,9 @@ public class Client {
         TUI = new ClientTUI(this);
     }
 
+    /**
+     * Initiates connection
+     */
     public void start() {
         try {
             createConnection();
@@ -53,6 +56,11 @@ public class Client {
         }
     }
 
+    /**
+     * Creates connection and thorws exception if program is exited
+     *
+     * @throws ExitProgram exception for exiting program
+     */
     public void createConnection() throws ExitProgram {
         clearConnection();
         while (clientSock == null) {
@@ -63,8 +71,8 @@ public class Client {
             TUI.showMessage("What is the port of the server?");
             int port = 0;
 
-          //  String host = "localhost"; //for quick testing
-        //    int port = 5000; //for quick testing
+            //  String host = "localhost"; //for quick testing
+            //    int port = 5000; //for quick testing
 
             try {
                 port = scnr.nextInt();
@@ -86,12 +94,21 @@ public class Client {
         }
     }
 
+    /**
+     * Clears connection by setting everything to null
+     */
     public void clearConnection() {
         clientSock = null;
         in = null;
         out = null;
     }
 
+    /**
+     * Send a message to the server
+     *
+     * @param msg message to be send
+     * @throws ServerUnavailableException exception for when the server isn't available
+     */
     public synchronized void sendMessage(String msg) throws ServerUnavailableException {
         if (out != null) {
             try {
@@ -107,6 +124,12 @@ public class Client {
         }
     }
 
+    /**
+     * Read a line from a server and return the message read
+     *
+     * @return String of what was read from the server
+     * @throws ServerUnavailableException exception for when the server isn't available
+     */
     public String readLineFromServer() throws ServerUnavailableException {
         if (in != null) {
             try {
@@ -127,6 +150,9 @@ public class Client {
         }
     }
 
+    /**
+     * Closes the connection by closing the socket and the in and output streams
+     */
     public void closeConnection() {
         TUI.showMessage("Closing the connection...");
         try {
@@ -138,6 +164,15 @@ public class Client {
         }
     }
 
+    /**
+     * The handshake, sends a join message and waits for a success message (handshake), then asks
+     * the player if they want to player singleplayer or multiplayer or join an existing game
+     * (caution! join should only be used if a client used mp before it and nobody has joined in between)
+     * Join is early implementation of lobby (non functioning), with mp creating a game instead of joining one (it currently does join one)
+     *
+     * @param playername
+     * @throws ServerUnavailableException
+     */
     public void handleJoin(String playername) throws ServerUnavailableException {
         sendMessage(ProtocolMessages.JOIN + ProtocolMessages.CS + playername + ProtocolMessages.CS + "false" + ProtocolMessages.CS + "false");
         String result = readLineFromServer();
@@ -146,7 +181,7 @@ public class Client {
 
             boolean correctAnswer = false;
             while (!correctAnswer) {
-                TUI.showMessage("Do you want to create own game ('mp') or join available one if possible? ('join') or singleplayer? (Type 'sp', 'mp','join')");
+                TUI.showMessage("Do you want to create own game ('mp')  singleplayer? (Type 'sp', 'mp'");
                 Scanner scnr = new Scanner(System.in);
                 String input = scnr.nextLine();
                 if (input.equals("mp")) {
@@ -155,14 +190,14 @@ public class Client {
                 } else if (input.equals("sp")) {
                     sendMessage(ProtocolMessages.PLAY + ProtocolMessages.CS + 1);
                     correctAnswer = true;
-                } else if (input.equals("join")) {
-                    correctAnswer = true;
+               // } else if (input.equals("join")) {
+               //     correctAnswer = true; // non functional lobby thing
                 } else {
-                    TUI.showMessage("Type 'sp', 'mp','join'");
+                    TUI.showMessage("Type 'sp', 'mp'");
                 }
 
             }
-           // System.out.println("After a while");
+            // System.out.println("After a while");
         } else if (result.split(";")[0].equals(ProtocolMessages.FAIL)) {
             TUI.showMessage(result.split(";")[1]);
         } else {
